@@ -1,0 +1,31 @@
+{
+  "name": "builder",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start",
+    "generate-site": "babel-node cli/generate"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@zeit/next-css": "1.0.1",
+    "autoprefixer": "9.5.1",
+    "next": "8.1.0",
+    "react": "16.8.6",
+    "react-dom": "16.8.6",
+    "react-frame-component": "^4.1.0",
+    "styled-components": "4.2.1",
+    "tailwindcss": "1.0.3"
+  },
+  "devDependencies": {
+    "@babel/node": "^7.4.5",
+    "babel-plugin-macros": "^2.6.0",
+    "babel-plugin-styled-components": "^1.10.0",
+    "tailwind.macro": "^1.0.0-alpha.10"
+  }
+}
