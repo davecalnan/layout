@@ -2,7 +2,6 @@
   "name": "builder",
   "version": "0.1.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
     "dev": "next",
     "build": "next build",
