@@ -2,7 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const React = require('react')
 const ReactDOMServer = require('react-dom/server')
-const { wait } = require('../util')
+const { wait } = require('../../util')
 
 const axios = require('axios')
 const http = axios.create({
