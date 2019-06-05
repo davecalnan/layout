@@ -23,6 +23,7 @@ const PreviewPage = withRouter(({ router }) => {
 
   const save = async site => {
     try {
+      updateError(null)
       updateSaving(true)
       const { data } = await axios.post('/api/save', site)
       updateSaving(false)
