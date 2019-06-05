@@ -8,7 +8,7 @@
   ],
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/src/$1.js" },
-    { "src": "/components/(.*)", "dest": "/components/dist/$1" },
+    { "src": "/__components/(.*)", "dest": "/$1" },
     { "src": "/(.*)", "dest": "/www/$1" }
   ]
 }
