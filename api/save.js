@@ -1,4 +1,4 @@
 module.exports = (req, res) => {
-  console.log('req:', req)
-  console.log('res:', res)
+  console.log('save.js')
+  return 'save.js'
 }
