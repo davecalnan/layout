@@ -53,7 +53,7 @@ const PreviewPage = withRouter(({ router }) => {
     const mergePropTypes = async (composition, updateComposition) => {
       const compositionWithPropTypes = await Promise.all(
         composition.map(async component => {
-          const Component = await import(`../../demo/${component.name}.demo`)
+          const Component = await import(`../demo/${component.name}.demo`)
 
           const propTypes = Object
             .entries(Component.default.propTypes)

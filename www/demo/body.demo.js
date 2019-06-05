@@ -1,4 +1,4 @@
-import { PropTypes } from '../lib'
+import { PropTypes } from '../../lib'
 
 const Body = ({ content }) => (
   <div>

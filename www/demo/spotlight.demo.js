@@ -1,4 +1,4 @@
-import { PropTypes } from '../lib'
+import { PropTypes } from '../../lib'
 
 import { H2, P } from './typography.demo'
 import Button from './button.demo'
