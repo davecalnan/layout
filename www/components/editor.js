@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import tw from 'tailwind.macro'
 
-import { toSentenceCase } from '../util'
+import { toSentenceCase } from '../../util'
 import { H3 } from './typography'
 import { Input, Textarea, Select } from './form-controls'
 

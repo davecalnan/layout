@@ -1,6 +1,3 @@
-// import '../demo/story/assets/css/main.css'
-// import '../demo/story/assets/css/noscript.css'
-
 const Demo = () => (
   <div id="wrapper" className="divided">
 

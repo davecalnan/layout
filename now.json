@@ -2,9 +2,11 @@
   "version": 2,
   "name": "builder",
   "builds": [
-    {
-      "src": "next.config.js",
-      "use": "@now/next"
-    }
+    { "src": "www/next.config.js", "use": "@now/next" },
+    { "src": "api/save.js", "use": "@now/node" }
+  ],
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/api/$1" },
+    { "src": "/(.*)", "dest": "/www/$1" }
   ]
 }
