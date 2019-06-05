@@ -1,0 +1,21 @@
+{
+  "name": "components",
+  "version": "0.1.0",
+  "description": "",
+  "scripts": {
+    "build": "babel src --out-dir=dist",
+    "now-build": "npm run build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/plugin-transform-react-jsx": "^7.3.0"
+  },
+  "dependencies": {
+    "@babel/preset-env": "^7.4.5",
+    "react": "^16.8.6"
+  }
+}

@@ -16,12 +16,15 @@ const PreviewPage = withRouter(({ router }) => {
   const [composition, updateComposition] = useState([])
   const [edited, updateEdited] = useState(false)
   const [saving, updateSaving] = useState(false)
+  const [deploying, updateDeploying] = useState(false)
   const [error, updateError] = useState(null)
+
+  const { metadata } = site
 
   const save = async site => {
     try {
       updateSaving(true)
-      const { data } = await axios.post('/api/save.js', site)
+      const { data } = await axios.post('/api/save', site)
       updateSaving(false)
       updateEdited(false)
       console.log(data)
@@ -29,6 +32,24 @@ const PreviewPage = withRouter(({ router }) => {
       updateError(error)
       console.error(error)
     }
+    updateSaving(false)
+  }
+
+  const deploy = async id => {
+    try {
+      updateDeploying(true)
+      const { data } = await axios.post('/api/deploy', { id })
+      console.log(data)
+    } catch (error) {
+      updateError(error)
+      console.error(error)
+    }
+    updateDeploying(false)
+  }
+
+  const handleSave = async site => {
+    await save(site)
+    await deploy(site.metadata.id)
   }
 
   useEffect(() => {
@@ -57,8 +78,6 @@ const PreviewPage = withRouter(({ router }) => {
     }
     getSite()
   }, [])
-
-  const { metadata } = site
 
   useEffect(() => {
     const mergePropTypes = async (composition, updateComposition) => {
@@ -105,6 +124,8 @@ const PreviewPage = withRouter(({ router }) => {
         <div className="flex items-center">
           {saving
             ? <P className="mr-4">Saving...</P>
+            : deploying
+            ? <P className="mr-4">Deploying...</P>
             : error
             ? <P className="mr-4">Something went wrong</P>
             : edited
@@ -112,7 +133,7 @@ const PreviewPage = withRouter(({ router }) => {
             : null
           }
           <Button
-            onClick={() => save({
+            onClick={() => handleSave({
               metadata,
               components: composition
             })}

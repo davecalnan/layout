@@ -21,3 +21,5 @@ export const toSnakeCase = (string) => splitIntoWords(string).join('_')
 export const toSentenceCase = (string) => splitIntoWords(string).map((word, index) => index === 0 ? capitalise(word) : word).join(' ')
 
 export const toUpperCase = (string) => splitIntoWords(string).map(word => word.toUpperCase()).join(' ')
+
+export const wait = async ms => new Promise(resolve => setTimeout(resolve, ms))

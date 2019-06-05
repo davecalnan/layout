@@ -5,7 +5,7 @@ const Button = ({ disabled, onClick, className, children, ...props }) => (
     className={[
       className,
       'text-lg rounded shadow px-4 py-1',
-      disabled ? 'text-gray-700 bg-gray-300 cursor-not-allowed' : 'text-black bg-white'
+      disabled ? 'text-gray-700 bg-gray-400 cursor-not-allowed' : 'text-black bg-white'
     ].join(' ')}
   >
     {children}
