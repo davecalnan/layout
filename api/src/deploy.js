@@ -47,7 +47,7 @@ app.post('*', async (req, res) => {
     '<!DOCTYPE html><html><head><link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet"></head><body>',
     ReactDOMServer.renderToStaticMarkup(
       site.components.map((({ name, props }, index) => {
-        const Component = require(`../../components/dist/${name}.demo`).default
+        const Component = require(`${__dirname}/../../components/dist/${name}.demo`).default
         return React.createElement(
           Component,
           {
