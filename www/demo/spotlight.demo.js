@@ -20,7 +20,7 @@ const Spotlight = ({ heading, text, buttonText, buttonPath, imageSource, imagePo
         backgroundImage: `url(${imageSource})`,
         minWidth: '20rem'
       }}
-      className="w-1/3 h-auto bg-cover bg-center bg-grey-300"
+      className="w-1/3 h-auto bg-cover bg-center bg-gray-300"
     />
   </section>
 )

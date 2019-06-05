@@ -8,17 +8,28 @@ import Button from '../components/button'
 import Browser from '../components/browser'
 import Editor from '../components/editor'
 import Viewer from '../components/viewer'
+import { P } from '../components/typography'
 
 const PreviewPage = withRouter(({ router }) => {
   const [loading, setLoading] = useState(true)
   const [site, updateSite] = useState({})
   const [composition, updateComposition] = useState([])
+  const [edited, updateEdited] = useState(false)
+  const [saving, updateSaving] = useState(false)
+  const [error, updateError] = useState(null)
 
   const save = async site => {
-    // const response = await axios.get('/api/save')
-    // console.log(response)
+    try {
+      updateSaving(true)
+      const { data } = await axios.post('/api/save.js', site)
+      updateSaving(false)
+      updateEdited(false)
+      console.log(data)
+    } catch (error) {
+      updateError(error)
+      console.error(error)
+    }
   }
-  save()
 
   useEffect(() => {
     const getSite = async () => {
@@ -91,17 +102,33 @@ const PreviewPage = withRouter(({ router }) => {
   return (
     <Layout
       headerContent={(
-        <Button
-          onClick={() => console.log('I should be disabled.')}
-          disabled
-        >
-          Save
-        </Button>
+        <div className="flex items-center">
+          {saving
+            ? <P className="mr-4">Saving...</P>
+            : error
+            ? <P className="mr-4">Something went wrong</P>
+            : edited
+            ? <P className="mr-4">Edited</P>
+            : null
+          }
+          <Button
+            onClick={() => save({
+              metadata,
+              components: composition
+            })}
+            disabled={!edited || saving}
+          >
+            Save
+          </Button>
+        </div>
       )}
       sidebarContent={
         <Editor
           composition={composition}
-          updateComposition={updateComposition}
+          updateComposition={composition => {
+            updateComposition(composition)
+            updateEdited(true)
+          }}
           loading={loading}
         />
       }
