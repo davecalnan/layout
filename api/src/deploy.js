@@ -62,7 +62,7 @@ app.post('*', async (req, res) => {
   ].join('')
 
   try {
-    console.log('deploying site')
+    console.log(`Deploying site '${site.metadata.name}'.`)
     const { data } = await http.post('https://api.zeit.co/v9/now/deployments/', {
       name: site.metadata.name,
       alias: site.metadata.domain,
@@ -76,6 +76,8 @@ app.post('*', async (req, res) => {
         { src: '*.html', use: '@now/static' }
       ]
     })
+    console.log(`Successfully deployed '${site.metadata.name}'. (Deployment id: ${data.id}.)`)
+    console.log(`Temporary url: '${data.url}'.`)
 
     /*
       To assign an alias to a Now deployment you must make a get request to the
@@ -83,19 +85,22 @@ app.post('*', async (req, res) => {
 
       More info: https://zeit.co/docs/api#endpoints/deployments/create-a-new-deployment
     */
-    const pollDeployment = async id => {
+    const pollDeployment = async (id, count = 1) => {
+      console.log(`(${count}) Checking if deployment to ${site.metadata.domain} is ready...`)
       const { data } = await http.get(`https://api.zeit.co/v9/now/deployments/${id}`)
       if (data.readyState !== 'READY') {
         await wait(5000)
-        return pollDeployment(id)
+        return pollDeployment(id, count + 1)
       }
       return data
     }
 
     await pollDeployment(data.id)
+    console.log(`Site is live at https://${site.metadata.domain}.`)
 
     res.status(200).send(JSON.stringify(data))
   } catch (error) {
+    console.error('Something went wrong.')
     res.status(500).send(JSON.stringify({ error }))
   }
 })
