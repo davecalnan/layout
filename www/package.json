@@ -5,10 +5,7 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "now-build": "next build",
-    "start": "next start",
-    "site:build": "babel-node cli/build",
-    "site:deploy": "babel-node cli/deploy"
+    "start": "next start"
   },
   "keywords": [],
   "author": "",

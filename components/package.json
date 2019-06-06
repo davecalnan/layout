@@ -3,8 +3,7 @@
   "version": "0.1.0",
   "description": "",
   "scripts": {
-    "build": "babel src --out-dir=dist",
-    "now-build": "npm run build"
+    "build": "babel src --out-dir=dist"
   },
   "keywords": [],
   "author": "",
