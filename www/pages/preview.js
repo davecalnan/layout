@@ -25,7 +25,7 @@ const PreviewPage = withRouter(({ router }) => {
     try {
       updateError(null)
       updateSaving(true)
-      const { data } = await axios.post('/api/save', site)
+      const { data } = await axios.post('http://localhost:3001/save', site)
       updateSaving(false)
       updateEdited(false)
       console.log(data)
@@ -39,7 +39,7 @@ const PreviewPage = withRouter(({ router }) => {
   const deploy = async id => {
     try {
       updateDeploying(true)
-      const { data } = await axios.post('/api/deploy', { id })
+      const { data } = await axios.post('http://localhost:3001/deploy', { id })
       console.log(data)
     } catch (error) {
       updateError(error)

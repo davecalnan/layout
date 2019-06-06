@@ -5,9 +5,11 @@ import { GraphQLClient } from 'graphql-request'
 
 import { wait } from '../../util'
 
+const ZEIT_API_KEY = 'GAuXnrlMPWciH0khBEYCaMQ9'
+
 const http = axios.create({
   headers: {
-    Authorization: `Bearer GAuXnrlMPWciH0khBEYCaMQ9`
+    Authorization: `Bearer ${ZEIT_API_KEY}`
   }
 })
 
