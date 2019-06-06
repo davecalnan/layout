@@ -1,29 +1,23 @@
-const express = require('express')
-const bodyParser = require('body-parser')
-const React = require('react')
-const ReactDOMServer = require('react-dom/server')
-const { wait } = require('../../util')
+import React from 'react'
+import ReactDOMServer from 'react-dom/server'
+import axios from 'axios'
+import { GraphQLClient } from 'graphql-request'
 
-const axios = require('axios')
+import { wait } from '../../util'
+
 const http = axios.create({
   headers: {
     Authorization: `Bearer GAuXnrlMPWciH0khBEYCaMQ9`
   }
 })
 
-const { GraphQLClient } = require('graphql-request')
 const graphql = new GraphQLClient('https://graphql.datocms.com', {
   headers: {
     Authorization: 'f8609401fef1aac3b7716778792814'
   }
 })
 
-const app = express()
-module.exports = app
-
-app.use(bodyParser.json())
-
-app.post('*', async (req, res) => {
+export default async (req, res) => {
   if (req.body == null) {
     return res.status(400).send({ error: 'no JSON object in the request' })
   }
@@ -103,8 +97,4 @@ app.post('*', async (req, res) => {
     console.error('Something went wrong.')
     res.status(500).send(JSON.stringify({ error }))
   }
-})
-
-app.all('*', (req, res) => {
-  res.status(405).send({ error: 'only POST requests are accepted' })
-})
+}
