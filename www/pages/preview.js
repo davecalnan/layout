@@ -84,17 +84,19 @@ const PreviewPage = withRouter(({ router }) => {
     const mergePropTypes = async (composition, updateComposition) => {
       const compositionWithPropTypes = await Promise.all(
         composition.map(async component => {
-          const Component = await import(`../demo/${component.name}.demo`)
+          const Component = await import(`../../components/dist/${component.name}.demo`)
 
           const propTypes = Object
             .entries(Component.default.propTypes)
-            .reduce((acc, [prop, fn]) => ({
-              ...acc,
-              [prop]: {
-                type: fn.name,
-                ...fn.name === 'list' ? { options: fn.options } : null
+            .reduce((acc, [prop, fn]) => {
+              return {
+                ...acc,
+                [prop]: {
+                  type: fn.type,
+                  ...fn.type === 'list' ? { options: fn.options } : null
+                }
               }
-            }), {})
+            }, {})
 
           return {
             ...component,
