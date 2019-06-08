@@ -3,8 +3,10 @@
   "version": "0.1.0",
   "description": "",
   "scripts": {
-    "dev": "nodemon server/index.js",
-    "build": "next build",
+    "dev": "NODE_ENV=development webpack --config webpack.dev.js --watch",
+    "build": "npm run build:next && npm run build:server",
+    "build:next": "next build",
+    "build:server": "NODE_ENV=production webpack --config webpack.prod.js",
     "start": "NODE_ENV=production node server/index.js"
   },
   "keywords": [],
@@ -27,10 +29,13 @@
     "tailwindcss": "1.0.3"
   },
   "devDependencies": {
-    "@babel/node": "7.4.5",
     "babel-plugin-macros": "2.6.0",
     "babel-plugin-styled-components": "1.10.0",
-    "nodemon": "^1.19.1",
-    "tailwind.macro": "1.0.0-alpha.10"
+    "nodemon-webpack-plugin": "^4.0.8",
+    "tailwind.macro": "1.0.0-alpha.10",
+    "webpack": "^4.33.0",
+    "webpack-cli": "^3.3.3",
+    "webpack-merge": "^4.2.1",
+    "webpack-node-externals": "^1.7.2"
   }
 }
