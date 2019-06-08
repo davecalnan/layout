@@ -5,6 +5,7 @@ module.exports = {
   entry: './server/index.js',
   externals: [nodeExternals()],
   output: {
-    filename: 'main.js'
+    filename: 'server.js',
+    path: __dirname + '/.next/dist'
   }
 }
