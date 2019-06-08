@@ -13,4 +13,4 @@ app.post('/save', save)
 app.post('/deploy', deploy)
 
 const port = 3001
-app.listen(port, () => console.log(`API listening on port ${port}.`))
+app.listen(port, () => console.log(`API ready on port ${port}.`))
