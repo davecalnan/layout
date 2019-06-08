@@ -62,7 +62,6 @@ const PreviewPage = withRouter(({ router }) => {
 
   useEffect(() => {
     const mergePropTypes = async (composition, updateComposition) => {
-      console.log('Composition:', composition)
       const compositionWithPropTypes = await Promise.all(
         composition.map(async component => {
           const Component = await import(`../../components/dist/${component.name}.demo`)
