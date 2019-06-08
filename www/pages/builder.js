@@ -1,6 +1,5 @@
 import { withRouter } from 'next/router'
 import React, { useState, useEffect } from 'react'
-import { GraphQLClient } from 'graphql-request'
 import axios from 'axios'
 
 import Layout from '../components/layout'
@@ -19,16 +18,15 @@ const PreviewPage = withRouter(({ router }) => {
   const [deploying, updateDeploying] = useState(false)
   const [error, updateError] = useState(null)
 
-  const { metadata } = site
+  const { id } = site
 
   const save = async site => {
     try {
       updateError(null)
       updateSaving(true)
-      const { data } = await axios.post(`${process.env.API_BASE}/save`, site)
+      await axios.patch(`${process.env.API_BASE}/sites/${site.id}`, site)
       updateSaving(false)
       updateEdited(false)
-      console.log(data)
     } catch (error) {
       updateError(error)
       console.error(error)
@@ -39,8 +37,7 @@ const PreviewPage = withRouter(({ router }) => {
   const deploy = async id => {
     try {
       updateDeploying(true)
-      const { data } = await axios.post(`${process.env.API_BASE}/deploy`, { id })
-      console.log(data)
+      axios.post(`${process.env.API_BASE}/sites/${id}/deploy`, {})
     } catch (error) {
       updateError(error)
       console.error(error)
@@ -50,29 +47,12 @@ const PreviewPage = withRouter(({ router }) => {
 
   const handleSave = async site => {
     await save(site)
-    await deploy(site.metadata.id)
+    await deploy(site.id)
   }
 
   useEffect(() => {
     const getSite = async () => {
-      const client = new GraphQLClient('https://graphql.datocms.com', {
-        headers: {
-          Authorization: 'f8609401fef1aac3b7716778792814'
-        }
-      })
-
-      const { website } = await client.request(/* GraphQL */`
-        query ($id: ItemId!) {
-          website(filter: { id: { eq: $id } } ) {
-            id
-            json
-          }
-        }
-      `, {
-        id: router.query.siteId
-      })
-
-      const site = website.json
+      const { data: site } = await axios.get(`${process.env.API_BASE}/sites/${router.query.siteId}`, {})
 
       await updateComposition(site.components)
       updateSite(site)
@@ -82,6 +62,7 @@ const PreviewPage = withRouter(({ router }) => {
 
   useEffect(() => {
     const mergePropTypes = async (composition, updateComposition) => {
+      console.log('Composition:', composition)
       const compositionWithPropTypes = await Promise.all(
         composition.map(async component => {
           const Component = await import(`../../components/dist/${component.name}.demo`)
@@ -113,10 +94,10 @@ const PreviewPage = withRouter(({ router }) => {
     }
   }, [site.components])
 
-  const constructUrl = metadata => {
-    if (metadata) {
-      if (metadata.url) return metadata.url
-      if (metadata.domain) return `https://${metadata.domain}`
+  const constructUrl = site => {
+    if (site) {
+      if (site.url) return site.url
+      if (site.domain) return `https://${site.domain}`
     }
     return null
   }
@@ -137,7 +118,7 @@ const PreviewPage = withRouter(({ router }) => {
           }
           <Button
             onClick={() => handleSave({
-              metadata,
+              ...site,
               components: composition
             })}
             disabled={!edited || saving}
@@ -158,7 +139,7 @@ const PreviewPage = withRouter(({ router }) => {
       }
     >
       <Browser
-        url={constructUrl(metadata)}
+        url={constructUrl(site)}
         content={<Viewer composition={composition} />}
       />
     </Layout>
