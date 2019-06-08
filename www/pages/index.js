@@ -3,13 +3,11 @@ import Layout from '../components/layout'
 
 const Homepage = () => (
   <Layout>
-    <Link
-      href="/preview?siteId=1066427"
-    >
-      <a className="underline text-blue-500">
-        Preview
-      </a>
-    </Link>
+    <div className="p-4">
+      <Link href="/sites/1066427/builder">
+        <a className="text-lg underline text-blue-500">Example</a>
+      </Link>
+    </div>
   </Layout>
 )
 
