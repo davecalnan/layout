@@ -1,16 +1,25 @@
 import express from 'express'
 import cors from 'cors'
 import bodyParser from 'body-parser'
-import save from './save'
-import deploy from './deploy'
+import {
+  setResponseContentTypeToJson,
+  attachDatabaseConnection,
+  requestBodyMustNotBeEmpty
+} from './middleware'
+
+import { controller as siteController } from './site/controller'
 
 const app = express()
 
 app.use(cors())
 app.use(bodyParser.json())
+app.use(setResponseContentTypeToJson)
+app.use(attachDatabaseConnection)
+app.post('*', requestBodyMustNotBeEmpty)
+app.put('*', requestBodyMustNotBeEmpty)
+app.patch('*', requestBodyMustNotBeEmpty)
 
-app.post('/save', save)
-app.post('/deploy', deploy)
+app.use('/sites', siteController)
 
 const port = 3001
 app.listen(port, () => console.log(`API ready on port ${port}.`))
