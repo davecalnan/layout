@@ -1,6 +1,3 @@
-// import { SiteClient } from 'datocms-client'
-// console.log(SiteClient)
-// const client = new SiteClient('720fac6d19cb5d0e77e38bb614a6ef')
 import axios from 'axios'
 
 const DATOCMS_WRITE_KEY = '720fac6d19cb5d0e77e38bb614a6ef'
@@ -21,9 +18,6 @@ export default async (req, res) => {
   res.set('Content-Type', 'application/json')
 
   try {
-    // const item = await client.items.update(req.body.metadata.id, {
-    //   json: JSON.stringify(req.body)
-    // })
     const id = req.body.metadata.id
     const { data } = await http.put(`https://site-api.datocms.com/items/${id}`, {
       data: {
