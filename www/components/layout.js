@@ -2,12 +2,14 @@ import '../styles/app.css'
 import styled from 'styled-components'
 import tw from 'tailwind.macro'
 
-import Header from '../components/header'
+import Header from './header'
 
 const Layout = ({ headerContent, sidebarContent, children, className }) => (
   <div className={className}>
     <Header content={headerContent} />
-    <aside className="min-w-xs overflow-x-hidden overflow-y-scroll bg-gray-100 shadow shadow-inner">{sidebarContent}</aside>
+    <aside className="min-w-xs overflow-x-hidden overflow-y-scroll bg-gray-100 shadow shadow-inner">
+      {sidebarContent}
+    </aside>
     <main className="overflow-y-scroll shadow-inner">{children}</main>
   </div>
 )
