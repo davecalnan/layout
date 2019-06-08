@@ -1,4 +1,4 @@
-import { stripInternalKeys } from '../../../util'
+import { stripInternalKeys } from '../helpers'
 
 export default async ({ db }, res) => {
   try {

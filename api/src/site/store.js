@@ -1,4 +1,4 @@
-import { stripInternalKeys } from '../../../util'
+import { stripInternalKeys } from '../helpers'
 
 const getNextId = async (db, collection) => {
   try {
