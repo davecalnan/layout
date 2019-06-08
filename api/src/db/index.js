@@ -7,7 +7,7 @@ const db = {
 
     process.on('SIGINT', () => {
       connection.close(() => {
-        console.log('MongoDB disconnected on app termination.')
+        console.log('\nMongoDB disconnected on app termination.')
         process.exit(0)
       })
     })
