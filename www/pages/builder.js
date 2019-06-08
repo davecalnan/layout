@@ -118,7 +118,7 @@ const PreviewPage = withRouter(({ router }) => {
       if (metadata.url) return metadata.url
       if (metadata.domain) return `https://${metadata.domain}`
     }
-    return 'Your Website'
+    return null
   }
 
   return (
