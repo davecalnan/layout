@@ -1,5 +1,5 @@
 import { withRouter } from 'next/router'
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useReducer } from 'react'
 import axios from 'axios'
 
 import Layout from '../components/layout'
@@ -9,40 +9,120 @@ import Editor from '../components/editor'
 import Viewer from '../components/viewer'
 import { P } from '../components/typography'
 
+const reducer = (state, { type, payload }) => {
+  console.log({
+    type,
+    payload
+  })
+  switch (type) {
+    case 'ERROR':
+      console.error(payload)
+      return {
+      ...state,
+      error: payload,
+      message: 'Something went wrong'
+    }
+    case 'START_LOADING': return {
+      ...state,
+      loading: true
+    }
+    case 'FINISH_LOADING': return {
+      ...state,
+      loading: false
+    }
+    case 'START_SAVING': return {
+      ...state,
+      error: false,
+      saving: true,
+      message: 'Saving...'
+    }
+    case 'FINISH_SAVING': return {
+      ...state,
+      saving: false,
+      message: null
+    }
+    case 'START_DEPLOYING': return {
+      ...state,
+      error: false,
+      deploying: true,
+      message: 'Deploying...'
+    }
+    case 'FINISH_DEPLOYING': return {
+      ...state,
+      deploying: false,
+      message: null
+    }
+    case 'EDIT_SITE': return {
+      ...state,
+      edited: true,
+      message: 'Edited',
+      site: payload
+    }
+    case 'UPDATE_SITE': return {
+      ...state,
+      loading: false,
+      site: payload
+    }
+    default:
+      throw new Error('Bad dispatch.')
+  }
+}
+
 const PreviewPage = withRouter(({ router }) => {
-  const [loading, setLoading] = useState(true)
-  const [site, updateSite] = useState({})
-  const [composition, updateComposition] = useState([])
-  const [edited, updateEdited] = useState(false)
-  const [saving, updateSaving] = useState(false)
-  const [deploying, updateDeploying] = useState(false)
-  const [error, updateError] = useState(null)
+  const [state, dispatch] = useReducer(reducer, {
+    message: null,
+    loading: true,
+    error: null,
+    saving: false,
+    deploying: false,
+    edited: false,
+    site: {},
+  })
+  const {
+    message,
+    loading,
+    error,
+    saving,
+    deploying,
+    edited,
+    site
+  } = state
+  console.log(state)
 
   const { id } = site
 
   const save = async site => {
     try {
-      updateError(null)
-      updateSaving(true)
+      dispatch({
+        type: 'START_SAVING'
+      })
       await axios.patch(`${process.env.API_BASE}/sites/${site.id}`, site)
-      updateSaving(false)
-      updateEdited(false)
     } catch (error) {
-      updateError(error)
-      console.error(error)
+      dispatch({
+        type: 'ERROR',
+        payload: error
+      })
     }
-    updateSaving(false)
+    dispatch({
+      type: 'FINISH_SAVING'
+    })
   }
 
   const deploy = async id => {
     try {
-      updateDeploying(true)
-      axios.post(`${process.env.API_BASE}/sites/${id}/deploy`, {})
+      dispatch({
+        type: 'START_DEPLOYING'
+      })
+      await axios.post(`${process.env.API_BASE}/sites/${id}/deploy`, {})
     } catch (error) {
-      updateError(error)
-      console.error(error)
+      dispatch({
+        type: 'ERROR',
+        payload: error
+      })
     }
-    updateDeploying(false)
+    dispatch({
+      type: 'FINISH_DEPLOYING'
+    })
   }
 
   const handleSave = async site => {
@@ -54,44 +134,58 @@ const PreviewPage = withRouter(({ router }) => {
     const getSite = async () => {
       const { data: site } = await axios.get(`${process.env.API_BASE}/sites/${router.query.siteId}`, {})
 
-      await updateComposition(site.components)
-      updateSite(site)
+      dispatch({
+        type: 'UPDATE_SITE',
+        payload: site
+      })
     }
     getSite()
   }, [])
 
-  useEffect(() => {
-    const mergePropTypes = async (composition, updateComposition) => {
-      const compositionWithPropTypes = await Promise.all(
-        composition.map(async component => {
-          const Component = await import(`../../components/dist/${component.name}.demo`)
+  // useEffect(() => {
+  //   const mergePropTypes = async (composition, updateComposition) => {
+  //     const compositionWithPropTypes = await Promise.all(
+  //       composition.map(async component => {
+  //         const Component = await import(`../../components/dist/${component.name}.demo`)
 
-          const propTypes = Object
-            .entries(Component.default.propTypes)
-            .reduce((acc, [prop, fn]) => {
-              return {
-                ...acc,
-                [prop]: {
-                  type: fn.type,
-                  ...fn.type === 'list' ? { options: fn.options } : null
-                }
-              }
-            }, {})
+  //         const propTypes = Object
+  //           .entries(Component.default.propTypes)
+  //           .reduce((acc, [prop, fn]) => {
+  //             return {
+  //               ...acc,
+  //               [prop]: {
+  //                 type: fn.type,
+  //                 ...fn.type === 'list' ? { options: fn.options } : null
+  //               }
+  //             }
+  //           }, {})
 
-          return {
-            ...component,
-            propTypes
-          }
-        })
-      )
+  //         return {
+  //           ...component,
+  //           propTypes
+  //         }
+  //       })
+  //     )
 
-      await updateComposition(compositionWithPropTypes)
-      setLoading(false)
-    }
-    if (Object.keys(site).length > 0) {
-      mergePropTypes(composition, updateComposition)
-    }
-  }, [site.components])
+  //     dispatch({
+  //       type: 'UPDATE_SITE',
+  //       payload: {
+  //         ...site,
+  //         components: compositionWithPropTypes
+  //       }
+  //     })
+
+  //     dispatch({
+  //       type: 'FINISH_LOADING'
+  //     })
+
+  //     // await updateComposition(compositionWithPropTypes)
+  //     // setLoading(false)
+  //   }
+  //   if (Object.keys(site).length > 0) {
+  //     mergePropTypes(site.components)
+  //   }
+  // }, [site.components])
 
   const constructUrl = site => {
     if (site) {
@@ -105,21 +199,9 @@ const PreviewPage = withRouter(({ router }) => {
     <Layout
       headerContent={(
         <div className="flex items-center">
-          {saving
-            ? <P className="mr-4">Saving...</P>
-            : deploying
-            ? <P className="mr-4">Deploying...</P>
-            : error
-            ? <P className="mr-4">Something went wrong</P>
-            : edited
-            ? <P className="mr-4">Edited</P>
-            : null
-          }
+          <P className="mr-4">{message}</P>
           <Button
-            onClick={() => handleSave({
-              ...site,
-              components: composition
-            })}
+            onClick={() => handleSave(site)}
             disabled={!edited || saving}
           >
             Save
@@ -128,18 +210,18 @@ const PreviewPage = withRouter(({ router }) => {
       )}
       sidebarContent={
         <Editor
-          composition={composition}
-          updateComposition={composition => {
-            updateComposition(composition)
-            updateEdited(true)
-          }}
+          site={site}
+          onEdit={site => dispatch({
+              type: 'EDIT_SITE',
+              payload: site
+            })}
           loading={loading}
         />
       }
     >
       <Browser
         url={constructUrl(site)}
-        content={<Viewer composition={composition} />}
+        content={<Viewer site={site} />}
       />
     </Layout>
   )

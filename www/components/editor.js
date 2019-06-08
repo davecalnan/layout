@@ -1,83 +1,43 @@
+import { useState } from 'react'
 import styled from 'styled-components'
 import tw from 'tailwind.macro'
 
 import { toSentenceCase } from '../../util'
-import { H3 } from './typography'
-import { Input, Textarea, Select } from './form-controls'
+import { P, H3 } from './typography/index'
+import ComponentEditor from './component-editor'
+import Button from './button'
 
-const makeInputComponent = ({ propType, ...props }) => {
-  switch (propType.type) {
-    case 'string':
-      return <Input {...props} />
-    case 'text':
-      return (
-        <Textarea
-          {...props}
-          rows={5}
-        />
-      )
-    case 'list':
-      return (
-        <Select {...props}>
-          {propType.options.map((option, index) => (
-            <option
-              key={option}
-              value={option}
-            >
-              {toSentenceCase(option)}
-            </option>
-          ))}
-        </Select>
-      )
-    default:
-      return '¯\\_(ツ)_/¯'
-  }
-}
+const Editor = ({ site, onEdit, loading, className }) => {
+  if (loading) return <div className={className}>Loading...</div>
 
-const Editor = ({ composition, updateComposition, loading, className }) => {
-  if (loading) return <div className="p-4">Loading...</div>
+  const { components } = site
+  const [activeSection, setActiveSection] = useState(null)
 
-  return composition.map(((component, index) => {
-    if (!component || !component.propTypes) return null
+  if (activeSection !== null) {
     return (
-      <section key={index} className={className}>
-        <H3 className="mb-4">{toSentenceCase(component.name)}</H3>
-        {Object.entries(component.propTypes).map(([propName, propType]) => {
-          const InputComponent = makeInputComponent({
-            propType,
-            defaultValue: component.props[propName],
-            onChange: event => {
-              let localComponents = [...composition]
-              localComponents[index] = {
-                ...component,
-                props: {
-                  ...component.props,
-                  [propName]: event.target.value
-                }
-              }
-              updateComposition(localComponents)
-            }
-          })
-
-          return (
-            <div
-              key={`${component.name}-${propName}`}
-              className="flex flex-col mb-6"
-            >
-              <label className="text-xs uppercase tracking-wide mb-1">{toSentenceCase(propName)}</label>
-              {InputComponent}
-            </div>
-          )
-        })}
+      <section className={className}>
+        <Button onClick={() => setActiveSection(null)}>&larr; Back</Button>
+        <ComponentEditor site={site} component={activeSection} onEdit={onEdit} />
       </section>
     )
-  }))
+  }
+
+  return (
+    <section className={className}>
+      <H3 className="mb-4">Components</H3>
+      {site.components.map((component, index) => (
+        <button
+          key={`${index}-${component.name}`}
+          className="w-full bg-white rounded shadow cursor-pointer p-4 mb-1"
+          onClick={() => setActiveSection(component)}
+        >
+          <P>{toSentenceCase(component.name)}</P>
+        </button>
+      ))}
+    </section>
+  )
 }
 
 export default styled(Editor)`
-  ${tw`p-4`}
-
-  &:not(:last-of-type) {
-    ${tw`border-b border-gray-400 pb-4 mb-4`}
-  }
+${tw`p-4`}
 `
