@@ -5,7 +5,7 @@ import { toSentenceCase } from '../../util'
 import { H3 } from './typography'
 import { makeInputComponent } from './form-controls'
 
-const ComponentEditor = ({ site, component, onEdit, className, ...props }) =>
+const ComponentEditor = ({ site, component, index, onEdit, className, ...props }) =>
   component && (
     <section className={className} {...props}>
       <H3 className="mb-4">{toSentenceCase(component.name)}</H3>
@@ -40,10 +40,4 @@ const ComponentEditor = ({ site, component, onEdit, className, ...props }) =>
     </section>
   )
 
-export default styled(ComponentEditor)`
-  ${tw`p-4`}
-
-  &:not(:last-of-type) {
-    ${tw`border-b border-gray-400 pb-4 mb-4`}
-  }
-`
+export default styled(ComponentEditor)``

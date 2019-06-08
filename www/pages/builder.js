@@ -10,13 +10,8 @@ import Viewer from '../components/viewer'
 import { P } from '../components/typography'
 
 const reducer = (state, { type, payload }) => {
-  console.log({
-    type,
-    payload
-  })
   switch (type) {
     case 'ERROR':
-      console.error(payload)
       return {
       ...state,
       error: payload,
@@ -68,7 +63,7 @@ const reducer = (state, { type, payload }) => {
   }
 }
 
-const PreviewPage = withRouter(({ router }) => {
+const BuilderPage = withRouter(({ router }) => {
   const [state, dispatch] = useReducer(reducer, {
     message: null,
     loading: true,
@@ -87,9 +82,10 @@ const PreviewPage = withRouter(({ router }) => {
     edited,
     site
   } = state
-  console.log(state)
 
   const { id } = site
+
+  const canSave = !edited || saving
 
   const save = async site => {
     try {
@@ -202,7 +198,7 @@ const PreviewPage = withRouter(({ router }) => {
           <P className="mr-4">{message}</P>
           <Button
             onClick={() => handleSave(site)}
-            disabled={!edited || saving}
+            disabled={canSave}
           >
             Save
           </Button>
@@ -227,4 +223,4 @@ const PreviewPage = withRouter(({ router }) => {
   )
 })
 
-export default PreviewPage
+export default BuilderPage
