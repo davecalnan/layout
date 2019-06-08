@@ -7,7 +7,7 @@ export const setResponseContentTypeToJson = (req, res, next) => {
 
 export const attachDatabaseConnection = async (req, res, next) => {
   const connection = await db.connect()
-  req.db = connection.db('builder')
+  req.db = connection.db(process.env.MONGO_DATABASE)
   next()
 }
 
