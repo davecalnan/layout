@@ -14,10 +14,17 @@ export const getNextId = async (db, collection) => {
 export const setNextId = async (db, collection, count) => {
   try {
     const counts = await db.collection('counts')
-    counts.insertOne({
-      _id: collection,
-      count
-    })
+    counts.findOneAndUpdate(
+      {
+        _id: collection
+      },
+      {
+        $set: { count }
+      },
+      {
+        upsert: true
+      }
+    )
   } catch (error) {
     throw new Error(
       `Could not autoincrement id for collection ${collection}.`
