@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import { getNextId, setNextId } from '../../db/auto-increment'
-import { stripInternalKeys } from '../../helpers'
+import { withoutId, withoutInternalKeys } from '../../helpers'
 
 export default async ({ db, body }, res) => {
   try {
@@ -9,11 +9,11 @@ export default async ({ db, body }, res) => {
     const collection = await db.collection('sites')
     const response = await collection.insertOne({
       id,
-      ..._.pickBy(body, (value, key) => key !== 'id')
+      ...withoutId(body)
     })
     const site = response.ops[0]
 
-    res.status(200).send(JSON.stringify(stripInternalKeys(site)))
+    res.status(200).send(JSON.stringify(withoutInternalKeys(site)))
 
     await setNextId(db, 'sites', id)
   } catch (error) {

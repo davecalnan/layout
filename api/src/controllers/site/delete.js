@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { stripInternalKeys } from '../../helpers'
+import { withoutInternalKeys } from '../../helpers'
 
 export default async ({ db, params }, res) => {
   try {
@@ -8,7 +8,7 @@ export default async ({ db, params }, res) => {
     const collection = await db.collection('sites')
     const { value: site } = await collection.findOneAndDelete({ id: Number(id) })
 
-    res.status(200).send(JSON.stringify(stripInternalKeys(site)))
+    res.status(200).send(JSON.stringify(withoutInternalKeys(site)))
   } catch (error) {
     console.error(error)
   }

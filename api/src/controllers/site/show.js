@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { stripInternalKeys } from '../../helpers'
+import { withoutInternalKeys } from '../../helpers'
 
 export default async ({ db, params }, res) => {
   try {
@@ -11,7 +11,7 @@ export default async ({ db, params }, res) => {
       return res.status(404).send(JSON.stringify({ message: `Could not find site with id ${id}.`}))
     }
 
-    res.status(200).send(JSON.stringify(stripInternalKeys(site)))
+    res.status(200).send(JSON.stringify(withoutInternalKeys(site)))
   } catch (error) {
     console.error(error)
   }
