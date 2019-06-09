@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import { getNextId, setNextId } from '../../db/auto-increment'
 import { stripInternalKeys } from '../../helpers'
 
@@ -8,7 +9,7 @@ export default async ({ db, body }, res) => {
     const collection = await db.collection('components')
     const response = await collection.insertOne({
       id,
-      ...body
+      ..._.pickBy(body, (value, key) => key !== 'id')
     })
     const component = response.ops[0]
 

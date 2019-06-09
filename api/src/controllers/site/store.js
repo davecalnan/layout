@@ -8,7 +8,7 @@ export default async ({ db, body }, res) => {
     const collection = await db.collection('sites')
     const response = await collection.insertOne({
       id,
-      ...body
+      ..._.pickBy(body, (value, key) => key !== 'id')
     })
     const site = response.ops[0]
 
