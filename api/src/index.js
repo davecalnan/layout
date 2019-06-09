@@ -8,6 +8,7 @@ import {
 } from './middleware'
 
 import { controller as siteController } from './controllers/site/controller'
+import { controller as componentController } from './controllers/component/controller'
 
 const app = express()
 
@@ -20,6 +21,7 @@ app.put('*', requestBodyMustNotBeEmpty)
 app.patch('*', requestBodyMustNotBeEmpty)
 
 app.use('/sites', siteController)
+app.use('/components', componentController)
 
 const port = 3001
 app.listen(port, () => console.log(`API ready on port ${port}.`))
