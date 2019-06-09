@@ -8,18 +8,23 @@ import { H3, P, Small } from './typography/index'
 import ComponentEditor from './component-editor'
 import ComponentEditCard from './component-edit-card'
 import Button from './button'
+import Modal from 'react-modal'
+
+import availableComponents from '../../components/available.json'
 
 const Editor = ({ site, loading, onEdit, onBack, className }) => {
   if (loading) return <div className={className}>Loading...</div>
   const { name, domain, components } = site
   const [activeIndex, setActiveIndex] = useState(null)
+  const [modalIsOpen, setModalIsOpen] = useState(true)
+  // const [availableComponents, setAvailableComponents] = useState([])
 
-  /*
-    If a component is selected, show the component editor.
-  */
-  if (activeIndex !== null) {
-    return (
-      <div className={className}>
+  const determineContent = activeIndex => {
+    /*
+      If a component is selected, show the component editor.
+    */
+    if (activeIndex !== null) {
+      return (
         <section>
           <Button className="mb-4" onClick={() => setActiveIndex(null)}>
             &larr; Back
@@ -31,56 +36,125 @@ const Editor = ({ site, loading, onEdit, onBack, className }) => {
             onEdit={onEdit}
           />
         </section>
-      </div>
+      )
+    }
+    /*
+      If not, show a list of all the components and the details pane.
+    */
+    return (
+      <>
+        <section>
+          <H3 className="mb-4">Sections</H3>
+          {components.map((component, index) => (
+            <ComponentEditCard
+              key={`${index}-${component}`}
+              site={site}
+              component={component}
+              index={index}
+              onClick={() => setActiveIndex(index)}
+              onEdit={onEdit}
+            />
+          ))}
+          <button
+            className="w-full h-20 flex justify-center items-center text-left bg-gray-200 rounded shadow-inner px-4 mb-2"
+            onClick={() => setModalIsOpen(true)}
+          >
+            <P>+</P>
+          </button>
+        </section>
+        <section>
+          <H3 className="mb-4">Details</H3>
+          {Object.entries({ name, domain }).map(([key, value]) => {
+            const InputComponent = makeInputComponent(
+              { type: 'string' },
+              {
+                defaultValue: value,
+                onChange: event => {
+                  onEdit({
+                    ...site,
+                    [key]: event.target.value
+                  })
+                }
+              }
+            )
+            return (
+              <div key={key} className="flex flex-col mb-6">
+                <label className="text-xs uppercase tracking-wide mb-1">
+                  {toSentenceCase(key)}
+                </label>
+                {InputComponent}
+              </div>
+            )
+          })}
+        </section>
+      </>
     )
   }
 
-  /*
-    If not, show a list of all the components and the details pane.
-  */
+  const content = determineContent(activeIndex)
+
+  const modalContent = (
+    <>
+      <H3 className="mb-4">Add a component</H3>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(10rem, 1fr))'
+        }}
+      >
+        {availableComponents.map((component, index) => (
+          <button
+            key={`${index}-${component.name}`}
+            className="bg-white rounded shadow text-left mr-4 mb-4"
+            onClick={() => {
+              onEdit({
+                ...site,
+                components: [
+                  ...components,
+                  {
+                    ...component,
+                    props: component.defaultProps
+                  }
+                ]
+              })
+              setModalIsOpen(false)
+            }}
+          >
+            <img
+              src="https://placehold.it/300x200"
+              className="w-full block rounded-t"
+            />
+            <div className="px-4 py-2">
+              <P>{toSentenceCase(component.name)}</P>
+              <Small>{component.description}</Small>
+            </div>
+          </button>
+        ))}
+      </div>
+    </>
+  )
+
   return (
     <div className={className}>
-      <section>
-        <H3 className="mb-4">Sections</H3>
-        {components.map((component, index) => (
-          <ComponentEditCard
-            key={`${index}-${component}`}
-            site={site}
-            component={component}
-            index={index}
-            onClick={() => setActiveIndex(index)}
-            onEdit={onEdit}
-          />
-        ))}
-        {/* <button className="w-full h-20 flex justify-center items-center text-left bg-gray-200 rounded shadow-inner px-4 mb-2">
-          <P>+</P>
-        </button> */}
-      </section>
-      <section>
-        <H3 className="mb-4">Details</H3>
-        {Object.entries({ name, domain }).map(([key, value]) => {
-          const InputComponent = makeInputComponent(
-            { type: 'string' },
-            {
-              defaultValue: value,
-              onChange: event => {
-                onEdit({
-                  ...site,
-                  [key]: event.target.value
-                })
-              }
-            }
-          )
-          return (
-            <div key={key} className="flex flex-col mb-6">
-              <label className="text-xs uppercase tracking-wide mb-1">
-                {toSentenceCase(key)}
-              </label>
-              {InputComponent}
-            </div>
-          )
-        })}
-      </section>
+      {content}
+      <Modal
+        appElement={typeof document !== 'undefined' && document.querySelector('__next')}
+        ariaHideApp={typeof document === 'undefined' && false}
+        isOpen={modalIsOpen}
+        onRequestClose={() => setModalIsOpen(false)}
+        className="w-full h-full max-w-2xl overflow-y-scroll rounded shadow bg-white p-8"
+        overlayClassName="fixed flex justify-center items-center top-0 left-0 right-0 bottom-0"
+        style={{
+          overlay: {
+            backgroundColor: 'rgba(0, 0, 0, 0.25)'
+          },
+          content: {
+            maxHeight: '36rem'
+          }
+        }}
+      >
+        {modalContent}
+      </Modal>
     </div>
   )
 }
