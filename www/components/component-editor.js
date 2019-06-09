@@ -10,8 +10,7 @@ const ComponentEditor = ({ site, component, index, onEdit, className, ...props }
     <section className={className} {...props}>
       <H3 className="mb-4">{toSentenceCase(component.name)}</H3>
       {Object.entries(component.propTypes).map(([propName, propType]) => {
-        const InputComponent = makeInputComponent({
-          propType,
+        const InputComponent = makeInputComponent(propType, {
           defaultValue: component.props[propName],
           onChange: event => {
             site.components[index] = {

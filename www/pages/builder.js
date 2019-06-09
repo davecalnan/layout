@@ -2,6 +2,7 @@ import { withRouter } from 'next/router'
 import React, { useEffect, useReducer } from 'react'
 import axios from 'axios'
 
+import { useUndoableReducer, UNDO, REDO } from '../hooks/use-undoable-reducer'
 import Layout from '../components/layout'
 import Button from '../components/button'
 import Browser from '../components/browser'
@@ -63,8 +64,7 @@ const reducer = (state, { type, payload }) => {
   }
 }
 
-const BuilderPage = withRouter(({ router }) => {
-  const [state, dispatch] = useReducer(reducer, {
+const initialState = {
     message: null,
     loading: true,
     error: null,
@@ -72,7 +72,17 @@ const BuilderPage = withRouter(({ router }) => {
     deploying: false,
     edited: false,
     site: {},
-  })
+}
+
+const BuilderPage = withRouter(({ router }) => {
+  /*
+    This is definitely going to be an issue. This component edits state
+    based on isSaving, isDeploying etc. The undoableReducer adds these
+    to its state in its current implemenation. It won't undo the API
+    calls or anything but it will mess up the UI's understanding of
+    what's happening.
+  */
+  const { state, dispatch, canUndo, canRedo } = useUndoableReducer(reducer, initialState)
   const {
     message,
     loading,
@@ -85,7 +95,7 @@ const BuilderPage = withRouter(({ router }) => {
 
   const { id } = site
 
-  const canSave = !edited || saving
+  const canSave = edited && !saving
 
   const save = async site => {
     try {
@@ -197,8 +207,26 @@ const BuilderPage = withRouter(({ router }) => {
         <div className="flex items-center">
           <P className="mr-4">{message}</P>
           <Button
+            className="mr-2"
+            onClick={() => dispatch({
+              type: UNDO
+            })}
+            disabled={!canUndo || !edited}
+          >
+            Undo
+          </Button>
+          <Button
+            className="mr-2"
+            onClick={() => dispatch({
+              type: REDO
+            })}
+            disabled={!canRedo}
+          >
+            Redo
+          </Button>
+          <Button
             onClick={() => handleSave(site)}
-            disabled={canSave}
+            disabled={!canSave}
           >
             Save
           </Button>

@@ -9,7 +9,7 @@ export const Input = styled.input`${baseClasses} ${tw``}`
 export const Select = styled.select`${baseClasses} ${tw`appearance-none`}`
 export const Textarea = styled.textarea`${baseClasses} ${tw``}`
 
-export const makeInputComponent = ({ propType, ...props }) => {
+export const makeInputComponent = (propType, props) => {
   switch (propType.type) {
     case 'string':
       return <Input {...props} />
