@@ -16,8 +16,7 @@ const Editor = ({ site, loading, onEdit, onBack, className }) => {
   if (loading) return <div className={className}>Loading...</div>
   const { name, domain, components } = site
   const [activeIndex, setActiveIndex] = useState(null)
-  const [modalIsOpen, setModalIsOpen] = useState(true)
-  // const [availableComponents, setAvailableComponents] = useState([])
+  const [modalIsOpen, setModalIsOpen] = useState(false)
 
   const determineContent = activeIndex => {
     /*
