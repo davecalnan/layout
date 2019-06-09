@@ -7,7 +7,7 @@ import {
   requestBodyMustNotBeEmpty
 } from './middleware'
 
-import { controller as siteController } from './site/controller'
+import { controller as siteController } from './controllers/site/controller'
 
 const app = express()
 

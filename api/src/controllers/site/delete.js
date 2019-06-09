@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { stripInternalKeys } from '../helpers'
+import { stripInternalKeys } from '../../helpers'
 
 export default async ({ db, params }, res) => {
   try {

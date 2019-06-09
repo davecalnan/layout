@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOMServer from 'react-dom/server'
 import axios from 'axios'
 
-import { wait } from '../../../util'
+import { wait } from '../../../../util'
 
 const ZEIT_API_KEY = 'GAuXnrlMPWciH0khBEYCaMQ9'
 
@@ -23,7 +23,7 @@ export default async ({ db, params, body }, res) => {
     '<!DOCTYPE html><html><head><link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet"></head><body>',
     ReactDOMServer.renderToStaticMarkup(
       components.map((({ name, props }, index) => {
-        const Component = require(`${__dirname}/../../../components/dist/${name}.demo`).default
+        const Component = require(`../../../../components/dist/${name}.demo`).default
         return React.createElement(
           Component,
           {
