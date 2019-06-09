@@ -15,7 +15,9 @@ const reducer = (state, { type, payload }) => {
     case 'ERROR':
       return {
       ...state,
-      error: payload,
+      error: payload.error,
+      deploying: payload.deploying || state.deploying,
+      saving: payload.saving || state.sving,
       message: 'Something went wrong'
     }
     case 'START_LOADING': return {
@@ -103,15 +105,18 @@ const BuilderPage = withRouter(({ router }) => {
         type: 'START_SAVING'
       })
       await axios.patch(`${process.env.API_BASE}/sites/${site.id}`, site)
+      dispatch({
+        type: 'FINISH_SAVING'
+      })
     } catch (error) {
       dispatch({
         type: 'ERROR',
-        payload: error
+        payload: {
+          error,
+          saving: false
+        }
       })
     }
-    dispatch({
-      type: 'FINISH_SAVING'
-    })
   }
 
   const deploy = async id => {
@@ -120,15 +125,18 @@ const BuilderPage = withRouter(({ router }) => {
         type: 'START_DEPLOYING'
       })
       await axios.post(`${process.env.API_BASE}/sites/${id}/deploy`, {})
+      dispatch({
+        type: 'FINISH_DEPLOYING'
+      })
     } catch (error) {
       dispatch({
         type: 'ERROR',
-        payload: error
+        payload: {
+          error,
+          deploying: false
+        }
       })
     }
-    dispatch({
-      type: 'FINISH_DEPLOYING'
-    })
   }
 
   const handleSave = async site => {
