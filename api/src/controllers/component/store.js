@@ -7,8 +7,8 @@ export default async ({ db, body }, res) => {
 
     const collection = await db.collection('components')
     const response = await collection.insertOne({
-      id,
-      ...body
+      ...body,
+      id
     })
     const component = response.ops[0]
 
