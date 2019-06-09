@@ -15,7 +15,7 @@ const Editor = ({ site, loading, onEdit, onBack, className }) => {
   const [activeIndex, setActiveIndex] = useState(null)
 
   /*
-    Show the component currently being edited.
+    If a component is selected, show the component editor.
   */
   if (activeIndex !== null) {
     return (
@@ -35,6 +35,9 @@ const Editor = ({ site, loading, onEdit, onBack, className }) => {
     )
   }
 
+  /*
+    If not, show a list of all the components and the details pane.
+  */
   return (
     <div className={className}>
       <section>
