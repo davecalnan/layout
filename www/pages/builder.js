@@ -202,9 +202,11 @@ const BuilderPage = withRouter(({ router }) => {
   // }, [site.components])
 
   const constructUrl = site => {
-    if (site) {
-      if (site.url) return site.url
-      if (site.domain) return `https://${site.domain}`
+    if (site.subdomain) {
+      return `https://${site.subdomain}.davecalnan.now.sh`
+    }
+    if (Object.keys(site).length > 0 && !site.id) {
+      return 'Save your site to get a url 👉🏻'
     }
     return null
   }

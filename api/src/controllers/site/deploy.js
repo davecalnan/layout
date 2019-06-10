@@ -12,12 +12,10 @@ const http = axios.create({
   }
 })
 
-export default async ({ db, params, body }, res) => {
-  const { id } = params
-
+export default async ({ db, params }, res) => {
   const sites = await db.collection('sites')
-  const site = await sites.findOne({ id: Number(id) })
-  const { name, domain, components } = site
+  const site = await sites.findOne({ id: Number(params.id) })
+  const { id, subdomain, components } = site
 
   const generateHtml = components => [
     '<!DOCTYPE html><html><head><link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet"></head><body>',
@@ -38,10 +36,10 @@ export default async ({ db, params, body }, res) => {
   ].join('')
 
   try {
-    console.log(`Deploying site '${name}'.`)
+    console.log(`Deploying site id ${id}.`)
     const { data: deployment } = await http.post('https://api.zeit.co/v9/now/deployments/', {
-      name: name,
-      alias: domain,
+      name: `builder-${id}`,
+      alias: `${subdomain}.davecalnan.now.sh`,
       public: true,
       version: 2,
       target: 'production',
@@ -52,7 +50,7 @@ export default async ({ db, params, body }, res) => {
         { src: '*.html', use: '@now/static' }
       ]
     })
-    console.log(`Successfully deployed '${name}'. (Deployment id: ${deployment.id}.)`)
+    console.log(`Successfully deployed site id ${id}. (Deployment id: ${deployment.id}.)`)
     console.log(`Temporary url: '${deployment.url}'.`)
 
     /*
@@ -62,7 +60,7 @@ export default async ({ db, params, body }, res) => {
       More info: https://zeit.co/docs/api#endpoints/deployments/create-a-new-deployment
     */
     const pollDeployment = async (id, count = 1) => {
-      console.log(`(${count}) Checking if deployment to ${domain} is ready...`)
+      console.log(`(${count}) Checking if deployment to ${subdomain} is ready...`)
       const { data: deployment } = await http.get(`https://api.zeit.co/v9/now/deployments/${id}`)
       if (deployment.readyState !== 'READY') {
         await wait(5000)
@@ -72,7 +70,7 @@ export default async ({ db, params, body }, res) => {
     }
 
     await pollDeployment(deployment.id)
-    console.log(`Site is live at https://${domain}.`)
+    console.log(`Site is live at ${deployment.alias.join(', ')}.`)
 
     res.status(200).send(JSON.stringify(deployment))
   } catch (error) {
