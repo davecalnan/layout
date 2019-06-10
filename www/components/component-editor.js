@@ -13,14 +13,18 @@ const ComponentEditor = ({ site, component, index, onEdit, className, ...props }
         const InputComponent = makeInputComponent(propType, {
           defaultValue: component.props[propName],
           onChange: event => {
-            site.components[index] = {
-              ...component,
-              props: {
-                ...component.props,
-                [propName]: event.target.value
+            const newComponents = [...site.components]
+            newComponents[index] = {
+                ...component,
+                props: {
+                  ...component.props,
+                  [propName]: event.target.value
+                }
               }
-            }
-            onEdit(site)
+            onEdit({
+              ...site,
+              components: newComponents
+            })
           }
         })
 
