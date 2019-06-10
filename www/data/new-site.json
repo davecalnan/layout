@@ -32,7 +32,7 @@
         "imageSource": "https://source.unsplash.com/featured/?landscape,green,hills",
         "imagePosition": "right",
         "heading": "Edit this heading",
-        "text": "Type whatever you want, it updates in real time. When you're finished, click the Save button and once it's deployed click the View → button to see the live site."
+        "text": "Using the panel on the left, type whatever you want. It updates in real time. When you're finished, click the Save button and once it's deployed click the View → button to see the live site."
       }
     },
     {
