@@ -1,9 +1,10 @@
 import { useReducer } from 'react'
 
-export const REDO = 'redo'
-export const UNDO = 'undo'
+export const INIT = 'INIT'
+export const REDO = 'REDO'
+export const UNDO = 'UNDO'
 
-export function useUndoableReducer(reducer, initialPresent) {
+export const useUndoableReducer = (reducer, initialPresent) => {
   const initialState = {
     history: [initialPresent],
     currentIndex: 0
@@ -19,12 +20,17 @@ export function useUndoableReducer(reducer, initialPresent) {
   return { state: history[currentIndex], dispatch, history, canUndo, canRedo }
 }
 
-function undoable(reducer) {
+const undoable = (reducer) =>
   // Return a reducer that handles undo and redo
-  return function(state, action) {
+  (state, action) => {
     const { history, currentIndex } = state
 
     switch (action.type) {
+      case INIT:
+        return {
+          ...state,
+          history: [action.payload]
+        }
       case UNDO:
         return {
           ...state,
@@ -54,4 +60,3 @@ function undoable(reducer) {
         }
     }
   }
-}
