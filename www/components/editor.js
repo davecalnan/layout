@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import tw from 'tailwind.macro'
+import axios from 'axios'
 
 import { toSentenceCase } from '../../util'
 import { makeInputComponent } from './form-controls'
@@ -10,13 +11,12 @@ import ComponentEditCard from './component-edit-card'
 import Button from './button'
 import Modal from 'react-modal'
 
-import availableComponents from '../../components/available.json'
-
 const Editor = ({ site, loading, onEdit, onBack, className }) => {
   if (loading) return <div className={className}>Loading...</div>
   const { name, domain, components } = site
   const [activeIndex, setActiveIndex] = useState(null)
   const [modalIsOpen, setModalIsOpen] = useState(false)
+  const [availableComponents, setAvailableComponents] = useState([])
 
   const determineContent = activeIndex => {
     /*
@@ -92,44 +92,63 @@ const Editor = ({ site, loading, onEdit, onBack, className }) => {
 
   const content = determineContent(activeIndex)
 
+  useEffect(() => {
+    const loadComponents = async () => {
+      const { data } = await axios.get(`${process.env.API_BASE}/components`)
+      const components = data.data
+
+      setAvailableComponents(components)
+    }
+
+    loadComponents()
+  }, [])
+
   const modalContent = (
     <>
       <H3 className="mb-4">Add a component</H3>
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(10rem, 1fr))'
-        }}
-      >
-        {availableComponents.map((component, index) => (
-          <button
-            key={`${index}-${component.name}`}
-            className="bg-white rounded shadow text-left mr-4 mb-4"
-            onClick={() => {
-              onEdit({
-                ...site,
-                components: [
-                  ...components,
-                  {
-                    ...component,
-                    props: component.defaultProps
-                  }
-                ]
-              })
-              setModalIsOpen(false)
+      {availableComponents.length > 0
+        ? (
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(10rem, 1fr))'
             }}
           >
-            <img
-              src="https://placehold.it/300x200"
-              className="w-full block rounded-t"
-            />
-            <div className="px-4 py-2">
-              <P>{toSentenceCase(component.name)}</P>
-              <Small>{component.description}</Small>
-            </div>
-          </button>
-        ))}
-      </div>
+            {availableComponents.map((component, index) => (
+              <button
+                key={`${index}-${component.name}`}
+                className="bg-white rounded shadow text-left mr-4 mb-4"
+                onClick={() => {
+                  onEdit({
+                    ...site,
+                    components: [
+                      ...components,
+                      {
+                        ...component,
+                        props: component.defaultProps
+                      }
+                    ]
+                  })
+                  setModalIsOpen(false)
+                }}
+              >
+                <img
+                  src="https://placehold.it/300x200"
+                  className="w-full block rounded-t"
+                />
+                <div className="px-4 py-2">
+                  <P>{toSentenceCase(component.name)}</P>
+                  <Small>{component.description}</Small>
+                </div>
+              </button>
+            ))}
+          </div>
+        ) : (
+          <P>
+            Having trouble finding components, sorry!
+          </P>
+        )
+      }
     </>
   )
 

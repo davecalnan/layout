@@ -1,6 +1,5 @@
 [
   {
-    "id": 1,
     "name": "banner",
     "description": "The main attraction on this particular page",
     "propTypes": {
@@ -37,7 +36,6 @@
     }
   },
   {
-    "id": 2,
     "name": "spotlight",
     "description": "Call attention to a feature or piece of information",
     "propTypes": {
@@ -74,7 +72,6 @@
     }
   },
   {
-    "id": 3,
     "name": "footer",
     "description": "It's not the head, it's not the body, it's the footer",
     "propTypes": {
