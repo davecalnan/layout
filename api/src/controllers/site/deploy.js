@@ -59,7 +59,7 @@ export default async ({ db, params }, res) => {
       More info: https://zeit.co/docs/api#endpoints/deployments/create-a-new-deployment
     */
     const pollDeployment = async (id, count = 1) => {
-      console.log(`(${count}) Checking if deployment to ${subdomain} is ready...`)
+      console.log(`(${count}) Checking if deployment for site id ${site.id} is ready...`)
       const { data: deployment } = await http.get(`https://api.zeit.co/v9/now/deployments/${id}`)
       if (deployment.readyState !== 'READY') {
         await wait(5000)
