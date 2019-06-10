@@ -37,19 +37,18 @@ export default async ({ db, params }, res) => {
 
   try {
     console.log(`Deploying site id ${id}.`)
-    const { data: deployment } = await http.post('https://api.zeit.co/v9/now/deployments/', {
-      name: `builder-${id}`,
-      alias: subdomain ? `${subdomain}.davecalnan.now.sh` : undefined,
-      public: true,
-      version: 2,
-      target: 'production',
-      files: [
-        { file: 'index.html', data: generateHtml(components) }
-      ],
-      builds: [
-        { src: '*.html', use: '@now/static' }
-      ]
-    })
+    const { data: deployment } = await http.post(
+      'https://api.zeit.co/v9/now/deployments/',
+      {
+        name: `builder-${process.env.NODE_ENV}-${id}`,
+        alias: subdomain ? `${subdomain}.davecalnan.now.sh` : undefined,
+        public: true,
+        version: 2,
+        target: 'production',
+        files: [{ file: 'index.html', data: generateHtml(components) }],
+        builds: [{ src: '*.html', use: '@now/static' }]
+      }
+    )
     console.log(`Successfully deployed site id ${id}. (Deployment id: ${deployment.id}.)`)
     console.log(`Temporary url: '${deployment.url}'.`)
 

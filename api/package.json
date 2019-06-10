@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "",
   "scripts": {
-    "dev": "webpack --config webpack.dev.js --watch",
+    "dev": "NODE_ENV=development webpack --config webpack.dev.js --watch",
     "build": "webpack --config webpack.prod.js",
     "start": "NODE_ENV=production node ./dist/main.js"
   },
