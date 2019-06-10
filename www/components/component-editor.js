@@ -13,7 +13,7 @@ const ComponentEditor = ({ site, availableComponents, component, index, onEdit, 
       <H3 className="mb-4">{toSentenceCase(component.name)}</H3>
       {Object.entries(componentPropTypes).map(([propName, propType]) => {
         const InputComponent = makeInputComponent(propType, {
-          defaultValue: component.props[propName],
+          value: component.props[propName],
           onChange: event => {
             const newComponents = [...site.components]
             newComponents[index] = {
