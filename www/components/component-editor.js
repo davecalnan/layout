@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import tw from 'tailwind.macro'
 
 import { toSentenceCase } from '../../util'
 import { H3 } from './typography'

@@ -64,7 +64,6 @@ const Editor = ({ site, isLoading, onEdit, onBack, className }) => {
         </section>
         <section>
           <H3 className="mb-4">Details</H3>
-          {console.log('Subdomain:', subdomain)}
           {Object.entries({ subdomain }).map(([key, value]) => {
             const InputComponent = makeInputComponent(
               { type: 'string' },
