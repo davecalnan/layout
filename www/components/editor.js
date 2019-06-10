@@ -11,8 +11,8 @@ import ComponentEditCard from './component-edit-card'
 import Button from './button'
 import Modal from 'react-modal'
 
-const Editor = ({ site, loading, onEdit, onBack, className }) => {
-  if (loading) return <div className={className}>Loading...</div>
+const Editor = ({ site, isLoading, onEdit, onBack, className }) => {
+  if (isLoading) return <div className={className}>Loading...</div>
   const { subdomain, components } = site
   const [activeIndex, setActiveIndex] = useState(null)
   const [modalIsOpen, setModalIsOpen] = useState(false)
