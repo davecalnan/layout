@@ -1,8 +1,8 @@
-import { withRouter } from 'next/router'
+import Router, { withRouter } from 'next/router'
 import React, { useEffect, useReducer } from 'react'
 import axios from 'axios'
 
-import { useUndoableReducer, INIT, UNDO, REDO } from '../hooks/use-undoable-reducer'
+import { useUndoableReducer, RESET, UNDO, REDO } from '../hooks/use-undoable-reducer'
 import Layout from '../components/layout'
 import Button from '../components/button'
 import Browser from '../components/browser'
@@ -12,6 +12,8 @@ import { P } from '../components/typography'
 
 const editReducer = (state, { type, payload }) => {
   switch (type) {
+    case 'CREATE_SITE':
+      return payload
     case 'EDIT':
       return payload
     default:
@@ -19,96 +21,134 @@ const editReducer = (state, { type, payload }) => {
   }
 }
 
-const initialState = {
-    message: null,
-    loading: true,
-    error: null,
-    saving: false,
-    deploying: false,
-    edited: false
-}
-
 const BuilderPage = withRouter(({ router }) => {
   const {
     state: site,
     dispatch: dispatchEdit,
+    history,
+    currentIndex,
     canUndo,
     canRedo
   } = useUndoableReducer(editReducer, {})
 
-  const [state, dispatch] = useReducer((state, { type, payload }) => {
-    switch (type) {
-      case 'ERROR':
-        return {
-          ...state,
-          error: payload.error,
-          deploying: payload.deploying || state.deploying,
-          saving: payload.saving || state.saving,
-          message: 'Something went wrong'
-        }
-      case 'START_LOADING':
-        return {
-          ...state,
-          loading: true
-        }
-      case 'FINISH_LOADING':
-        return {
-          ...state,
-          loading: false
-        }
-      case 'START_SAVING':
-        return {
-          ...state,
-          error: false,
-          saving: true,
-          message: 'Saving...'
-        }
-      case 'FINISH_SAVING':
-        return {
-          ...state,
-          saving: false,
-          message: null
-        }
-      case 'START_DEPLOYING':
-        return {
-          ...state,
-          error: false,
-          deploying: true,
-          message: 'Deploying...'
-        }
-      case 'FINISH_DEPLOYING':
-        return {
-          ...state,
-          deploying: false,
-          message: null
-        }
-      case 'LOAD_SITE':
-        dispatchEdit({
-          type: INIT,
-          payload
-        })
-        return {
-          ...state,
-          loading: false
-        }
-      default:
-        throw new Error('Bad dispatch.')
+  const [state, dispatch] = useReducer(
+    (state, { type, payload }) => {
+      switch (type) {
+        case 'ERROR':
+          return {
+            ...state,
+            hasError: payload.error,
+            isDeploying: payload.isDeploying || state.isDeploying,
+            isSaving: payload.isSaving || state.isSaving,
+            message: 'Something went wrong'
+          }
+        case 'START_LOADING_SITE':
+          return {
+            ...state,
+            isLoading: true
+          }
+        case 'FINISH_LOADING_SITE':
+          dispatchEdit({
+            type: RESET,
+            payload
+          })
+          return {
+            ...state,
+            isLoading: false
+          }
+        case 'START_CREATING':
+          return {
+            ...state,
+            error: false,
+            isSaving: true,
+            message: 'Saving...'
+          }
+        case 'FINISH_CREATING':
+          const href = `/builder?siteId=${site.id}`
+          const as = `/sites/${site.id}/builder`
+          Router.push(href, as, {
+            shallow: true
+          })
+          dispatchEdit({
+            type: 'CREATE_SITE',
+            payload: {
+              ...payload,
+              subdomain: site.subdomain,
+              components: site.components
+            }
+          })
+          return {
+            ...state,
+            isSaving: false,
+            isExistingSite: true,
+            message: null
+          }
+        case 'START_SAVING':
+          return {
+            ...state,
+            error: false,
+            isSaving: true,
+            message: 'Saving...'
+          }
+        case 'FINISH_SAVING':
+          return {
+            ...state,
+            isSaving: false,
+            message: null
+          }
+        case 'START_DEPLOYING':
+          return {
+            ...state,
+            error: false,
+            deploying: true,
+            message: 'Deploying...'
+          }
+        case 'FINISH_DEPLOYING':
+          return {
+            ...state,
+            deploying: false,
+            message: null
+          }
+        default:
+          throw new Error('Bad dispatch.')
+      }
+    },
+    {
+      message: null,
+      isLoading: true,
+      hasError: null,
+      isSaving: false,
+      isDeploying: false,
+      isExistingSite: router.query.siteId === 'new' ? false : true
     }
-  }, initialState)
+  )
 
-  const { message, loading, error, saving, deploying } = state
+  const { message, isLoading, hasError, isSaving, isDeploying, isExistingSite } = state
 
-  const canSave = canUndo && !saving
+  const canSave = !isExistingSite || (canUndo && !isSaving)
 
   const save = async site => {
     try {
+      if (isExistingSite) {
+        dispatch({
+          type: 'START_SAVING'
+        })
+        const { data } = await axios.patch(`${process.env.API_BASE}/sites/${site.id}`, site)
+        dispatch({
+          type: 'FINISH_SAVING',
+          payload: data
+        })
+        return data
+      }
       dispatch({
-        type: 'START_SAVING'
+        type: 'START_CREATING'
       })
-      await axios.patch(`${process.env.API_BASE}/sites/${site.id}`, site)
-      dispatch({
-        type: 'FINISH_SAVING'
+      const { data } = await axios.post(`${process.env.API_BASE}/sites`, site)
+      await dispatch({
+        type: 'FINISH_CREATING',
+        payload: data
       })
+      return data
     } catch (error) {
       dispatch({
         type: 'ERROR',
@@ -134,15 +174,15 @@ const BuilderPage = withRouter(({ router }) => {
         type: 'ERROR',
         payload: {
           error,
-          deploying: false
+          isDeploying: false
         }
       })
     }
   }
 
   const handleSave = async site => {
-    await save(site)
-    await deploy(site)
+    const savedSite = await save(site)
+    await deploy(savedSite)
   }
 
   useEffect(() => {
@@ -150,22 +190,34 @@ const BuilderPage = withRouter(({ router }) => {
       const { data: site } = await axios.get(`${process.env.API_BASE}/sites/${router.query.siteId}`, {})
 
       dispatch({
-        type: 'LOAD_SITE',
+        type: 'FINISH_LOADING_SITE',
         payload: site
       })
     }
-    getSite()
+    const getStarterSite = () => {
+      const site = require('../data/new-site.json')
+
+      dispatch({
+        type: 'FINISH_LOADING_SITE',
+        payload: site
+      })
+    }
+    if (isExistingSite) {
+      getSite()
+      return
+    }
+    getStarterSite()
   }, [])
 
   const constructUrl = site => {
-    if (loading) {
+    if (isLoading) {
       return null
+    }
+    if (!isExistingSite) {
+      return 'Save your site to get a url 👉🏻'
     }
     if (site.subdomain) {
       return `https://${site.subdomain}.davecalnan.now.sh`
-    }
-    if (!site.id) {
-      return 'Save your site to get a url 👉🏻'
     }
   }
 
@@ -211,12 +263,14 @@ const BuilderPage = withRouter(({ router }) => {
         <Editor
           site={site}
           onEdit={site =>
-            dispatchEdit({
-              type: 'EDIT',
-              payload: site
-            })
+            {
+              dispatchEdit({
+                type: 'EDIT',
+                payload: site
+              })
+            }
           }
-          loading={loading}
+          isLoading={isLoading}
         />
       }
     >
