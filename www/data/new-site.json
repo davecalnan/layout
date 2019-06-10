@@ -1,31 +1,8 @@
 {
   "components": [
     {
+      "id": 1,
       "name": "banner",
-      "propTypes": {
-        "heading": {
-          "type": "string"
-        },
-        "text": {
-          "type": "text"
-        },
-        "buttonText": {
-          "type": "string"
-        },
-        "buttonPath": {
-          "type": "string"
-        },
-        "imageSource": {
-          "type": "string"
-        },
-        "imagePosition": {
-          "type": "list",
-          "options": [
-            "left",
-            "right"
-          ]
-        }
-      },
       "props": {
         "buttonText": "Get started",
         "buttonPath": "#get-started",
@@ -36,6 +13,7 @@
       }
     },
     {
+      "id": 2,
       "name": "spotlight",
       "props": {
         "heading": "Spotlight",
@@ -44,33 +22,10 @@
         "buttonPath": "#learn-more",
         "imageSource": "https://source.unsplash.com/featured/?girl,camera",
         "imagePosition": "left"
-      },
-      "propTypes": {
-        "heading": {
-          "type": "string"
-        },
-        "text": {
-          "type": "text"
-        },
-        "buttonText": {
-          "type": "string"
-        },
-        "buttonPath": {
-          "type": "string"
-        },
-        "imageSource": {
-          "type": "string"
-        },
-        "imagePosition": {
-          "type": "list",
-          "options": [
-            "left",
-            "right"
-          ]
-        }
       }
     },
     {
+      "id": 2,
       "name": "spotlight",
       "props": {
         "heading": "Spotlight",
@@ -79,33 +34,10 @@
         "buttonPath": "#learn-more",
         "imageSource": "https://source.unsplash.com/featured/?fox,snow",
         "imagePosition": "right"
-      },
-      "propTypes": {
-        "heading": {
-          "type": "string"
-        },
-        "text": {
-          "type": "text"
-        },
-        "buttonText": {
-          "type": "string"
-        },
-        "buttonPath": {
-          "type": "string"
-        },
-        "imageSource": {
-          "type": "string"
-        },
-        "imagePosition": {
-          "type": "list",
-          "options": [
-            "left",
-            "right"
-          ]
-        }
       }
     },
     {
+      "id": 2,
       "name": "spotlight",
       "props": {
         "heading": "Spotlight",
@@ -114,41 +46,13 @@
         "buttonPath": "#learn-more",
         "imageSource": "https://source.unsplash.com/featured/?city,sunset,skyline",
         "imagePosition": "left"
-      },
-      "propTypes": {
-        "heading": {
-          "type": "string"
-        },
-        "text": {
-          "type": "text"
-        },
-        "buttonText": {
-          "type": "string"
-        },
-        "buttonPath": {
-          "type": "string"
-        },
-        "imageSource": {
-          "type": "string"
-        },
-        "imagePosition": {
-          "type": "list",
-          "options": [
-            "left",
-            "right"
-          ]
-        }
       }
     },
     {
+      "id": 3,
       "name": "footer",
       "props": {
         "copyrightText": "© 2019"
-      },
-      "propTypes": {
-        "copyrightText": {
-          "type": "string"
-        }
       }
     }
   ]

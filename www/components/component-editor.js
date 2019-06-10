@@ -5,11 +5,13 @@ import { toSentenceCase } from '../../util'
 import { H3 } from './typography'
 import { makeInputComponent } from './form-controls'
 
-const ComponentEditor = ({ site, component, index, onEdit, className, ...props }) =>
-  component && (
+const ComponentEditor = ({ site, availableComponents, component, index, onEdit, className, ...props }) => {
+  const { propTypes: componentPropTypes } = availableComponents.find(({ id }) => id === component.id)
+
+  return component && (
     <section className={className} {...props}>
       <H3 className="mb-4">{toSentenceCase(component.name)}</H3>
-      {Object.entries(component.propTypes).map(([propName, propType]) => {
+      {Object.entries(componentPropTypes).map(([propName, propType]) => {
         const InputComponent = makeInputComponent(propType, {
           defaultValue: component.props[propName],
           onChange: event => {
@@ -42,5 +44,6 @@ const ComponentEditor = ({ site, component, index, onEdit, className, ...props }
       })}
     </section>
   )
+}
 
 export default styled(ComponentEditor)``

@@ -30,6 +30,7 @@ const Editor = ({ site, isLoading, onEdit, onBack, className }) => {
           </Button>
           <ComponentEditor
             site={site}
+            availableComponents={availableComponents}
             component={components[activeIndex]}
             index={activeIndex}
             onEdit={onEdit}
@@ -124,7 +125,8 @@ const Editor = ({ site, isLoading, onEdit, onBack, className }) => {
                     components: [
                       ...components,
                       {
-                        ...component,
+                        id: component.id,
+                        name: component.name,
                         props: component.defaultProps
                       }
                     ]

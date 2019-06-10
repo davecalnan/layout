@@ -25,8 +25,6 @@ const BuilderPage = withRouter(({ router }) => {
   const {
     state: site,
     dispatch: dispatchEdit,
-    history,
-    currentIndex,
     canUndo,
     canRedo
   } = useUndoableReducer(editReducer, {})
@@ -221,6 +219,7 @@ const BuilderPage = withRouter(({ router }) => {
     }
   }
 
+  console.log(site.components)
   return (
     <Layout
       headerContent={
