@@ -39,7 +39,7 @@ export default async ({ db, params }, res) => {
     console.log(`Deploying site id ${id}.`)
     const { data: deployment } = await http.post('https://api.zeit.co/v9/now/deployments/', {
       name: `builder-${id}`,
-      alias: `${subdomain}.davecalnan.now.sh`,
+      alias: subdomain ? `${subdomain}.davecalnan.now.sh` : undefined,
       public: true,
       version: 2,
       target: 'production',
