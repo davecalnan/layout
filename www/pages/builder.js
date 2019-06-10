@@ -219,7 +219,6 @@ const BuilderPage = withRouter(({ router }) => {
     }
   }
 
-  console.log(site.components)
   return (
     <Layout
       headerContent={
