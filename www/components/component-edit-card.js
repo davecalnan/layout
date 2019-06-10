@@ -3,7 +3,7 @@ import { P, Small } from './typography'
 import Button from './button'
 
 const moveDown = (array, index) => {
-  if (index < 0 || index >= array.length) return array
+  if (index === array.length -1) throw new Error(`Section is at the bottom. Can't move down.`)
 
   const copy = [...array]
   const deleted = copy.splice(index, 1)
@@ -13,7 +13,7 @@ const moveDown = (array, index) => {
 }
 
 const moveUp = (array, index) => {
-  if (index <= 0 || index > array.length) return array
+  if (index === 0) throw new Error(`Section is at the top. Can't move up.`)
 
   const copy = [...array]
   const deleted = copy.splice(index, 1)
@@ -42,10 +42,14 @@ const ComponentEditCard = ({ site, component, index, onClick, onEdit }) => {
           className="mr-1"
           onClick={event => {
             event.stopPropagation()
-            onEdit({
-              ...site,
-              components: moveUp(components, index)
-            })
+            try {
+              onEdit({
+                ...site,
+                components: moveUp(components, index)
+              })
+            } catch (error) {
+              console.error(error.message)
+            }
           }}
           compact
         >
@@ -55,10 +59,14 @@ const ComponentEditCard = ({ site, component, index, onClick, onEdit }) => {
           className="mr-1"
           onClick={event => {
             event.stopPropagation()
-            onEdit({
-              ...site,
-              components: moveDown(components, index)
-            })
+            try {
+              onEdit({
+                ...site,
+                components: moveDown(components, index)
+              })
+            } catch (error) {
+              console.error(error.message)
+            }
           }}
           compact
         >
