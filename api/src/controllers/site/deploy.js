@@ -4,11 +4,9 @@ import axios from 'axios'
 
 import { wait } from '../../../../util'
 
-const ZEIT_API_KEY = 'GAuXnrlMPWciH0khBEYCaMQ9'
-
 const http = axios.create({
   headers: {
-    Authorization: `Bearer ${ZEIT_API_KEY}`
+    Authorization: `Bearer ${process.env.ZEIT_API_KEY}`
   }
 })
 
@@ -38,7 +36,7 @@ export default async ({ db, params }, res) => {
   try {
     console.log(`Deploying site id ${id}.`)
     const { data: deployment } = await http.post(
-      'https://api.zeit.co/v9/now/deployments/',
+      'https://api.zeit.co/v9/now/deployments',
       {
         name: `builder-${process.env.NODE_ENV}-${id}`,
         alias: subdomain ? `${subdomain}.davecalnan.now.sh` : undefined,
@@ -73,7 +71,7 @@ export default async ({ db, params }, res) => {
 
     res.status(200).send(JSON.stringify(deployment))
   } catch (error) {
-    console.error('Something went wrong.', error)
+    console.error('Something went wrong:', error.message)
     res.status(500).send(JSON.stringify({ error }))
   }
 }
