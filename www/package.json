@@ -15,7 +15,7 @@
   "dependencies": {
     "@layouthq/components": "0.1.4",
     "@layouthq/sections": "0.1.4",
-    "@layouthq/util": "^0.1.0",
+    "@layouthq/util": "0.1.0",
     "@zeit/next-css": "1.0.1",
     "autoprefixer": "9.5.1",
     "axios": "0.19.0",
@@ -28,7 +28,7 @@
     "react": "16.8.6",
     "react-dom": "16.8.6",
     "react-frame-component": "4.1.0",
-    "react-modal": "^3.8.1",
+    "react-modal": "3.8.1",
     "styled-components": "4.2.1",
     "tailwindcss": "1.0.3"
   },
