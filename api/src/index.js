@@ -23,4 +23,4 @@ app.patch('*', requestBodyMustNotBeEmpty)
 app.use('/sites', siteController)
 app.use('/components', componentController)
 
-app.listen(port, () => console.log(`> Ready on http://localhost:${process.env.PORT}`))
+app.listen(process.env.PORT, () => console.log(`> Ready on http://localhost:${process.env.PORT}`))
