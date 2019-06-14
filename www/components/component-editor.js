@@ -14,8 +14,8 @@ const ComponentEditor = ({ site, availableComponents, component, index, onEdit, 
         const InputComponent = makeInputComponent(propType, {
           value: component.props[propName],
           onChange: event => {
-            const newComponents = [...site.components]
-            newComponents[index] = {
+            const newPages = [...site.pages]
+            newPages[0].sections[index] = {
                 ...component,
                 props: {
                   ...component.props,
@@ -24,7 +24,7 @@ const ComponentEditor = ({ site, availableComponents, component, index, onEdit, 
               }
             onEdit({
               ...site,
-              components: newComponents
+              pages: newPages
             })
           }
         })

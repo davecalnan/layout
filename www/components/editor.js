@@ -13,7 +13,7 @@ import Modal from 'react-modal'
 
 const Editor = ({ site, isLoading, onEdit, onBack, className }) => {
   if (isLoading) return <div className={className}>Loading...</div>
-  const { subdomain, components } = site
+  const { subdomain, pages } = site
   const [activeIndex, setActiveIndex] = useState(null)
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [availableComponents, setAvailableComponents] = useState([])
@@ -31,7 +31,7 @@ const Editor = ({ site, isLoading, onEdit, onBack, className }) => {
           <ComponentEditor
             site={site}
             availableComponents={availableComponents}
-            component={components[activeIndex]}
+            component={pages[0].sections[activeIndex]}
             index={activeIndex}
             onEdit={onEdit}
           />
@@ -45,7 +45,7 @@ const Editor = ({ site, isLoading, onEdit, onBack, className }) => {
       <>
         <section>
           <H3 className="mb-4">Sections</H3>
-          {components.map((component, index) => (
+          {pages[0].sections.map((component, index) => (
             <ComponentEditCard
               key={`${index}-${component}`}
               site={site}

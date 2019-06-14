@@ -1,8 +1,8 @@
 import React from 'react'
 import ReactDOMServer from 'react-dom/server'
 
-export const buildComponentTree = (site, options = {}) =>
-  site.components.map(({ id, props }, index) => {
+export const buildComponentTree = (page, options = {}) =>
+  page.sections.map(({ id, props }, index) => {
     const Component = options.browser
       ? React.lazy(() => import(`@layouthq/sections/dist/${id}`))
       : require(`@layouthq/sections/dist/${id}`).default
@@ -10,11 +10,11 @@ export const buildComponentTree = (site, options = {}) =>
     return <Component key={index} {...props} />
   })
 
-export const generateHTML = site =>
+export const generateHTML = page =>
   [
     '<!DOCTYPE html><html><head><link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet"></head><body>',
     ReactDOMServer.renderToStaticMarkup(
-      buildComponentTree(site)
+      buildComponentTree(page)
     ),
     '</body></html>'
   ].join('')

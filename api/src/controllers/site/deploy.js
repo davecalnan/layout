@@ -12,11 +12,9 @@ const http = axios.create({
 export default async ({ db, params }, res) => {
   const sites = await db.collection('sites')
   const site = await sites.findOne({ id: Number(params.id) })
-  const { id, subdomain } = site
+  const { id, subdomain, pages } = site
 
-  // console.log('site:', site)
-  const html = generateHTML(site)
-  // console.log('html:', html)
+  const html = generateHTML(pages[0])
 
   try {
     console.log(`Deploying site id ${id}.`)

@@ -1,8 +1,8 @@
 import { buildComponentTree } from '@layouthq/renderer'
 
 const Renderer = ({ site }) =>
-  site.components
-    ? buildComponentTree(site, { browser: true })
+  site.pages
+    ? buildComponentTree(site.pages[0], { browser: true })
     : null
 
 export default Renderer
