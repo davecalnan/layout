@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "",
   "scripts": {
+    "dev": "babel src --out-dir=dist --watch --verbose",
     "build": "babel src --out-dir=dist"
   },
   "keywords": [],

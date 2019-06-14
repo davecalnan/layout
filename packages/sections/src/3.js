@@ -1,7 +1,7 @@
 import React from 'react'
 import { PropTypes } from '../../lib'
 
-import { P } from './typography.demo'
+import { P } from '../../components/dist/typography'
 
 const Footer = ({ copyrightText }) => (
   <footer className="text-center px-8 py-20">

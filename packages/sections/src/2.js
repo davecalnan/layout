@@ -1,8 +1,8 @@
 import React from 'react'
 import { PropTypes } from '../../lib'
 
-import { H2, P } from './typography.demo'
-import Button from './button.demo'
+import { H2, P } from '../../components/dist/typography'
+import Button from '../../components/dist/button'
 
 const Spotlight = ({ heading, text, buttonText, buttonPath, imageSource, imagePosition ='left' }) => (
   <section className={[

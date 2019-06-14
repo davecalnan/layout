@@ -1,8 +1,8 @@
 import React from 'react'
 import { PropTypes } from '../../lib'
 
-import { H1, P } from './typography.demo'
-import Button from './button.demo'
+import { H1, P } from '../../components/dist/typography'
+import Button from '../../components/dist/button'
 
 const Banner = ({ heading, text, buttonText, buttonPath, imageSource, imagePosition }) => (
   <section className={[
