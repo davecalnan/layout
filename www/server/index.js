@@ -20,9 +20,9 @@ app
       return handle(req, res)
     })
 
-    server.listen(3000, error => {
+    server.listen(process.env.PORT, error => {
       if (error) throw error
-      console.log('> Ready on http://localhost:3000')
+      console.log(`> Ready on http://localhost:${process.env.PORT}`)
     })
   })
   .catch(error => {

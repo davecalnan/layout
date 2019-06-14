@@ -23,5 +23,4 @@ app.patch('*', requestBodyMustNotBeEmpty)
 app.use('/sites', siteController)
 app.use('/components', componentController)
 
-const port = 3001
-app.listen(port, () => console.log(`API ready on port ${port}.`))
+app.listen(port, () => console.log(`> Ready on http://localhost:${process.env.PORT}`))
