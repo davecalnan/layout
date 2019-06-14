@@ -1,23 +1,27 @@
 {
   "name": "@layouthq/sections",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "",
   "scripts": {
     "dev": "babel src --out-dir=dist --watch --verbose",
     "build": "babel src --out-dir=dist",
     "prepare": "npm run build"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@babel/cli": "7.4.4",
     "@babel/core": "7.4.5",
-    "@babel/plugin-transform-react-jsx": "7.3.0"
+    "@babel/plugin-transform-react-jsx": "7.3.0",
+    "@babel/preset-env": "^7.4.5"
   },
   "dependencies": {
-    "@babel/preset-env": "7.4.5",
+    "@layouthq/components": "^0.1.1",
+    "@layouthq/prop-types": "^0.1.0",
     "react": "16.8.6"
   }
 }

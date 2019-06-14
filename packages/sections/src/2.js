@@ -1,8 +1,8 @@
 import React from 'react'
-import { PropTypes } from '../../../lib'
+import { PropTypes } from '@layouthq/prop-types'
 
-import { H2, P } from '../../components/dist/typography'
-import Button from '../../components/dist/button'
+import { H2, P } from '@layouthq/components/dist/typography'
+import Button from '@layouthq/components/dist/button'
 
 const Spotlight = ({ heading, text, buttonText, buttonPath, imageSource, imagePosition ='left' }) => (
   <section className={[
