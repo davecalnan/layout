@@ -2,8 +2,8 @@ import React from 'react'
 
 const Viewer = ({ site }) =>
   site.components
-    ? site.components.map((({ name, props }, index) => {
-      const Component = React.lazy(() => import(`${__dirname}/../../components/dist/${name}.demo`))
+    ? site.components.map((({ id, props }, index) => {
+      const Component = React.lazy(() => import(`@layouthq/sections/dist/${id}`))
       return <Component key={index} {...props} />
     }))
     : null
