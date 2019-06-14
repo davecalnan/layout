@@ -7,7 +7,7 @@ import Layout from '../components/layout'
 import Button from '../components/button'
 import Browser from '../components/browser'
 import Editor from '../components/editor'
-import Viewer from '../components/viewer'
+import Renderer from '../components/renderer'
 import { P } from '../components/typography'
 
 const editReducer = (state, { type, payload }) => {
@@ -276,7 +276,7 @@ const BuilderPage = withRouter(({ router }) => {
         />
       }
     >
-      <Browser url={constructUrl(site)} content={<Viewer site={site} />} />
+      <Browser url={constructUrl(site)} content={<Renderer site={site} />} />
     </Layout>
   )
 })

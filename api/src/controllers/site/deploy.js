@@ -1,7 +1,6 @@
-import React from 'react'
-import ReactDOMServer from 'react-dom/server'
 import axios from 'axios'
 
+import { generateHTML } from '@layouthq/renderer'
 import { wait } from '@layouthq/util'
 
 const http = axios.create({
@@ -13,25 +12,11 @@ const http = axios.create({
 export default async ({ db, params }, res) => {
   const sites = await db.collection('sites')
   const site = await sites.findOne({ id: Number(params.id) })
-  const { id, subdomain, components } = site
+  const { id, subdomain } = site
 
-  const generateHtml = components => [
-    '<!DOCTYPE html><html><head><link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet"></head><body>',
-    ReactDOMServer.renderToStaticMarkup(
-      components.map((({ id, props }, index) => {
-        const Component = require(`@layouthq/sections/dist/${id}`).default
-        return React.createElement(
-          Component,
-          {
-            ...props,
-            key: index
-          },
-          null
-        )
-      }))
-    ),
-    '</body></html>'
-  ].join('')
+  // console.log('site:', site)
+  const html = generateHTML(site)
+  // console.log('html:', html)
 
   try {
     console.log(`Deploying site id ${id}.`)
@@ -43,7 +28,7 @@ export default async ({ db, params }, res) => {
         public: true,
         version: 2,
         target: 'production',
-        files: [{ file: 'index.html', data: generateHtml(components) }],
+        files: [{ file: 'index.html', data: html }],
         builds: [{ src: '*.html', use: '@now/static' }]
       }
     )
