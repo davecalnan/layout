@@ -18,8 +18,8 @@ export default async ({ db, params }, res) => {
   const generateHtml = components => [
     '<!DOCTYPE html><html><head><link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet"></head><body>',
     ReactDOMServer.renderToStaticMarkup(
-      components.map((({ name, props }, index) => {
-        const Component = require(`../../../../components/dist/${name}.demo`).default
+      components.map((({ id, props }, index) => {
+        const Component = require(`@layouthq/sections/dist/${id}`).default
         return React.createElement(
           Component,
           {
