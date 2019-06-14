@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { toSentenceCase } from '../../util'
+import { toSentenceCase } from '@layouthq/util'
 import { H3 } from './typography'
 import { makeInputComponent } from './form-controls'
 

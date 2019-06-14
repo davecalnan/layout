@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { withoutInternalKeys } from '../../helpers'
+import { withoutInternalKeys } from '@layouthq/util'
 
 export default async ({ db, params }, res) => {
   try {

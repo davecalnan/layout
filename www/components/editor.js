@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import tw from 'tailwind.macro'
 import axios from 'axios'
 
-import { toSentenceCase } from '../../util'
+import { toSentenceCase } from '@layouthq/util'
 import { makeInputComponent } from './form-controls'
 import { H3, P, Small } from './typography/index'
 import ComponentEditor from './component-editor'

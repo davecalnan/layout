@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOMServer from 'react-dom/server'
 import axios from 'axios'
 
-import { wait } from '../../../../util'
+import { wait } from '@layouthq/util'
 
 const http = axios.create({
   headers: {

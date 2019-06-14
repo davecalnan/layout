@@ -1,4 +1,4 @@
-import { toSentenceCase } from '../../util'
+import { toSentenceCase } from '@layouthq/util'
 import { P, Small } from './typography'
 import Button from './button'
 

@@ -1,4 +1,4 @@
-import { withoutInternalKeys } from '../../helpers'
+import { withoutInternalKeys } from '@layouthq/util'
 
 export default async ({ db }, res) => {
   try {

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import tw from 'tailwind.macro'
 
-import { toSentenceCase } from '../../util'
+import { toSentenceCase } from '@layouthq/util'
 
 const baseStyles = tw`bg-white rounded border border-gray-400 px-2 py-1`
 

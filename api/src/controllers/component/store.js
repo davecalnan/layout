@@ -1,6 +1,5 @@
-import _ from 'lodash'
 import { getNextId, setNextId } from '../../db/auto-increment'
-import { withoutId, withoutInternalKeys } from '../../helpers'
+import { withoutId, withoutInternalKeys } from '@layouthq/util'
 
 export default async ({ db, body }, res) => {
   try {
