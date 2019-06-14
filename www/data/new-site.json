@@ -1,59 +1,65 @@
 {
-  "components": [
+  "pages": [
     {
-      "id": 1,
-      "name": "banner",
-      "props": {
-        "buttonText": "Get started",
-        "buttonPath": "#get-started",
-        "imageSource": "https://source.unsplash.com/featured/?landscape,green,hills",
-        "imagePosition": "right",
-        "heading": "Edit this heading",
-        "text": "Using the panel on the left, type whatever you want. It updates in real time. When you're finished, click the Save button and once it's deployed click the View → button to see the live site."
-      }
-    },
-    {
-      "id": 2,
-      "name": "spotlight",
-      "props": {
-        "heading": "Spotlight",
-        "text": "This is a Spotlight element, and it's generally used – as its name implies – to spotlight a particular feature, subject, or pretty much whatever. You can customize its style, scheme, color, orientation, content alignment, and image position, as well as assign it an optional onload or onscroll transition modifier (details).",
-        "buttonText": "Learn more",
-        "buttonPath": "#learn-more",
-        "imageSource": "https://source.unsplash.com/featured/?girl,camera",
-        "imagePosition": "left"
-      }
-    },
-    {
-      "id": 2,
-      "name": "spotlight",
-      "props": {
-        "heading": "Spotlight",
-        "text": "This is also a Spotlight element, and it's here because this demo would look a bit empty with just one spotlight. Like all spotlights, you can customize its style, scheme, color, orientation, content alignment, and image position, as well as assign it an optional onload or onscroll transition modifier (details).",
-        "buttonText": "Learn more",
-        "buttonPath": "#learn-more",
-        "imageSource": "https://source.unsplash.com/featured/?fox,snow",
-        "imagePosition": "right"
-      }
-    },
-    {
-      "id": 2,
-      "name": "spotlight",
-      "props": {
-        "heading": "Spotlight",
-        "text": "And yes, this is another Spotlight element, and it's also here because I need to fill a bit of space. Naturally, like any other spotlight, you can customize its style, scheme, color, orientation, content alignment, and image position, as well as assign it an optional onload or onscroll transition modifier (details).",
-        "buttonText": "Learn more",
-        "buttonPath": "#learn-more",
-        "imageSource": "https://source.unsplash.com/featured/?city,sunset,skyline",
-        "imagePosition": "left"
-      }
-    },
-    {
-      "id": 3,
-      "name": "footer",
-      "props": {
-        "copyrightText": "© 2019"
-      }
+      "name": "Homepage",
+      "path": "/",
+      "sections": [
+        {
+          "id": 1,
+          "name": "banner",
+          "props": {
+            "buttonText": "Get started",
+            "buttonPath": "#get-started",
+            "imageSource": "https://source.unsplash.com/featured/?landscape,green,hills",
+            "imagePosition": "right",
+            "heading": "Edit this heading",
+            "text": "Using the panel on the left, type whatever you want. It updates in real time. When you're finished, click the Save button and once it's deployed click the View → button to see the live site."
+          }
+        },
+        {
+          "id": 2,
+          "name": "spotlight",
+          "props": {
+            "heading": "Spotlight",
+            "text": "This is a Spotlight element, and it's generally used – as its name implies – to spotlight a particular feature, subject, or pretty much whatever. You can customize its style, scheme, color, orientation, content alignment, and image position, as well as assign it an optional onload or onscroll transition modifier (details).",
+            "buttonText": "Learn more",
+            "buttonPath": "#learn-more",
+            "imageSource": "https://source.unsplash.com/featured/?girl,camera",
+            "imagePosition": "left"
+          }
+        },
+        {
+          "id": 2,
+          "name": "spotlight",
+          "props": {
+            "heading": "Spotlight",
+            "text": "This is also a Spotlight element, and it's here because this demo would look a bit empty with just one spotlight. Like all spotlights, you can customize its style, scheme, color, orientation, content alignment, and image position, as well as assign it an optional onload or onscroll transition modifier (details).",
+            "buttonText": "Learn more",
+            "buttonPath": "#learn-more",
+            "imageSource": "https://source.unsplash.com/featured/?fox,snow",
+            "imagePosition": "right"
+          }
+        },
+        {
+          "id": 2,
+          "name": "spotlight",
+          "props": {
+            "heading": "Spotlight",
+            "text": "And yes, this is another Spotlight element, and it's also here because I need to fill a bit of space. Naturally, like any other spotlight, you can customize its style, scheme, color, orientation, content alignment, and image position, as well as assign it an optional onload or onscroll transition modifier (details).",
+            "buttonText": "Learn more",
+            "buttonPath": "#learn-more",
+            "imageSource": "https://source.unsplash.com/featured/?city,sunset,skyline",
+            "imagePosition": "left"
+          }
+        },
+        {
+          "id": 3,
+          "name": "footer",
+          "props": {
+            "copyrightText": "© 2019"
+          }
+        }
+      ]
     }
   ]
 }
