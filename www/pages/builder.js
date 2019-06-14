@@ -14,7 +14,7 @@ const editReducer = (state, { type, payload }) => {
   switch (type) {
     case 'CREATE_SITE':
       return payload
-    case 'EDIT':
+    case 'EDIT_SITE':
       return payload
     default:
       throw new Error('Bad dispatch.')
@@ -33,6 +33,33 @@ const createReducer = (context) =>
           isSaving: payload.isSaving || state.isSaving,
           message: 'Something went wrong'
         }
+      case 'EDIT_SITE':
+        dispatchEdit({
+          type: 'EDIT_SITE',
+          payload
+        })
+        return {
+          ...state,
+          hasUnsavedEdits: true
+        }
+      case 'UNDO_EDIT_SITE':
+        dispatchEdit({
+          type: UNDO,
+          payload
+        })
+        return {
+          ...state,
+          hasUnsavedEdits: true
+        }
+      case 'REDO_EDIT_SITE':
+        dispatchEdit({
+          type: REDO,
+          payload
+        })
+        return {
+          ...state,
+          hasUnsavedEdits: true
+        }
       case 'START_LOADING_SITE':
         return {
           ...state,
@@ -50,7 +77,7 @@ const createReducer = (context) =>
       case 'START_CREATING':
         return {
           ...state,
-          error: false,
+          hasError: false,
           isSaving: true,
           message: 'Saving...'
         }
@@ -70,8 +97,8 @@ const createReducer = (context) =>
         })
         return {
           ...state,
-          isSaving: false,
           isExistingSite: true,
+          isSaving: false,
           message: null
         }
       case 'START_SAVING':
@@ -84,20 +111,21 @@ const createReducer = (context) =>
       case 'FINISH_SAVING':
         return {
           ...state,
+          hasUnsavedEdits: false,
           isSaving: false,
           message: null
         }
       case 'START_DEPLOYING':
         return {
           ...state,
-          error: false,
-          deploying: true,
+          hasError: false,
+          isDeploying: true,
           message: 'Deploying...'
         }
       case 'FINISH_DEPLOYING':
         return {
           ...state,
-          deploying: false,
+          isDeploying: false,
           message: null
         }
       default:
@@ -116,18 +144,27 @@ const BuilderPage = withRouter(({ router }) => {
   const [state, dispatch] = useReducer(
     createReducer({ dispatchEdit }),
     {
-      message: null,
-      isLoading: true,
       hasError: null,
-      isSaving: false,
+      hasUnsavedEdits: false,
       isDeploying: false,
-      isExistingSite: router.query.siteId === 'new' ? false : true
+      isExistingSite: router.query.siteId === 'new' ? false : true,
+      isLoading: true,
+      isSaving: false,
+      message: null
     }
   )
 
-  const { message, isLoading, hasError, isSaving, isDeploying, isExistingSite } = state
+  const {
+    hasError,
+    hasUnsavedEdits,
+    isDeploying,
+    isExistingSite,
+    isLoading,
+    isSaving,
+    message,
+  } = state
 
-  const canSave = !isExistingSite || (canUndo && !isSaving)
+  const canSave = !isExistingSite || (!isSaving && hasUnsavedEdits)
 
   const save = async site => {
     try {
@@ -231,8 +268,8 @@ const BuilderPage = withRouter(({ router }) => {
           <Button
             className="mr-2"
             onClick={() =>
-              dispatchEdit({
-                type: UNDO
+              dispatch({
+                type: 'UNDO_EDIT_SITE'
               })
             }
             disabled={!canUndo}
@@ -243,8 +280,8 @@ const BuilderPage = withRouter(({ router }) => {
           <Button
             className="mr-2"
             onClick={() =>
-              dispatchEdit({
-                type: REDO
+              dispatch({
+                type: 'REDO_EDIT_SITE'
               })
             }
             disabled={!canRedo}
@@ -266,8 +303,8 @@ const BuilderPage = withRouter(({ router }) => {
           site={site}
           onEdit={site =>
             {
-              dispatchEdit({
-                type: 'EDIT',
+              dispatch({
+                type: 'EDIT_SITE',
                 payload: site
               })
             }
