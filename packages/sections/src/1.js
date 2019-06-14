@@ -1,5 +1,5 @@
 import React from 'react'
-import { PropTypes } from '../../lib'
+import { PropTypes } from '../../../lib'
 
 import { H1, P } from '../../components/dist/typography'
 import Button from '../../components/dist/button'
