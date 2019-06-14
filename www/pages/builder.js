@@ -21,6 +21,90 @@ const editReducer = (state, { type, payload }) => {
   }
 }
 
+const createReducer = (context) =>
+  (state, { type, payload }) => {
+    const { dispatchEdit } = context
+    switch (type) {
+      case 'ERROR':
+        return {
+          ...state,
+          hasError: payload.error,
+          isDeploying: payload.isDeploying || state.isDeploying,
+          isSaving: payload.isSaving || state.isSaving,
+          message: 'Something went wrong'
+        }
+      case 'START_LOADING_SITE':
+        return {
+          ...state,
+          isLoading: true
+        }
+      case 'FINISH_LOADING_SITE':
+        dispatchEdit({
+          type: RESET,
+          payload
+        })
+        return {
+          ...state,
+          isLoading: false
+        }
+      case 'START_CREATING':
+        return {
+          ...state,
+          error: false,
+          isSaving: true,
+          message: 'Saving...'
+        }
+      case 'FINISH_CREATING':
+        const href = `/builder?siteId=${site.id}`
+        const as = `/sites/${site.id}/builder`
+        Router.push(href, as, {
+          shallow: true
+        })
+        dispatchEdit({
+          type: 'CREATE_SITE',
+          payload: {
+            ...payload,
+            subdomain: site.subdomain,
+            components: site.components
+          }
+        })
+        return {
+          ...state,
+          isSaving: false,
+          isExistingSite: true,
+          message: null
+        }
+      case 'START_SAVING':
+        return {
+          ...state,
+          error: false,
+          isSaving: true,
+          message: 'Saving...'
+        }
+      case 'FINISH_SAVING':
+        return {
+          ...state,
+          isSaving: false,
+          message: null
+        }
+      case 'START_DEPLOYING':
+        return {
+          ...state,
+          error: false,
+          deploying: true,
+          message: 'Deploying...'
+        }
+      case 'FINISH_DEPLOYING':
+        return {
+          ...state,
+          deploying: false,
+          message: null
+        }
+      default:
+        throw new Error('Bad dispatch.')
+    }
+  }
+
 const BuilderPage = withRouter(({ router }) => {
   const {
     state: site,
@@ -30,87 +114,7 @@ const BuilderPage = withRouter(({ router }) => {
   } = useUndoableReducer(editReducer, {})
 
   const [state, dispatch] = useReducer(
-    (state, { type, payload }) => {
-      switch (type) {
-        case 'ERROR':
-          return {
-            ...state,
-            hasError: payload.error,
-            isDeploying: payload.isDeploying || state.isDeploying,
-            isSaving: payload.isSaving || state.isSaving,
-            message: 'Something went wrong'
-          }
-        case 'START_LOADING_SITE':
-          return {
-            ...state,
-            isLoading: true
-          }
-        case 'FINISH_LOADING_SITE':
-          dispatchEdit({
-            type: RESET,
-            payload
-          })
-          return {
-            ...state,
-            isLoading: false
-          }
-        case 'START_CREATING':
-          return {
-            ...state,
-            error: false,
-            isSaving: true,
-            message: 'Saving...'
-          }
-        case 'FINISH_CREATING':
-          const href = `/builder?siteId=${site.id}`
-          const as = `/sites/${site.id}/builder`
-          Router.push(href, as, {
-            shallow: true
-          })
-          dispatchEdit({
-            type: 'CREATE_SITE',
-            payload: {
-              ...payload,
-              subdomain: site.subdomain,
-              components: site.components
-            }
-          })
-          return {
-            ...state,
-            isSaving: false,
-            isExistingSite: true,
-            message: null
-          }
-        case 'START_SAVING':
-          return {
-            ...state,
-            error: false,
-            isSaving: true,
-            message: 'Saving...'
-          }
-        case 'FINISH_SAVING':
-          return {
-            ...state,
-            isSaving: false,
-            message: null
-          }
-        case 'START_DEPLOYING':
-          return {
-            ...state,
-            error: false,
-            deploying: true,
-            message: 'Deploying...'
-          }
-        case 'FINISH_DEPLOYING':
-          return {
-            ...state,
-            deploying: false,
-            message: null
-          }
-        default:
-          throw new Error('Bad dispatch.')
-      }
-    },
+    createReducer({ dispatchEdit }),
     {
       message: null,
       isLoading: true,
