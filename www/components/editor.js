@@ -7,37 +7,55 @@ import { toSentenceCase } from '@layouthq/util'
 import { ADD_SECTION_TO_PAGE, UPDATE_SITE_METADATA } from '../reducers/site'
 import { makeInputComponent } from './form-controls'
 import { H3, P, Small } from './typography/index'
-import ComponentEditor from './component-editor'
-import ComponentEditCard from './component-edit-card'
+import SectionEditPanel from './section-edit-panel'
+import SectionPreviewCard from './section-preview-card'
 import Button from './button'
 import Modal from 'react-modal'
 
-const Editor = ({ site, isLoading, onEdit, onBack, className }) => {
+const Editor = ({ site, isLoading, onEdit, className }) => {
   if (isLoading) return <div className={className}>Loading...</div>
-  const { subdomain, pages } = site
-  const [activeIndex, setActiveIndex] = useState(null)
+  const { pages, subdomain } = site
+  const [activeSection, setActiveSection] = useState()
   const [modalIsOpen, setModalIsOpen] = useState(false)
-  const [availableSections, setAvailableSections] = useState([])
-  const [availableComponents, setAvailableComponents] = useState([])
+  const [availableSections, setAvailableSections] = useState()
+  const [availableComponents, setAvailableComponents] = useState()
 
   const currentPage = pages[0]
 
-  const determineContent = activeIndex => {
+  useEffect(() => {
+    const loadSections = async () => {
+      const { data } = await axios.get(`${process.env.API_BASE}/sections`)
+      const sections = data.data
+
+      setAvailableSections(sections)
+    }
+
+    const loadComponents = async () => {
+      const { data } = await axios.get(`${process.env.API_BASE}/components`)
+      const components = data.data
+
+      setAvailableComponents(components)
+    }
+
+    loadSections()
+    // loadComponents()
+  }, [])
+
+  const determineContent = activeSection => {
     /*
-      If a component is selected, show the component editor.
+      If a section is selected, show the section edit panel.
     */
-    if (activeIndex !== null) {
+    if (activeSection) {
       return (
         <section>
-          <Button className="mb-4" onClick={() => setActiveIndex(null)}>
+          <Button className="mb-4" onClick={() => setActiveSection(null)}>
             &larr; Back
           </Button>
-          <ComponentEditor
+          <SectionEditPanel
             site={site}
             currentPage={currentPage}
-            availableComponents={availableSections}
-            component={currentPage.sections[activeIndex]}
-            index={activeIndex}
+            section={activeSection}
+            propTypes={availableSections.find(({ id }) => id === activeSection.id).propTypes}
             onEdit={onEdit}
           />
         </section>
@@ -50,14 +68,12 @@ const Editor = ({ site, isLoading, onEdit, onBack, className }) => {
       <>
         <section>
           <H3 className="mb-4">Sections</H3>
-          {currentPage.sections.map((component, index) => (
-            <ComponentEditCard
-              key={`${index}-${component}`}
-              site={site}
+          {currentPage.sections.map((section, index) => (
+            <SectionPreviewCard
+              key={`${index}-${section}`}
               currentPage={currentPage}
-              component={component}
-              index={index}
-              onClick={() => setActiveIndex(index)}
+              section={section}
+              onClick={() => setActiveSection(section)}
               onEdit={onEdit}
             />
           ))}
@@ -99,31 +115,10 @@ const Editor = ({ site, isLoading, onEdit, onBack, className }) => {
     )
   }
 
-  const content = determineContent(activeIndex)
-
-  useEffect(() => {
-    const loadSections = async () => {
-      const { data } = await axios.get(`${process.env.API_BASE}/sections`)
-      const sections = data.data
-
-      setAvailableSections(sections)
-    }
-
-    const loadComponents = async () => {
-      const { data } = await axios.get(`${process.env.API_BASE}/components`)
-      const components = data.data
-
-      setAvailableComponents(components)
-    }
-
-    loadSections()
-    loadComponents()
-  }, [])
-
   const modalContent = (
     <>
       <H3 className="mb-4">Add a section</H3>
-      {availableSections.length > 0
+      {availableSections
         ? (
           <div
             style={{
@@ -172,7 +167,7 @@ const Editor = ({ site, isLoading, onEdit, onBack, className }) => {
 
   return (
     <div className={className}>
-      {content}
+      {determineContent(activeSection)}
       <Modal
         appElement={typeof document !== 'undefined' && document.querySelector('__next')}
         ariaHideApp={typeof document === 'undefined' && false}
