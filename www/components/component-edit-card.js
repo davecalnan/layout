@@ -2,26 +2,6 @@ import { toSentenceCase } from '@layouthq/util'
 import { P, Small } from './typography'
 import Button from './button'
 
-const moveDown = (array, index) => {
-  if (index === array.length -1) throw new Error(`Section is at the bottom. Can't move down.`)
-
-  const copy = [...array]
-  const deleted = copy.splice(index, 1)
-  copy.splice(index + 1, null, ...deleted)
-
-  return copy
-}
-
-const moveUp = (array, index) => {
-  if (index === 0) throw new Error(`Section is at the top. Can't move up.`)
-
-  const copy = [...array]
-  const deleted = copy.splice(index, 1)
-  copy.splice(index - 1, null, ...deleted)
-
-  return copy
-}
-
 const ComponentEditCard = ({ site, component, index, onClick, onEdit }) => {
   return (
     <button

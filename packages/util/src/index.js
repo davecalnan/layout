@@ -1,24 +1,26 @@
 import _ from 'lodash'
 
-export const without = (object, matchingKey) =>
-  _.pickBy(object, (value, key) => key !== matchingKey)
-
-export const withoutId = object => without(object, 'id')
-
-export const withoutKeysStartingWithUnderscore = object =>
-  _.pickBy(object, (value, key) => !key.startsWith('_'))
-
-export const withoutInternalKeys = data =>
-  _.isArray(data)
-    ? data.map(item => {
-        return _.isObject(item) && _.keys(item).length > 0
-          ? withoutKeysStartingWithUnderscore(item)
-          : item
-      })
-    : withoutKeysStartingWithUnderscore(data)
-
-
 export const capitalise = ([first, ...rest]) => first.toUpperCase() + rest.join('').toLowerCase()
+
+export const moveDown = (array, index) => {
+  if (index === array.length - 1) return array
+
+  const copy = [...array]
+  const deleted = copy.splice(index, 1)
+  copy.splice(index + 1, null, ...deleted)
+
+  return copy
+}
+
+export const moveUp = (array, index) => {
+  if (index === 0) return array
+
+  const copy = [...array]
+  const deleted = copy.splice(index, 1)
+  copy.splice(index - 1, null, ...deleted)
+
+  return copy
+}
 
 export const splitIntoWords = (string) => {
   return string.replace(/([a-z])([A-Z])/g, (match, firstLetter, secondLetter) => `${ firstLetter } ${ secondLetter }`).toLowerCase().split(/ |_|-/)
@@ -43,3 +45,21 @@ export const toSentenceCase = (string) => splitIntoWords(string).map((word, inde
 export const toUpperCase = (string) => splitIntoWords(string).map(word => word.toUpperCase()).join(' ')
 
 export const wait = async ms => new Promise(resolve => setTimeout(resolve, ms))
+
+
+export const without = (object, matchingKey) =>
+  _.pickBy(object, (value, key) => key !== matchingKey)
+
+export const withoutId = object => without(object, 'id')
+
+export const withoutKeysStartingWithUnderscore = object =>
+  _.pickBy(object, (value, key) => !key.startsWith('_'))
+
+export const withoutInternalKeys = data =>
+  _.isArray(data)
+    ? data.map(item => {
+        return _.isObject(item) && _.keys(item).length > 0
+          ? withoutKeysStartingWithUnderscore(item)
+          : item
+      })
+    : withoutKeysStartingWithUnderscore(data)
