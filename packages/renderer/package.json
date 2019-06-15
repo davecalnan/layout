@@ -1,6 +1,6 @@
 {
   "name": "@layouthq/renderer",
-  "version": "0.1.2",
+  "version": "0.1.5",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -22,7 +22,7 @@
     "@babel/preset-env": "7.4.5"
   },
   "dependencies": {
-    "@layouthq/sections": "0.1.4",
+    "@layouthq/sections": "0.1.5",
     "react": "16.8.6",
     "react-dom": "16.8.6"
   }
