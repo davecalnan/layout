@@ -4,22 +4,30 @@ import { PropTypes } from '@layouthq/prop-types'
 import { H1, P } from '@layouthq/components/dist/typography'
 import Button from '@layouthq/components/dist/button'
 
-const Banner = ({ heading, text, buttonText, buttonPath, imageSource, imagePosition }) => (
-  <section className={[
-    'w-full h-screen flex border-b border-gray-200',
-    imagePosition === 'left' ? 'flex-row-reverse' : 'flex-row'
-  ].join(' ')}>
-    <div className="w-1/2 h-full flex flex-col justify-center">
+const Banner = ({
+  heading,
+  text,
+  buttonText,
+  buttonPath,
+  imageSource,
+  imagePosition
+}) => (
+  <section
+    className={[
+      'w-full border-b border-gray-200 sm:h-screen sm:flex',
+      imagePosition === 'left' ? 'sm:flex-row-reverse' : 'sm:flex-row'
+    ].join(' ')}
+  >
+    <div className="flex flex-col justify-center sm:w-1/2 sm:h-full ">
       <div className="p-12">
-        <H1 className="mb-6">{heading}</H1>
-        <P className="mb-6">{text}</P>
-        <Button href={buttonPath}>{buttonText}</Button>
+        <H1>{heading}</H1>
+        <P className="mt-6">{text}</P>
+        <Button href={buttonPath} className="mt-6">
+          {buttonText}
+        </Button>
       </div>
     </div>
-    <div
-      style={{ backgroundImage: `url(${imageSource})` }}
-      className="w-1/2 h-full bg-cover bg-center bg-gray-300"
-    />
+    <img src={imageSource} className="h-64 w-full object-cover bg-gray-300 sm:w-1/2 sm:h-full" />
   </section>
 )
 
