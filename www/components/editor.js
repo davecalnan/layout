@@ -16,6 +16,7 @@ const Editor = ({ site, isLoading, onEdit, onBack, className }) => {
   const { subdomain, pages } = site
   const [activeIndex, setActiveIndex] = useState(null)
   const [modalIsOpen, setModalIsOpen] = useState(false)
+  const [availableSections, setAvailableSections] = useState([])
   const [availableComponents, setAvailableComponents] = useState([])
 
   const determineContent = activeIndex => {
@@ -30,7 +31,7 @@ const Editor = ({ site, isLoading, onEdit, onBack, className }) => {
           </Button>
           <ComponentEditor
             site={site}
-            availableComponents={availableComponents}
+            availableComponents={availableSections}
             component={pages[0].sections[activeIndex]}
             index={activeIndex}
             onEdit={onEdit}
@@ -94,6 +95,13 @@ const Editor = ({ site, isLoading, onEdit, onBack, className }) => {
   const content = determineContent(activeIndex)
 
   useEffect(() => {
+    const loadSections = async () => {
+      const { data } = await axios.get(`${process.env.API_BASE}/sections`)
+      const sections = data.data
+
+      setAvailableSections(sections)
+    }
+
     const loadComponents = async () => {
       const { data } = await axios.get(`${process.env.API_BASE}/components`)
       const components = data.data
@@ -101,13 +109,14 @@ const Editor = ({ site, isLoading, onEdit, onBack, className }) => {
       setAvailableComponents(components)
     }
 
+    loadSections()
     loadComponents()
   }, [])
 
   const modalContent = (
     <>
-      <H3 className="mb-4">Add a component</H3>
-      {availableComponents.length > 0
+      <H3 className="mb-4">Add a section</H3>
+      {availableSections.length > 0
         ? (
           <div
             style={{
@@ -115,21 +124,23 @@ const Editor = ({ site, isLoading, onEdit, onBack, className }) => {
               gridTemplateColumns: 'repeat(auto-fill, minmax(10rem, 1fr))'
             }}
           >
-            {availableComponents.map((component, index) => (
+            {availableSections.map((component, index) => (
               <button
                 key={`${index}-${component.name}`}
                 className="bg-white rounded shadow text-left mr-4 mb-4"
                 onClick={() => {
+                  const newPages = [...site.pages]
+                  newPages[0].sections = [
+                    ...newPages[0].sections,
+                    {
+                      id: component.id,
+                      name: component.name,
+                      props: component.defaultProps
+                    }
+                  ]
                   onEdit({
                     ...site,
-                    components: [
-                      ...components,
-                      {
-                        id: component.id,
-                        name: component.name,
-                        props: component.defaultProps
-                      }
-                    ]
+                    pages: newPages
                   })
                   setModalIsOpen(false)
                 }}

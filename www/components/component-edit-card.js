@@ -23,8 +23,6 @@ const moveUp = (array, index) => {
 }
 
 const ComponentEditCard = ({ site, component, index, onClick, onEdit }) => {
-  const { components } = site
-
   return (
     <button
       key={`${index}-${component.name}`}
@@ -43,9 +41,11 @@ const ComponentEditCard = ({ site, component, index, onClick, onEdit }) => {
           onClick={event => {
             event.stopPropagation()
             try {
+              const newPages = [...site.pages]
+              newPages[0].sections = moveUp(newPages[0].sections, index)
               onEdit({
                 ...site,
-                components: moveUp(components, index)
+                pages: newPages
               })
             } catch (error) {
               console.error(error.message)
@@ -60,9 +60,11 @@ const ComponentEditCard = ({ site, component, index, onClick, onEdit }) => {
           onClick={event => {
             event.stopPropagation()
             try {
+              const newPages = [...site.pages]
+              newPages[0].sections = moveDown(newPages[0].sections, index)
               onEdit({
                 ...site,
-                components: moveDown(components, index)
+                pages: newPages
               })
             } catch (error) {
               console.error(error.message)
@@ -76,11 +78,11 @@ const ComponentEditCard = ({ site, component, index, onClick, onEdit }) => {
           className="pr-1"
           onClick={event => {
             event.stopPropagation()
-            const copy = [...components]
-            copy.splice(index, 1)
+            const newPages = [...site.pages]
+            newPages[0].sections.splice(index, 1)
             onEdit({
               ...site,
-              components: copy
+              pages: newPages
             })
           }}
           compact
