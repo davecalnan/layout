@@ -1,10 +1,11 @@
 import styled from 'styled-components'
 
 import { toSentenceCase } from '@layouthq/util'
+import { UPDATE_SECTION_PROPS } from '../reducers/site'
 import { H3 } from './typography'
 import { makeInputComponent } from './form-controls'
 
-const ComponentEditor = ({ site, availableComponents, component, index, onEdit, className, ...props }) => {
+const ComponentEditor = ({ site, currentPage, availableComponents, component, index, onEdit, className, ...props }) => {
   const { propTypes: componentPropTypes } = availableComponents.find(({ id }) => id === component.id)
 
   return component && (
@@ -14,17 +15,15 @@ const ComponentEditor = ({ site, availableComponents, component, index, onEdit, 
         const InputComponent = makeInputComponent(propType, {
           value: component.props[propName],
           onChange: event => {
-            const newPages = [...site.pages]
-            newPages[0].sections[index] = {
-                ...component,
-                props: {
-                  ...component.props,
-                  [propName]: event.target.value
-                }
-              }
             onEdit({
-              ...site,
-              pages: newPages
+              type: UPDATE_SECTION_PROPS,
+              target: {
+                page: currentPage,
+                section: component
+              },
+              payload: {
+                [propName]: event.target.value
+              }
             })
           }
         })

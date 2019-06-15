@@ -4,6 +4,7 @@ import tw from 'tailwind.macro'
 import axios from 'axios'
 
 import { toSentenceCase } from '@layouthq/util'
+import { ADD_SECTION_TO_PAGE, UPDATE_SITE_METADATA } from '../reducers/site'
 import { makeInputComponent } from './form-controls'
 import { H3, P, Small } from './typography/index'
 import ComponentEditor from './component-editor'
@@ -19,6 +20,8 @@ const Editor = ({ site, isLoading, onEdit, onBack, className }) => {
   const [availableSections, setAvailableSections] = useState([])
   const [availableComponents, setAvailableComponents] = useState([])
 
+  const currentPage = pages[0]
+
   const determineContent = activeIndex => {
     /*
       If a component is selected, show the component editor.
@@ -31,8 +34,9 @@ const Editor = ({ site, isLoading, onEdit, onBack, className }) => {
           </Button>
           <ComponentEditor
             site={site}
+            currentPage={currentPage}
             availableComponents={availableSections}
-            component={pages[0].sections[activeIndex]}
+            component={currentPage.sections[activeIndex]}
             index={activeIndex}
             onEdit={onEdit}
           />
@@ -46,10 +50,11 @@ const Editor = ({ site, isLoading, onEdit, onBack, className }) => {
       <>
         <section>
           <H3 className="mb-4">Sections</H3>
-          {pages[0].sections.map((component, index) => (
+          {currentPage.sections.map((component, index) => (
             <ComponentEditCard
               key={`${index}-${component}`}
               site={site}
+              currentPage={currentPage}
               component={component}
               index={index}
               onClick={() => setActiveIndex(index)}
@@ -72,8 +77,10 @@ const Editor = ({ site, isLoading, onEdit, onBack, className }) => {
                 value,
                 onChange: event => {
                   onEdit({
-                    ...site,
-                    [key]: event.target.value
+                    type: UPDATE_SITE_METADATA,
+                    payload: {
+                      [key]: event.target.value
+                    }
                   })
                 }
               }
@@ -129,18 +136,16 @@ const Editor = ({ site, isLoading, onEdit, onBack, className }) => {
                 key={`${index}-${component.name}`}
                 className="bg-white rounded shadow text-left mr-4 mb-4"
                 onClick={() => {
-                  const newPages = [...site.pages]
-                  newPages[0].sections = [
-                    ...newPages[0].sections,
-                    {
+                  onEdit({
+                    type: ADD_SECTION_TO_PAGE,
+                    target: {
+                      page: currentPage
+                    },
+                    payload: {
                       id: component.id,
                       name: component.name,
                       props: component.defaultProps
                     }
-                  ]
-                  onEdit({
-                    ...site,
-                    pages: newPages
                   })
                   setModalIsOpen(false)
                 }}

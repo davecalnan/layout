@@ -3,6 +3,7 @@ import React, { useEffect, useReducer } from 'react'
 import axios from 'axios'
 
 import { useUndoableReducer, RESET, UNDO, REDO } from '../hooks/use-undoable-reducer'
+import { siteReducer, CREATE_SITE, EDIT_SITE, EDIT_SUBDOMAIN } from '../reducers/site'
 import Layout from '../components/layout'
 import Button from '../components/button'
 import Browser from '../components/browser'
@@ -10,20 +11,9 @@ import Editor from '../components/editor'
 import Renderer from '../components/renderer'
 import { P } from '../components/typography'
 
-const editReducer = (state, { type, payload }) => {
-  switch (type) {
-    case 'CREATE_SITE':
-      return payload
-    case 'EDIT_SITE':
-      return payload
-    default:
-      throw new Error('Bad dispatch.')
-  }
-}
-
 const createReducer = (context) =>
   (state, { type, payload }) => {
-    const { dispatchEdit } = context
+    const { dispatchSiteEdit } = context
     switch (type) {
       case 'ERROR':
         return {
@@ -33,9 +23,10 @@ const createReducer = (context) =>
           isSaving: payload.isSaving || state.isSaving,
           message: 'Something went wrong'
         }
-      case 'EDIT_SITE':
-        dispatchEdit({
-          type: 'EDIT_SITE',
+      case EDIT_SITE:
+        dispatchSiteEdit({
+          type: EDIT_SITE,
+          target: 'site',
           payload
         })
         return {
@@ -43,7 +34,7 @@ const createReducer = (context) =>
           hasUnsavedEdits: true
         }
       case 'UNDO_EDIT_SITE':
-        dispatchEdit({
+        dispatchSiteEdit({
           type: UNDO,
           payload
         })
@@ -52,7 +43,7 @@ const createReducer = (context) =>
           hasUnsavedEdits: true
         }
       case 'REDO_EDIT_SITE':
-        dispatchEdit({
+        dispatchSiteEdit({
           type: REDO,
           payload
         })
@@ -66,7 +57,7 @@ const createReducer = (context) =>
           isLoading: true
         }
       case 'FINISH_LOADING_SITE':
-        dispatchEdit({
+        dispatchSiteEdit({
           type: RESET,
           payload
         })
@@ -87,8 +78,8 @@ const createReducer = (context) =>
         Router.push(href, as, {
           shallow: true
         })
-        dispatchEdit({
-          type: 'CREATE_SITE',
+        dispatchSiteEdit({
+          type: CREATE_SITE,
           payload: {
             ...payload,
             subdomain: site.subdomain,
@@ -136,13 +127,13 @@ const createReducer = (context) =>
 const BuilderPage = withRouter(({ router }) => {
   const {
     state: site,
-    dispatch: dispatchEdit,
+    dispatch: dispatchSiteEdit,
     canUndo,
     canRedo
-  } = useUndoableReducer(editReducer, {})
+  } = useUndoableReducer(siteReducer, {})
 
   const [state, dispatch] = useReducer(
-    createReducer({ dispatchEdit }),
+    createReducer({ dispatchSiteEdit }),
     {
       hasError: null,
       hasUnsavedEdits: false,
@@ -268,8 +259,8 @@ const BuilderPage = withRouter(({ router }) => {
           <Button
             className="mr-2"
             onClick={() =>
-              dispatch({
-                type: 'UNDO_EDIT_SITE'
+              dispatchSiteEdit({
+                type: UNDO
               })
             }
             disabled={!canUndo}
@@ -280,8 +271,8 @@ const BuilderPage = withRouter(({ router }) => {
           <Button
             className="mr-2"
             onClick={() =>
-              dispatch({
-                type: 'REDO_EDIT_SITE'
+              dispatchSiteEdit({
+                type: REDO
               })
             }
             disabled={!canRedo}
@@ -301,12 +292,9 @@ const BuilderPage = withRouter(({ router }) => {
       sidebarContent={
         <Editor
           site={site}
-          onEdit={site =>
+          onEdit={action =>
             {
-              dispatch({
-                type: 'EDIT_SITE',
-                payload: site
-              })
+              dispatchSiteEdit(action)
             }
           }
           isLoading={isLoading}

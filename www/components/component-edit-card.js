@@ -1,8 +1,9 @@
 import { toSentenceCase } from '@layouthq/util'
+import { MOVE_SECTION_DOWN, MOVE_SECTION_UP, REMOVE_SECTION_FROM_PAGE } from '../reducers/site'
 import { P, Small } from './typography'
 import Button from './button'
 
-const ComponentEditCard = ({ site, component, index, onClick, onEdit }) => {
+const ComponentEditCard = ({ site, currentPage, component, index, onClick, onEdit }) => {
   return (
     <button
       key={`${index}-${component.name}`}
@@ -20,16 +21,13 @@ const ComponentEditCard = ({ site, component, index, onClick, onEdit }) => {
           className="mr-1"
           onClick={event => {
             event.stopPropagation()
-            try {
-              const newPages = [...site.pages]
-              newPages[0].sections = moveUp(newPages[0].sections, index)
-              onEdit({
-                ...site,
-                pages: newPages
-              })
-            } catch (error) {
-              console.error(error.message)
-            }
+            onEdit({
+              type: MOVE_SECTION_UP,
+              target: {
+                page: currentPage,
+                section: component
+              }
+            })
           }}
           compact
         >
@@ -39,16 +37,13 @@ const ComponentEditCard = ({ site, component, index, onClick, onEdit }) => {
           className="mr-1"
           onClick={event => {
             event.stopPropagation()
-            try {
-              const newPages = [...site.pages]
-              newPages[0].sections = moveDown(newPages[0].sections, index)
-              onEdit({
-                ...site,
-                pages: newPages
-              })
-            } catch (error) {
-              console.error(error.message)
-            }
+            onEdit({
+              type: MOVE_SECTION_DOWN,
+              target: {
+                page: currentPage,
+                section: component
+              }
+            })
           }}
           compact
         >
@@ -58,11 +53,12 @@ const ComponentEditCard = ({ site, component, index, onClick, onEdit }) => {
           className="pr-1"
           onClick={event => {
             event.stopPropagation()
-            const newPages = [...site.pages]
-            newPages[0].sections.splice(index, 1)
             onEdit({
-              ...site,
-              pages: newPages
+              type: REMOVE_SECTION_FROM_PAGE,
+              target: {
+                page: currentPage,
+                section: component
+              }
             })
           }}
           compact
