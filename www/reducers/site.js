@@ -10,7 +10,6 @@ export const MOVE_SECTION_UP = 'MOVE_SECTION_UP'
 export const MOVE_SECTION_DOWN = 'MOVE_SECTION_DOWN'
 
 export const siteReducer = (site, { type, target, payload  }) => {
-  console.log('site reducer:', { type, target, payload })
   switch (type) {
     case CREATE_SITE:
       return payload
