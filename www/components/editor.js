@@ -16,12 +16,14 @@ const Editor = ({ site, isLoading, onEdit, className }) => {
   if (isLoading) return <div className={className}>Loading...</div>
   const { pages, subdomain } = site
   const metadata = { subdomain }
-  const [activeSection, setActiveSection] = useState()
+  const [activeSectionIndex, setActiveSectionIndex] = useState()
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [availableSections, setAvailableSections] = useState()
   const [availableComponents, setAvailableComponents] = useState()
 
   const currentPage = pages[0]
+  const { sections } = currentPage
+  const activeSection = activeSectionIndex !== undefined ? sections[activeSectionIndex] : null
 
   useEffect(() => {
     const loadSections = async () => {
@@ -49,7 +51,7 @@ const Editor = ({ site, isLoading, onEdit, className }) => {
     if (activeSection) {
       return (
         <section>
-          <Button className="mb-4" onClick={() => setActiveSection(null)}>
+          <Button className="mb-4" onClick={() => setActiveSectionIndex()}>
             &larr; Back
           </Button>
           <SectionEditPanel
@@ -74,7 +76,7 @@ const Editor = ({ site, isLoading, onEdit, className }) => {
               key={`${index}-${section}`}
               currentPage={currentPage}
               section={section}
-              onClick={() => setActiveSection(section)}
+              onClick={() => setActiveSectionIndex(index)}
               onEdit={onEdit}
             />
           ))}
