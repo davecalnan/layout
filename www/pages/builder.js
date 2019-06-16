@@ -215,7 +215,11 @@ const BuilderPage = withRouter(({ router }) => {
         />
       }
     >
-      <Browser url={constructUrl(site)} content={<Renderer site={site} />} />
+      <Browser
+        url={constructUrl(site)}
+        content={<Renderer site={site} />}
+        isExistingSite={isExistingSite}
+      />
     </Layout>
   )
 })
