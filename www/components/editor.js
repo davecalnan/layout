@@ -15,6 +15,7 @@ import Modal from 'react-modal'
 const Editor = ({ site, isLoading, onEdit, className }) => {
   if (isLoading) return <div className={className}>Loading...</div>
   const { pages, subdomain } = site
+  const metadata = { subdomain }
   const [activeSection, setActiveSection] = useState()
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [availableSections, setAvailableSections] = useState()
@@ -86,7 +87,7 @@ const Editor = ({ site, isLoading, onEdit, className }) => {
         </section>
         <section>
           <H3 className="mb-4">Details</H3>
-          {Object.entries({ subdomain }).map(([key, value]) => {
+          {Object.entries(metadata).map(([key, value]) => {
             const InputComponent = makeInputComponent(
               { type: 'string' },
               {
