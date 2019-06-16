@@ -3,9 +3,7 @@ import ReactDOMServer from 'react-dom/server'
 
 export const buildComponentTree = (page, options = {}) =>
   page.sections.map(({ id, props }, index) => {
-    const Component = options.browser
-      ? React.lazy(() => import(`@layouthq/sections/dist/${id}`))
-      : require(`@layouthq/sections/dist/${id}`).default
+    const Component = require(`@layouthq/sections/dist/${id}`).default
 
     return <Component key={index} {...props} />
   })
