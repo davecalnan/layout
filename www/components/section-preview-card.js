@@ -3,7 +3,7 @@ import { MOVE_SECTION_DOWN, MOVE_SECTION_UP, REMOVE_SECTION_FROM_PAGE } from '..
 import { P, Small } from './typography'
 import Button from './button'
 
-const SectionPreviewCard = ({ currentPage, section, onClick, onEdit }) => {
+const SectionPreviewCard = ({ currentPage, section, onClick, onEdit, canMoveUp, canMoveDown }) => {
   return (
     <button
       className="w-full h-20 flex justify-between items-center text-left bg-white rounded shadow px-4 mb-2"
@@ -20,13 +20,15 @@ const SectionPreviewCard = ({ currentPage, section, onClick, onEdit }) => {
           className="mr-1"
           onClick={event => {
             event.stopPropagation()
-            onEdit({
-              type: MOVE_SECTION_UP,
-              target: {
-                page: currentPage,
-                section
-              }
-            })
+            if (canMoveUp) {
+              onEdit({
+                type: MOVE_SECTION_UP,
+                target: {
+                  page: currentPage,
+                  section
+                }
+              })
+            }
           }}
           compact
         >
@@ -36,13 +38,15 @@ const SectionPreviewCard = ({ currentPage, section, onClick, onEdit }) => {
           className="mr-1"
           onClick={event => {
             event.stopPropagation()
-            onEdit({
-              type: MOVE_SECTION_DOWN,
-              target: {
-                page: currentPage,
-                section
-              }
-            })
+            if (canMoveDown) {
+              onEdit({
+                type: MOVE_SECTION_DOWN,
+                target: {
+                  page: currentPage,
+                  section
+                }
+              })
+            }
           }}
           compact
         >

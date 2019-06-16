@@ -46,7 +46,7 @@ const Editor = ({ site, isLoading, onEdit, className }) => {
 
   const determineContent = activeSection => {
     /*
-      If a section is selected, show the section edit panel.
+      If a section is selected, show the edit panel for that section.
     */
     if (activeSection) {
       return (
@@ -65,19 +65,21 @@ const Editor = ({ site, isLoading, onEdit, className }) => {
       )
     }
     /*
-      If not, show a list of all the components and the details pane.
+      If not, show a list of all the sections and the details pane.
     */
     return (
       <>
         <section>
           <H3 className="mb-4">Sections</H3>
-          {currentPage.sections.map((section, index) => (
+          {sections.map((section, index) => (
             <SectionPreviewCard
               key={`${index}-${section}`}
               currentPage={currentPage}
               section={section}
               onClick={() => setActiveSectionIndex(index)}
               onEdit={onEdit}
+              canMoveUp={index !== 0}
+              canMoveDown={index !== sections.length - 1}
             />
           ))}
           <button
@@ -161,7 +163,7 @@ const Editor = ({ site, isLoading, onEdit, className }) => {
           </div>
         ) : (
           <P>
-            Having trouble finding components, sorry!
+            Having trouble finding sections, sorry!
           </P>
         )
       }
