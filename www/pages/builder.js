@@ -9,6 +9,7 @@ import {
   REDO,
   PERHAPS_UNWISELY_REPLACE_STATE_WITHOUT_ADDING_TO_HISTORY
 } from '../hooks/use-undoable-reducer'
+
 import {
   builderReducer,
   ERROR,
@@ -22,6 +23,7 @@ import {
   START_DEPLOYING,
   FINISH_DEPLOYING
 } from '../reducers/builder'
+
 import { siteReducer } from '../reducers/site'
 import Layout from '../components/layout'
 import Button from '../components/button'
@@ -158,7 +160,6 @@ const BuilderPage = withRouter(({ router }) => {
 
   const handleSave = async site => {
     const savedSite = await save(site)
-    console.log(savedSite)
     await deploy(savedSite)
   }
 
