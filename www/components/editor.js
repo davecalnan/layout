@@ -6,7 +6,7 @@ import axios from 'axios'
 import { toSentenceCase } from '@layouthq/util'
 import { ADD_SECTION_TO_PAGE, UPDATE_SITE_METADATA } from '../reducers/site'
 import { makeInputComponent } from './form-controls'
-import { H3, P, Small } from './typography/index'
+import { H1, H2, P, Small } from './typography/index'
 import SectionEditPanel from './section-edit-panel'
 import SectionPreviewCard from './section-preview-card'
 import Button from './button'
@@ -69,19 +69,22 @@ const Editor = ({ site, isLoading, onEdit, className }) => {
     */
     return (
       <>
+        <H1 className="mt-4 px-4">{currentPage.name}</H1>
         <section>
-          <H3 className="mb-4">Sections</H3>
-          {sections.map((section, index) => (
-            <SectionPreviewCard
-              key={`${index}-${section}`}
-              currentPage={currentPage}
-              section={section}
-              onClick={() => setActiveSectionIndex(index)}
-              onEdit={onEdit}
-              canMoveUp={index !== 0}
-              canMoveDown={index !== sections.length - 1}
-            />
-          ))}
+          <H2>Sections</H2>
+          <div className="mt-4">
+            {sections.map((section, index) => (
+              <SectionPreviewCard
+                key={`${index}-${section}`}
+                currentPage={currentPage}
+                section={section}
+                onClick={() => setActiveSectionIndex(index)}
+                onEdit={onEdit}
+                canMoveUp={index !== 0}
+                canMoveDown={index !== sections.length - 1}
+              />
+            ))}
+          </div>
           <button
             className="w-full h-20 flex justify-center items-center text-left bg-gray-200 rounded shadow-inner px-4 mb-2"
             onClick={() => setModalIsOpen(true)}
@@ -90,31 +93,33 @@ const Editor = ({ site, isLoading, onEdit, className }) => {
           </button>
         </section>
         <section>
-          <H3 className="mb-4">Details</H3>
-          {Object.entries(metadata).map(([key, value]) => {
-            const InputComponent = makeInputComponent(
-              { type: 'string' },
-              {
-                value,
-                onChange: event => {
-                  onEdit({
-                    type: UPDATE_SITE_METADATA,
-                    payload: {
-                      [key]: event.target.value
-                    }
-                  })
+          <H2>Details</H2>
+          <div className="mt-4">
+            {Object.entries(metadata).map(([key, value]) => {
+              const InputComponent = makeInputComponent(
+                { type: 'string' },
+                {
+                  value,
+                  onChange: event => {
+                    onEdit({
+                      type: UPDATE_SITE_METADATA,
+                      payload: {
+                        [key]: event.target.value
+                      }
+                    })
+                  }
                 }
-              }
-            )
-            return (
-              <div key={key} className="flex flex-col mb-6">
-                <label className="text-xs uppercase tracking-wide mb-1">
-                  {toSentenceCase(key)}
-                </label>
-                {InputComponent}
-              </div>
-            )
-          })}
+              )
+              return (
+                <div key={key} className="flex flex-col mb-6">
+                  <label className="text-xs uppercase tracking-wide mb-1">
+                    {toSentenceCase(key)}
+                  </label>
+                  {InputComponent}
+                </div>
+              )
+            })}
+          </div>
         </section>
       </>
     )
@@ -122,7 +127,7 @@ const Editor = ({ site, isLoading, onEdit, className }) => {
 
   const modalContent = (
     <>
-      <H3 className="mb-4">Add a section</H3>
+      <H2 className="mb-4">Add a section</H2>
       {availableSections
         ? (
           <div

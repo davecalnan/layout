@@ -2,13 +2,13 @@ import styled from 'styled-components'
 
 import { toSentenceCase } from '@layouthq/util'
 import { UPDATE_SECTION_PROPS } from '../reducers/site'
-import { H3 } from './typography'
+import { H1 } from './typography'
 import { makeInputComponent } from './form-controls'
 
 const SectionEditPanel = ({ site, currentPage, section, propTypes, onEdit, className }) => {
   return section && (
     <section className={className}>
-      <H3 className="mb-4">{toSentenceCase(section.name)}</H3>
+      <H1 className="mb-4">{toSentenceCase(section.name)}</H1>
       {Object.entries(propTypes).map(([propName, propType]) => {
         const InputComponent = makeInputComponent(propType, {
           value: section.props[propName],
