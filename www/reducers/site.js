@@ -1,7 +1,5 @@
 import { moveUp, moveDown } from '@layouthq/util'
 
-export const CREATE_SITE = 'CREATE_SITE'
-export const EDIT_SITE = 'EDIT_SITE'
 export const UPDATE_SITE_METADATA = 'UPDATE_SITE_METADATA'
 export const ADD_SECTION_TO_PAGE = 'ADD_SECTION_TO_PAGE'
 export const REMOVE_SECTION_FROM_PAGE = 'REMOVE_SECTION_FROM_PAGE'
@@ -11,10 +9,6 @@ export const MOVE_SECTION_DOWN = 'MOVE_SECTION_DOWN'
 
 export const siteReducer = (site, { type, target, payload  }) => {
   switch (type) {
-    case CREATE_SITE:
-      return payload
-    case EDIT_SITE:
-      return payload
     case UPDATE_SITE_METADATA:
       /*
         `payload` should be the an object with the key of the metadatum to update and its new value.
