@@ -14,7 +14,7 @@ const Banner = ({
 }) => (
   <section
     className={[
-      'w-full border-b border-gray-200 sm:h-screen sm:flex',
+      'flex flex-col-reverse w-full border-b border-gray-200 sm:h-screen',
       imagePosition === 'left' ? 'sm:flex-row-reverse' : 'sm:flex-row'
     ].join(' ')}
   >
@@ -27,7 +27,10 @@ const Banner = ({
         </Button>
       </div>
     </div>
-    <img src={imageSource} className="h-64 w-full object-cover bg-gray-300 sm:w-1/2 sm:h-full" />
+    <img
+      src={imageSource}
+      className="h-64 w-full object-cover bg-gray-300 sm:w-1/2 sm:h-full"
+    />
   </section>
 )
 

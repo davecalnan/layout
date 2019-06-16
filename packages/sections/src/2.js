@@ -14,7 +14,7 @@ const Spotlight = ({
 }) => (
   <section
     className={[
-      'w-full border-b border-gray-200 sm:flex',
+      'flex flex-col-reverse w-full border-b border-gray-200',
       imagePosition === 'left' ? 'sm:flex-row-reverse' : 'sm:flex-row'
     ].join(' ')}
   >
@@ -27,19 +27,19 @@ const Spotlight = ({
         </Button>
       </div>
     </div>
-    {/* <div
+    <div
       style={{
         backgroundImage: `url(${imageSource})`,
         minWidth: '20rem'
       }}
-      className="w-1/3 h-auto bg-cover bg-center bg-gray-300"
-    /> */}
-    <div className="h-64 sm:w-1/3 sm:h-auto">
+      className="h-64 bg-cover bg-gray-300 sm:w-1/3 sm:h-auto"
+    />
+    {/* <div className="h-64 sm:w-1/3 sm:h-auto">
       <img
         src={imageSource}
         className="w-full h-full object-cover bg-gray-300"
       />
-    </div>
+    </div> */}
   </section>
 )
 
