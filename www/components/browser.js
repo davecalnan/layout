@@ -12,14 +12,8 @@ const Browser = ({ url, content, canView }) => (
       <span className="w-96 rounded bg-white text-center truncate shadow">
         {url}
       </span>
-      <Button
-        className="w-20"
-        disabled={!canView}
-        compact
-      >
-        <a href={url} target="blank" rel="noreferrer noopener" className="">
-          View &rarr;
-        </a>
+      <Button className="w-20" disabled={!canView} href={url} compact>
+        View &rarr;
       </Button>
     </header>
     <Frame
