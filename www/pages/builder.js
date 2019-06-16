@@ -2,7 +2,13 @@ import { withRouter } from 'next/router'
 import { useEffect, useReducer } from 'react'
 import axios from 'axios'
 
-import { useUndoableReducer, RESET, UNDO, REDO } from '../hooks/use-undoable-reducer'
+import {
+  useUndoableReducer,
+  RESET,
+  UNDO,
+  REDO,
+  PERHAPS_UNWISELY_REPLACE_STATE_WITHOUT_ADDING_TO_HISTORY
+} from '../hooks/use-undoable-reducer'
 import {
   builderReducer,
   ERROR,
@@ -31,6 +37,7 @@ const BuilderPage = withRouter(({ router }) => {
     canUndo,
     canRedo
   } = useUndoableReducer(siteReducer, {})
+  console.log('site:', site)
 
   const [state, dispatchBuilderAction] = useReducer(
     builderReducer,
@@ -56,12 +63,21 @@ const BuilderPage = withRouter(({ router }) => {
   } = state
 
   const canSave = !isExistingSite || (!isSaving && hasUnsavedEdits)
+  const canView = isExistingSite && !isDeploying
 
   useEffect(() => {
-    const getExistingSite = async siteId =>
-      (await axios.get(`${process.env.API_BASE}/sites/${siteId}`, {})).data
+    const getExistingSite = async siteId => {
+      const { data: site } = await axios.get(`${process.env.API_BASE}/sites/${siteId}`)
 
-    const getStarterSite = () => import('../data/new-site.json')
+      return site
+    }
+
+    const getStarterSite = async () => {
+      const { default: site } = await import('../data/new-site.json')
+
+      console.log('imported site:', site)
+      return site
+    }
 
     const getSite = async () => {
       dispatchBuilderAction({
@@ -94,8 +110,7 @@ const BuilderPage = withRouter(({ router }) => {
         })
         const { data } = await axios.patch(`${process.env.API_BASE}/sites/${site.id}`, site)
         dispatchBuilderAction({
-          type: FINISH_SAVING,
-          payload: data
+          type: FINISH_SAVING
         })
         return data
       }
@@ -103,15 +118,13 @@ const BuilderPage = withRouter(({ router }) => {
         type: START_CREATING
       })
       const { data } = await axios.post(`${process.env.API_BASE}/sites`, site)
-      dispatchSiteAction({
-        type: CREATE_SITE,
-        payload: {
-          ...payload,
-          subdomain: site.subdomain,
-          components: site.components
-        }
+      console.log('saved site:', data)
+      debugger
+      await dispatchSiteAction({
+        type: PERHAPS_UNWISELY_REPLACE_STATE_WITHOUT_ADDING_TO_HISTORY,
+        payload: data
       })
-      await dispatchBuilderAction({
+      dispatchBuilderAction({
         type: FINISH_CREATING,
         payload: data
       })
@@ -149,6 +162,7 @@ const BuilderPage = withRouter(({ router }) => {
 
   const handleSave = async site => {
     const savedSite = await save(site)
+    console.log(savedSite)
     await deploy(savedSite)
   }
 
@@ -218,7 +232,7 @@ const BuilderPage = withRouter(({ router }) => {
       <Browser
         url={constructUrl(site)}
         content={<Renderer site={site} />}
-        isExistingSite={isExistingSite}
+        canView={canView}
       />
     </Layout>
   )

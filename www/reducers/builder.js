@@ -45,8 +45,8 @@ export const builderReducer = (state, { type, payload }) => {
         message: 'Saving...'
       }
     case FINISH_CREATING:
-      const href = `/builder?siteId=${site.id}`
-      const as = `/sites/${site.id}/builder`
+      const href = `/builder?siteId=${payload.id}`
+      const as = `/sites/${payload.id}/builder`
       Router.push(href, as, {
         shallow: true
       })

@@ -3,6 +3,7 @@ import { useReducer } from 'react'
 export const RESET = 'RESET'
 export const REDO = 'REDO'
 export const UNDO = 'UNDO'
+export const PERHAPS_UNWISELY_REPLACE_STATE_WITHOUT_ADDING_TO_HISTORY = 'PERHAPS_UNWISELY_REPLACE_STATE_WITHOUT_ADDING_TO_HISTORY'
 
 export const useUndoableReducer = (reducer, initialPresent) => {
   const initialState = {
@@ -17,6 +18,8 @@ export const useUndoableReducer = (reducer, initialPresent) => {
   const canUndo = currentIndex > 0
   const canRedo = currentIndex < history.length - 1
 
+  console.log('state in undoable reducer:', history[currentIndex])
+
   return { state: history[currentIndex], dispatch, history, canUndo, canRedo }
 }
 
@@ -24,8 +27,9 @@ const undoable = reducer =>
   // Return a reducer that handles undo and redo
   (state, action) => {
     const { history, currentIndex } = state
+    const { type, payload } = action
 
-    switch (action.type) {
+    switch (type) {
       case RESET:
         return {
           ...state,
@@ -42,6 +46,9 @@ const undoable = reducer =>
           ...state,
           currentIndex: currentIndex + 1
         }
+      case PERHAPS_UNWISELY_REPLACE_STATE_WITHOUT_ADDING_TO_HISTORY:
+        history[currentIndex] = payload
+        return state
       default:
         // Delegate handling the action to the passed reducer
         const present = history[currentIndex]

@@ -108,7 +108,10 @@ export const siteReducer = (site, { type, target, payload  }) => {
 
           return {
             ...page,
-            sections: moveUp(page.sections, page.sections.indexOf(target.section))
+            sections: moveUp(
+              page.sections,
+              page.sections.indexOf(target.section)
+            )
           }
         })
 
@@ -129,7 +132,10 @@ export const siteReducer = (site, { type, target, payload  }) => {
 
           return {
             ...page,
-            sections: moveDown(page.sections, page.sections.indexOf(target.section))
+            sections: moveDown(
+              page.sections,
+              page.sections.indexOf(target.section)
+            )
           }
         })
 

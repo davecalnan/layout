@@ -1,7 +1,7 @@
 import Frame from 'react-frame-component'
 import Button from './button'
 
-const Browser = ({ url, content, isExistingSite }) => (
+const Browser = ({ url, content, canView }) => (
   <div className="flex flex-col h-full w-full">
     <header className="flex justify-between shadow bg-gray-300 z-0 px-4 py-2">
       <div className="w-20 flex justify-start items-center">
@@ -14,7 +14,7 @@ const Browser = ({ url, content, isExistingSite }) => (
       </span>
       <Button
         className="w-20"
-        disabled={!isExistingSite}
+        disabled={!canView}
         compact
       >
         <a href={url} target="blank" rel="noreferrer noopener" className="">
