@@ -37,7 +37,6 @@ const BuilderPage = withRouter(({ router }) => {
     canUndo,
     canRedo
   } = useUndoableReducer(siteReducer, {})
-  console.log('site:', site)
 
   const [state, dispatchBuilderAction] = useReducer(
     builderReducer,
@@ -75,7 +74,6 @@ const BuilderPage = withRouter(({ router }) => {
     const getStarterSite = async () => {
       const { default: site } = await import('../data/new-site.json')
 
-      console.log('imported site:', site)
       return site
     }
 
@@ -118,8 +116,6 @@ const BuilderPage = withRouter(({ router }) => {
         type: START_CREATING
       })
       const { data } = await axios.post(`${process.env.API_BASE}/sites`, site)
-      console.log('saved site:', data)
-      debugger
       await dispatchSiteAction({
         type: PERHAPS_UNWISELY_REPLACE_STATE_WITHOUT_ADDING_TO_HISTORY,
         payload: data
