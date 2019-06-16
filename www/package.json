@@ -13,7 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@layouthq/renderer": "0.1.2",
+    "@layouthq/renderer": "0.1.5",
     "@layouthq/util": "0.1.2",
     "@zeit/next-css": "1.0.1",
     "autoprefixer": "9.5.1",
