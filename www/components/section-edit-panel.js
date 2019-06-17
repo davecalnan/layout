@@ -17,7 +17,6 @@ const SectionEditPanel = ({ currentPage, section, sectionPropTypes = {}, availab
   const [modalIsOpen, setModalIsOpen] = useState(false)
 
   const activeComponent = activeComponentIndex !== undefined ? components[activeComponentIndex] : null
-  // const activeComponent = components[0]
 
   const determineContent = activeComponent => {
     /*
