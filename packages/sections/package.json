@@ -20,7 +20,6 @@
     "@babel/preset-env": "7.4.5"
   },
   "dependencies": {
-    "@layouthq/components": "0.1.7",
     "@layouthq/prop-types": "0.1.7",
     "react": "16.8.6"
   }
