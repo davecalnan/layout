@@ -2,19 +2,42 @@
   {
     "name": "banner",
     "description": "The main attraction on this particular page",
+    "defaultComponents": [
+      {
+        "id": 1,
+        "name": "heading",
+        "props": {
+          "text": "Add a heading",
+          "level": 1
+        }
+      },
+      {
+        "id": 2,
+        "name": "text",
+        "props": {
+          "markdown": "Use this element as the main attraction on this page. Edit this text to explain what your website is about in 2-3 sentences."
+        }
+      },
+      {
+        "id": 3,
+        "name": "button",
+        "props": {
+          "text": "Get started",
+          "link": "#get-started",
+          "type": "primary"
+        }
+      },
+      {
+        "id": 3,
+        "name": "button",
+        "props": {
+          "text": "Learn more",
+          "link": "#learn-more",
+          "type": "secondary"
+        }
+      }
+    ],
     "propTypes": {
-      "heading": {
-        "type": "string"
-      },
-      "text": {
-        "type": "text"
-      },
-      "buttonText": {
-        "type": "string"
-      },
-      "buttonPath": {
-        "type": "string"
-      },
       "imageSource": {
         "type": "string"
       },
@@ -27,10 +50,6 @@
       }
     },
     "defaultProps": {
-      "heading": "Add a heading",
-      "text": "Use this element as the main attraction on this page. Edit this text to explain what your website is about in 2-3 sentences.",
-      "buttonText": "Get started",
-      "buttonPath": "#get-started",
       "imageSource": "https://source.unsplash.com/featured/?landscape,green,hills",
       "imagePosition": "right"
     }
@@ -38,19 +57,33 @@
   {
     "name": "spotlight",
     "description": "Call attention to a feature or piece of information",
+    "defaultComponents": [
+      {
+        "id": 1,
+        "name": "heading",
+        "props": {
+          "text": "Edit this heading",
+          "level": 2
+        }
+      },
+      {
+        "id": 2,
+        "name": "text",
+        "props": {
+          "markdown": "Use this element to highlight something important — a feature, benefit, or whatever. Change the image to whatever you'd like and get rid of the button if you're not using it."
+        }
+      },
+      {
+        "id": 3,
+        "name": "button",
+        "props": {
+          "text": "Learn more",
+          "link": "#learn-more",
+          "type": "secondary"
+        }
+      }
+    ],
     "propTypes": {
-      "heading": {
-        "type": "string"
-      },
-      "text": {
-        "type": "text"
-      },
-      "buttonText": {
-        "type": "string"
-      },
-      "buttonPath": {
-        "type": "string"
-      },
       "imageSource": {
         "type": "string"
       },
@@ -63,10 +96,6 @@
       }
     },
     "defaultProps": {
-      "heading": "Edit this heading",
-      "text": "Use this element to highlight something important — a feature, benefit, or whatever. Change the image to whatever you'd like and get rid of the button if you're not using it.",
-      "buttonText": "Learn more",
-      "buttonPath": "#learn-more",
       "imageSource": "https://source.unsplash.com/featured/?girl,camera",
       "imagePosition": "left"
     }

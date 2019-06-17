@@ -9,17 +9,17 @@ import { makeInputComponent } from './form-controls'
 import { H1, H2, P, Small } from './typography/index'
 import SectionEditPanel from './section-edit-panel'
 import SectionPreviewCard from './section-preview-card'
-import Button from './button'
-import Modal from 'react-modal'
+import AddNewButton from './add-new-button'
+import Modal from './modal'
 
 const Editor = ({ site, isLoading, onEdit, className }) => {
   if (isLoading) return <div className={className}>Loading...</div>
   const { pages, subdomain } = site
   const metadata = { subdomain }
   const [activeSectionIndex, setActiveSectionIndex] = useState()
+  const [availableSections, setAvailableSections] = useState([])
+  const [availableComponents, setAvailableComponents] = useState([])
   const [modalIsOpen, setModalIsOpen] = useState(false)
-  const [availableSections, setAvailableSections] = useState()
-  const [availableComponents, setAvailableComponents] = useState()
 
   const currentPage = pages[0]
   const { sections } = currentPage
@@ -41,7 +41,7 @@ const Editor = ({ site, isLoading, onEdit, className }) => {
     }
 
     loadSections()
-    // loadComponents()
+    loadComponents()
   }, [])
 
   const determineContent = activeSection => {
@@ -49,19 +49,16 @@ const Editor = ({ site, isLoading, onEdit, className }) => {
       If a section is selected, show the edit panel for that section.
     */
     if (activeSection) {
+      const activeSectionPropTypes = (availableSections.find(({ id }) => id === activeSection.id) || {}).propTypes
       return (
-        <section>
-          <Button className="mb-4" onClick={() => setActiveSectionIndex()}>
-            &larr; Back
-          </Button>
-          <SectionEditPanel
-            site={site}
-            currentPage={currentPage}
-            section={activeSection}
-            propTypes={availableSections.find(({ id }) => id === activeSection.id).propTypes}
-            onEdit={onEdit}
-          />
-        </section>
+        <SectionEditPanel
+          currentPage={currentPage}
+          section={activeSection}
+          sectionPropTypes={activeSectionPropTypes}
+          availableComponents={availableComponents}
+          onEdit={onEdit}
+          onBack={() => setActiveSectionIndex()}
+        />
       )
     }
     /*
@@ -85,12 +82,9 @@ const Editor = ({ site, isLoading, onEdit, className }) => {
               />
             ))}
           </div>
-          <button
-            className="w-full h-20 flex justify-center items-center text-left bg-gray-200 rounded shadow-inner px-4 mb-2"
+          <AddNewButton
             onClick={() => setModalIsOpen(true)}
-          >
-            <P>+</P>
-          </button>
+          />
         </section>
         <section>
           <H2>Details</H2>
@@ -136,9 +130,9 @@ const Editor = ({ site, isLoading, onEdit, className }) => {
               gridTemplateColumns: 'repeat(auto-fill, minmax(10rem, 1fr))'
             }}
           >
-            {availableSections.map((component, index) => (
+            {availableSections.map((section, index) => (
               <button
-                key={`${index}-${component.name}`}
+                key={`${index}-${section.name}`}
                 className="bg-white rounded shadow text-left mr-4 mb-4"
                 onClick={() => {
                   onEdit({
@@ -147,9 +141,10 @@ const Editor = ({ site, isLoading, onEdit, className }) => {
                       page: currentPage
                     },
                     payload: {
-                      id: component.id,
-                      name: component.name,
-                      props: component.defaultProps
+                      id: section.id,
+                      name: section.name,
+                      components: section.defaultComponents,
+                      props: section.defaultProps
                     }
                   })
                   setModalIsOpen(false)
@@ -160,8 +155,8 @@ const Editor = ({ site, isLoading, onEdit, className }) => {
                   className="w-full block rounded-t"
                 />
                 <div className="px-4 py-2">
-                  <P>{toSentenceCase(component.name)}</P>
-                  <Small>{component.description}</Small>
+                  <P>{toSentenceCase(section.name)}</P>
+                  <Small>{section.description}</Small>
                 </div>
               </button>
             ))}
@@ -179,20 +174,8 @@ const Editor = ({ site, isLoading, onEdit, className }) => {
     <div className={className}>
       {determineContent(activeSection)}
       <Modal
-        appElement={typeof document !== 'undefined' && document.querySelector('__next')}
-        ariaHideApp={typeof document === 'undefined' && false}
         isOpen={modalIsOpen}
         onRequestClose={() => setModalIsOpen(false)}
-        className="w-full h-full max-w-2xl overflow-y-scroll rounded shadow bg-white p-8"
-        overlayClassName="fixed flex justify-center items-center top-0 left-0 right-0 bottom-0"
-        style={{
-          overlay: {
-            backgroundColor: 'rgba(0, 0, 0, 0.25)'
-          },
-          content: {
-            maxHeight: '36rem'
-          }
-        }}
       >
         {modalContent}
       </Modal>
@@ -205,7 +188,7 @@ export default styled(Editor)`
     ${tw`p-4`}
 
     &:not(:last-child) {
-      ${tw`border-b border-gray-400 pb-4 mb-4`}
+      ${tw`border-b border-gray-400 pb-4`}
     }
   }
 `

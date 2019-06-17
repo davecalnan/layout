@@ -20,7 +20,7 @@ export const makeInputComponent = (propType, props) => {
         <Select {...props}>
           {propType.options.map((option, index) => (
             <option key={option} value={option}>
-              {toSentenceCase(option)}
+              {typeof option === 'string' ? toSentenceCase(option) : option}
             </option>
           ))}
         </Select>

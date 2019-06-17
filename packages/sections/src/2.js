@@ -1,14 +1,8 @@
 import React from 'react'
 import { PropTypes } from '@layouthq/prop-types'
 
-import { H2, P } from '@layouthq/components/dist/typography'
-import Button from '@layouthq/components/dist/button'
-
 const Spotlight = ({
-  heading,
-  text,
-  buttonText,
-  buttonPath,
+  children,
   imageSource,
   imagePosition = 'left'
 }) => (
@@ -19,13 +13,7 @@ const Spotlight = ({
     ].join(' ')}
   >
     <div className="flex flex-col justify-center sm:w-2/3">
-      <div className="p-8 sm:px-20 sm:pt-20 sm:pb-12 ">
-        <H2>{heading}</H2>
-        <P className="mt-6">{text}</P>
-        <Button href={buttonPath} className="mt-6">
-          {buttonText}
-        </Button>
-      </div>
+      <div className="p-8 sm:px-20 sm:pt-20 sm:pb-12">{children}</div>
     </div>
     <div
       style={{

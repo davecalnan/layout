@@ -1,11 +1,58 @@
 import React from 'react'
 import ReactDOMServer from 'react-dom/server'
 
-export const buildComponentTree = (page, options = {}) =>
-  page.sections.map(({ id, props }, index) => {
-    const Component = require(`@layouthq/sections/dist/${id}`).default
+const ButtonWrapper = ({ children }) => {
+  return <div className="flex flex-wrap">{children}</div>
+}
 
-    return <Component key={index} {...props} />
+const Stack = ({ children }) =>
+  children.reduce((accumulator, component, index, components) => {
+    const previousComponent = accumulator[accumulator.length - 1]
+    const nextComponent = components[index + 1]
+
+    const componentWithKey = {
+      ...component,
+      props: {
+        ...component.props,
+        key: index
+      }
+    }
+
+    /*
+      Wrap sibling buttons in a container.
+    */
+    if (component.type.name === 'Button') {
+      if (previousComponent && previousComponent.type.name === 'ButtonWrapper') {
+        previousComponent.props.children.push(componentWithKey)
+        return accumulator
+      }
+
+      if (nextComponent && nextComponent.type.name === 'Button') {
+        return [
+          ...accumulator,
+          <ButtonWrapper key={index}>{[component]}</ButtonWrapper>
+        ]
+      }
+    }
+
+    return [...accumulator, componentWithKey]
+  }, [])
+
+export const buildComponentTree = (page, options = {}) =>
+  page.sections.map(({ id, components = [], props }, index) => {
+    const { default: Section } = require(`@layouthq/sections/dist/${id}`)
+
+    const children = components.map(({ id, props }) => {
+      const { default: Component } = require(`@layouthq/components/dist/${id}`)
+
+      return <Component {...props} />
+    })
+
+    return (
+      <Section key={index} {...props}>
+        <Stack>{children}</Stack>
+      </Section>
+    )
   })
 
 export const generateHTML = page =>
