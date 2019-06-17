@@ -1,6 +1,6 @@
 {
   "name": "@layouthq/components",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "",
   "scripts": {
     "dev": "babel src --out-dir=dist --watch --verbose",
@@ -20,7 +20,7 @@
     "@babel/preset-env": "7.4.5"
   },
   "dependencies": {
-    "@layouthq/prop-types": "0.1.7",
+    "@layouthq/prop-types": "0.1.8",
     "react": "16.8.6",
     "react-markdown": "4.0.8"
   }
