@@ -3,26 +3,37 @@ import cors from 'cors'
 import bodyParser from 'body-parser'
 import {
   setResponseContentTypeToJson,
-  attachDatabaseConnection,
   requestBodyMustNotBeEmpty
 } from './middleware'
+import db from './db'
 
 import { controller as siteController } from './controllers/site/controller'
 import { controller as sectionController } from './controllers/section/controller'
 import { controller as componentController } from './controllers/component/controller'
 
-const app = express()
+const start = async () => {
+  const app = express()
 
-app.use(cors())
-app.use(bodyParser.json())
-app.use(setResponseContentTypeToJson)
-app.use(attachDatabaseConnection)
-app.post('*', requestBodyMustNotBeEmpty)
-app.put('*', requestBodyMustNotBeEmpty)
-app.patch('*', requestBodyMustNotBeEmpty)
+  app.use(cors())
+  app.use(bodyParser.json())
+  app.use(setResponseContentTypeToJson)
 
-app.use('/sites', siteController)
-app.use('/sections', sectionController)
-app.use('/components', componentController)
+  const connection = await db.connect()
+  const database = connection.db(process.env.MONGO_DATABASE)
+  app.use((req, res, next) => {
+    req.db = database
+    next()
+  })
 
-app.listen(process.env.PORT, () => console.log(`> Ready on http://localhost:${process.env.PORT}`))
+  app.post('*', requestBodyMustNotBeEmpty)
+  app.put('*', requestBodyMustNotBeEmpty)
+  app.patch('*', requestBodyMustNotBeEmpty)
+
+  app.use('/sites', siteController)
+  app.use('/sections', sectionController)
+  app.use('/components', componentController)
+
+  app.listen(process.env.PORT, () => console.log(`> Ready on http://localhost:${process.env.PORT}`))
+}
+
+start()
