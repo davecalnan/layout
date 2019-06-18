@@ -7,13 +7,18 @@ import { toSentenceCase } from '@layouthq/util'
 import { ADD_SECTION_TO_PAGE, UPDATE_SITE_METADATA } from '../reducers/site'
 import { makeInputComponent } from './form-controls'
 import { H1, H2, P, Small } from './typography/index'
+import LoadingDots from './loading-dots'
 import SectionEditPanel from './section-edit-panel'
 import SectionPreviewCard from './section-preview-card'
 import AddNewButton from './add-new-button'
 import Modal from './modal'
 
 const Editor = ({ site, isLoading, onEdit, className }) => {
-  if (isLoading) return <div className={className}>Loading...</div>
+  if (isLoading) return (
+    <div className="h-full w-full flex flex-col justify-center items-center p-4">
+      <LoadingDots />
+    </div>
+  )
   const { pages, subdomain } = site
   const metadata = { subdomain }
   const [activeSectionIndex, setActiveSectionIndex] = useState()
