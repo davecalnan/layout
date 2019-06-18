@@ -19,8 +19,7 @@ export default styled(LoadingGrid)`
 ${tw`w-32 h-32`}
 
   div {
-    ${tw`w-1/3 bg-gray-500 float-left`}
-    height: 33%;
+    ${tw`w-1/3 h-1/3 bg-gray-500 float-left`}
     -webkit-animation: loading-grid 1.3s infinite ease-in-out;
     animation: loading-grid 1.3s infinite ease-in-out;
   }
