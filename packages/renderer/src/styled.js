@@ -4,6 +4,7 @@ import postcss from 'postcss'
 import postcssNested from 'postcss-nested'
 import perfectionist from 'perfectionist'
 import { toKebabCase, without } from '@layouthq/util'
+import { PropTypes } from '@layouthq/prop-types'
 
 import { styles } from './index'
 
@@ -39,6 +40,13 @@ const parseExpression = (expression, props) => {
 export const styled = Component => {
   return (strings, ...expressions) => {
     return props => {
+
+      console.log('component prop types:', Component.propTypes)
+      const propTypes = Component.propTypes || []
+      const filteredPropTypes = propTypes.filter(propType => propType === PropTypes.list)
+      console.log('filtered prop types:', filteredPropTypes)
+      throw new Error('fucked ')
+
       const keysToHash = without(
         props,
         'children',
@@ -46,6 +54,7 @@ export const styled = Component => {
         'markdown',
         'link'
       )
+      // console.log('keys to hash:', keysToHash)
       const hash = createHash(keysToHash)
       const className = `${Component.name}--${hash}`
       const rule = createCSSRule(
@@ -69,7 +78,6 @@ export const styled = Component => {
 }
 
 export const processCSS = css => {
-  console.log('input css:', css)
   return postcss([
     postcssNested,
     perfectionist({ indentSize: 2 })
