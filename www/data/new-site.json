@@ -158,5 +158,41 @@
         }
       ]
     }
-  ]
+  ],
+  "theme": {
+    "colors": {
+      "primary": {
+        "base": "#2d3748",
+        "hover": "#1a202c",
+        "text": "#ffffff"
+      },
+      "secondary": {
+        "base": "#ffffff",
+        "hover": "#f7fafc",
+        "text": "#000000"
+      },
+      "background": {
+        "base": "#f6e6df"
+      },
+      "border": {
+        "base": "#cbd5e0"
+      },
+      "text": {
+        "base": "#000000",
+        "white": "#ffffff"
+      },
+      "link" : {
+        "base": "#4299e1",
+        "visited": "#9f7aea"
+      }
+    },
+    "typography": {
+      "headings": {
+        "fontFamily": "Special Elite,Constantia,Lucida Bright,Lucidabright,Lucida Serif,Lucida,DejaVu Serif,Bitstream Vera Serif,Liberation Serif,Georgia,serif"
+      },
+      "body": {
+        "fontFamily": "Special Elite,Constantia,Lucida Bright,Lucidabright,Lucida Serif,Lucida,DejaVu Serif,Bitstream Vera Serif,Liberation Serif,Georgia,serif"
+      }
+    }
+  }
 }

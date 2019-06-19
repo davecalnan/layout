@@ -1,33 +1,16 @@
 import React from 'react'
 import { PropTypes } from '@layouthq/prop-types'
+import { buildContext, styled } from '@layouthq/renderer'
+import tw from 'tailwind.macro'
 
-const Spotlight = ({
-  children,
-  imageSource,
-  imagePosition = 'left'
-}) => (
-  <section
-    className={[
-      'flex flex-col-reverse w-full border-b border-gray-200',
-      imagePosition === 'left' ? 'sm:flex-row-reverse' : 'sm:flex-row'
-    ].join(' ')}
-  >
-    <div className="flex flex-col justify-center sm:w-2/3">
-      <div className="p-8 sm:px-20 sm:pt-20 sm:pb-12">{children}</div>
+const { withTheme } = buildContext
+
+const Spotlight = ({ imageSource, children, className }) => (
+  <section className={className}>
+    <div>
+      <div>{children}</div>
     </div>
-    <div
-      style={{
-        backgroundImage: `url(${imageSource})`,
-        minWidth: '20rem'
-      }}
-      className="h-64 bg-cover bg-gray-300 sm:w-1/3 sm:h-auto"
-    />
-    {/* <div className="h-64 sm:w-1/3 sm:h-auto">
-      <img
-        src={imageSource}
-        className="w-full h-full object-cover bg-gray-300"
-      />
-    </div> */}
+    <div />
   </section>
 )
 
@@ -44,4 +27,23 @@ Spotlight.defaultProps = {
   imagePosition: 'left'
 }
 
-export default Spotlight
+export default withTheme(styled(Spotlight)`
+  ${tw`flex flex-col-reverse w-full border-b border-gray-200`}
+  ${({ imagePosition }) =>
+    imagePosition === 'left' ? tw`sm:flex-row-reverse` : tw`sm:flex-row`}
+  background-color: ${({ theme }) => theme.colors.background.base};
+
+  & > div:first-child {
+    ${tw`flex flex-col justify-center sm:w-2/3`}
+
+    & > div {
+      ${tw`p-8 sm:px-20 sm:pt-20 sm:pb-12`}
+    }
+  }
+
+  & > div:last-child {
+    ${tw`h-64 bg-cover bg-gray-300 sm:w-1/3 sm:h-auto`}
+    background-image: url(${({ imageSource }) => imageSource});
+    min-width: '20rem';
+  }
+`)

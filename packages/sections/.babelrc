@@ -9,5 +9,8 @@
       }
     ]
   ],
-  "plugins": ["@babel/plugin-transform-react-jsx"]
+  "plugins": [
+    "macros",
+    "@babel/plugin-transform-react-jsx"
+  ]
 }

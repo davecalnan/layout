@@ -1,18 +1,29 @@
 import React from 'react'
+import { buildContext, styled } from '@layouthq/renderer'
+import tw from 'tailwind.macro'
 
-const Button = ({ text, link, type, children, className, ...props }) => (
-  <a
-    className={[
-      className,
-      'inline-block text-xs border rounded-full uppercase tracking-wider px-12 py-4 mr-4 mb-4',
-      type === 'primary' ? 'bg-gray-800 text-white border-gray-800 hover:bg-gray-900 hover:border-gray-900' : '',
-      type === 'secondary' ? 'bg-transparent text-black border-gray-400 hover:bg-gray-100' : ''
-    ].join(' ')}
-    href={link}
-    {...props}
-  >
-    {text}
-  </a>
-)
+const { withTheme } = buildContext
 
-export default Button
+const Button = ({ text, link, type, theme, ...props }) => {
+  return (
+    <a
+      {...props}
+      href={link}
+    >
+      {text}
+    </a>
+  )
+}
+
+export default withTheme(styled(Button)`
+${tw`inline-block text-xs border rounded-full uppercase tracking-wider px-12 py-4 mr-4 mb-4`}
+${({ theme }) => theme.typography.body}
+background-color: ${({ theme, type }) => theme.colors[type].base};
+border-color: ${({ theme, type }) => type === 'primary' ? theme.colors.primary.base : theme.colors.border.base};
+color: ${({ theme, type }) => theme.colors[type].text};
+
+  &:hover {
+    background-color: ${({ theme, type }) => theme.colors[type].hover};
+    border-color: ${({ theme, type }) => type === 'primary' && theme.colors[type].hover};
+  }
+`)
