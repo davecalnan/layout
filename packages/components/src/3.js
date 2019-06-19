@@ -1,4 +1,5 @@
 import React from 'react'
+import { PropTypes } from '@layouthq/prop-types'
 import { buildContext, styled } from '@layouthq/renderer'
 import tw from 'tailwind.macro'
 
@@ -13,6 +14,12 @@ const Button = ({ text, link, type, theme, ...props }) => {
       {text}
     </a>
   )
+}
+
+Button.propTypes = {
+  text: PropTypes.string,
+  link: PropTypes.string,
+  type: PropTypes.list(['primary', 'secondary'])
 }
 
 export default withTheme(styled(Button)`

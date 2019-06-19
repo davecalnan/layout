@@ -60,6 +60,7 @@ export const renderPage = (page, options) => {
   setBuildContext(options)
 
   const prettyCSS = processCSS(styles.join(''))
+  // console.log(prettyCSS)
 
   const Tree = (
     <>

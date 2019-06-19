@@ -10,7 +10,7 @@ const Spotlight = ({ imageSource, children, className }) => (
     <div>
       <div>{children}</div>
     </div>
-    <div />
+    <div style={{ backgroundImage: `url(${imageSource})` }}/>
   </section>
 )
 
@@ -44,7 +44,6 @@ export default withTheme(styled(Spotlight)`
 
   & > div:last-child {
     ${tw`h-64 bg-cover bg-gray-300 sm:w-1/3 sm:h-auto`}
-    background-image: url(${({ imageSource }) => imageSource});
     min-width: '20rem';
   }
 `)
