@@ -32,6 +32,7 @@ export default withTheme(styled(Spotlight)`
   ${({ imagePosition }) =>
     imagePosition === 'left' ? tw`sm:flex-row-reverse` : tw`sm:flex-row`}
   background-color: ${({ theme }) => theme.colors.background.base};
+  border-color: ${({ theme }) => theme.colors.border.base};
 
   & > div:first-child {
     ${tw`flex flex-col justify-center sm:w-2/3`}

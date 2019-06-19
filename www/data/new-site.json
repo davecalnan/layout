@@ -159,6 +159,42 @@
       ]
     }
   ],
+  "otherTheme": {
+    "colors": {
+      "primary": {
+        "base": "#2d3748",
+        "hover": "#1a202c",
+        "text": "#ffffff"
+      },
+      "secondary": {
+        "base": "#ffffff",
+        "hover": "#f7fafc",
+        "text": "#000000"
+      },
+      "background": {
+        "base": "#transparent"
+      },
+      "border": {
+        "base": "#cbd5e0"
+      },
+      "text": {
+        "base": "#000000",
+        "white": "#ffffff"
+      },
+      "link" : {
+        "base": "#4299e1",
+        "visited": "#9f7aea"
+      }
+    },
+    "typography": {
+      "headings": {
+        "fontFamily": "-apple-system"
+      },
+      "body": {
+        "fontFamily": "-apple-system"
+      }
+    }
+  },
   "theme": {
     "colors": {
       "primary": {
@@ -175,7 +211,7 @@
         "base": "#f6e6df"
       },
       "border": {
-        "base": "#cbd5e0"
+        "base": "#2d3748"
       },
       "text": {
         "base": "#000000",
@@ -188,7 +224,8 @@
     },
     "typography": {
       "headings": {
-        "fontFamily": "Special Elite,Constantia,Lucida Bright,Lucidabright,Lucida Serif,Lucida,DejaVu Serif,Bitstream Vera Serif,Liberation Serif,Georgia,serif"
+        "fontFamily": "Special Elite,Constantia,Lucida Bright,Lucidabright,Lucida Serif,Lucida,DejaVu Serif,Bitstream Vera Serif,Liberation Serif,Georgia,serif",
+        "fontWeight": "700"
       },
       "body": {
         "fontFamily": "Special Elite,Constantia,Lucida Bright,Lucidabright,Lucida Serif,Lucida,DejaVu Serif,Bitstream Vera Serif,Liberation Serif,Georgia,serif"

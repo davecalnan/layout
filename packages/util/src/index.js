@@ -46,9 +46,8 @@ export const toUpperCase = (string) => splitIntoWords(string).map(word => word.t
 
 export const wait = async ms => new Promise(resolve => setTimeout(resolve, ms))
 
-
-export const without = (object, matchingKey) =>
-  _.pickBy(object, (value, key) => key !== matchingKey)
+export const without = (object, ...matchingKeys) =>
+  _.pickBy(object, (value, key) => !matchingKeys.includes(key))
 
 export const withoutId = object => without(object, 'id')
 

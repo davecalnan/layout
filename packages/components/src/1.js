@@ -16,7 +16,7 @@ const Heading = ({ text, level, theme, ...props }) => {
 }
 
 export default withTheme(styled(Heading)`
-${tw`font-light leading-none tracking-tight mb-6`}
+${tw`leading-none tracking-tight mb-6`}
 ${({ level }) => Number(level) === 1 && tw`text-5xl`}
 ${({ level }) => Number(level) === 2 && tw`text-4xl`}
 ${({ level }) => Number(level) === 3 && tw`text-3xl`}

@@ -26,9 +26,10 @@ Banner.defaultProps = {
 }
 
 export default withTheme(styled(Banner)`
-${tw`flex flex-col-reverse w-full border-b border-gray-200 sm:h-screen`}
+${tw`flex flex-col-reverse w-full border-b sm:h-screen`}
 ${({ imagePosition }) => imagePosition === 'left' ? tw`sm:flex-row-reverse` : tw`sm:flex-row`}
 background-color: ${({ theme }) => theme.colors.background.base};
+border-color: ${({ theme }) => theme.colors.border.base};
 
   & > div {
     ${tw`flex flex-col justify-center sm:w-1/2 sm:h-full`}

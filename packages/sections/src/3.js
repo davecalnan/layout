@@ -7,17 +7,7 @@ const { withTheme } = buildContext
 
 const Footer = ({ copyrightText, className }) => (
   <footer className={className}>
-    <p>
-      {copyrightText} Images:{' '}
-      <a href="https://unsplash.com">
-        Unsplash
-      </a>
-      . Design:{' '}
-      <a href="https://html5up.net">
-        HTML5 UP
-      </a>
-      .
-    </p>
+    <p>{copyrightText}</p>
   </footer>
 )
 
@@ -26,7 +16,7 @@ Footer.propTypes = {
 }
 
 export default withTheme(styled(Footer)`
-  ${tw`text-center px-8 py-20`}
+  ${tw`text-center px-8 py-12`}
   background-color: ${({ theme }) => theme.colors.background.base};
 
   & > p {

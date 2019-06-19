@@ -13,4 +13,12 @@ export default withTheme(styled(Text)`
 ${tw`font-light leading-normal text-lg mb-6`}
 ${({ theme }) => theme.typography.body}
 color: ${({ theme }) => theme.colors.text.base};
+
+  * {
+    ${tw`mb-4`}
+  }
+
+  strong {
+    ${tw`font-bold`}
+  }
 `)
