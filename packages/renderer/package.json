@@ -1,6 +1,6 @@
 {
   "name": "@layouthq/renderer",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -23,8 +23,8 @@
   },
   "dependencies": {
     "@callstack/react-theme-provider": "3.0.0",
-    "@layouthq/components": "0.1.8",
-    "@layouthq/sections": "0.1.8",
+    "@layouthq/components": "0.1.9",
+    "@layouthq/sections": "0.1.9",
     "@layouthq/util": "^0.1.8",
     "classnames": "2.2.6",
     "perfectionist": "^2.4.0",
