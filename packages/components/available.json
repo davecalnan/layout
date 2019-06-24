@@ -31,7 +31,7 @@
   {
     "id": 3,
     "name": "button",
-    "decription": "A button. Press it.",
+    "description": "A button. Press it.",
     "propTypes": {
       "text": {
         "type": "string"
@@ -51,6 +51,31 @@
       "text": "Learn more",
       "link": "#learn-more",
       "type": "secondary"
+    }
+  },
+  {
+    "id": 4,
+    "name": "image",
+    "description": "An image of your choice.",
+    "propTypes": {
+      "url": {
+        "type": "string"
+      },
+      "alt": {
+        "type": "string"
+      },
+      "maxHeight": {
+        "type": "string"
+      },
+      "maxWidth": {
+        "type": "string"
+      }
+    },
+    "defaultProps": {
+      "url": "https://images.unsplash.com/photo-1533258439784-28006397342d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=80",
+      "alt": "A man's hand holding a lightbulb",
+      "maxHeight": "",
+      "maxWidth": ""
     }
   }
 ]

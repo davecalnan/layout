@@ -44,12 +44,16 @@ const styles = []
 const buildComponentTree = (page, options = {}) =>
   page.sections.map(({ id, components = [], props }, index) => {
     const { default: Section } = require(`@layouthq/sections/dist/${id}`)
-    addComponentStyles(styles, Section, options)
+    if (Section.isStyledComponent) {
+      addComponentStyles(styles, Section, options)
+    }
 
     const children = components.map(({ id, props }) => {
       const { default: Component } = require(`@layouthq/components/dist/${id}`)
 
-      addComponentStyles(styles, Component, options)
+      if (Component.isStyledComponent) {
+        addComponentStyles(styles, Component, options)
+      }
       return <Component {...props} />
     })
 

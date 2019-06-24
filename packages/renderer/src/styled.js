@@ -128,6 +128,7 @@ export const styled = Component => {
     const Output = annoyingObjectSoThatICanNameTheFunctionDynamically[Component.name]
     Output.propTypes = Component.propTypes
     Output.inputCSS = inputCSS
+    Output.isStyledComponent = true
 
     return Output
   }
