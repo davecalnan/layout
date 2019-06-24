@@ -1,12 +1,19 @@
 import React from 'react'
 import ReactDOMServer from 'react-dom/server'
+import { toKebabCase } from '@layouthq/util'
 import { addComponentStyles, processCSS } from './styled'
 
-const ButtonWrapper = ({ children }) => {
-  return <div className="flex flex-wrap">{children}</div>
-}
+const Wrapper = ({ children }) => (
+  <div
+    style={{
+      maxWidth: '100%'
+    }}
+  >
+    {children}
+  </div>
+)
 
-const Stack = ({ children }) =>
+const Stack = ({ theme, children }) =>
   children.reduce((accumulator, component, index, components) => {
     const previousComponent = accumulator[accumulator.length - 1]
     const nextComponent = components[index + 1]
@@ -22,16 +29,32 @@ const Stack = ({ children }) =>
     /*
       Wrap sibling buttons in a container.
     */
-    if (component.type.name === 'Button') {
-      if (previousComponent && previousComponent.type.name === 'ButtonWrapper') {
+    if (component.type.name === 'Button' || component.type.name === 'EmailSignup') {
+      if (previousComponent && previousComponent.type.name === 'Wrapper') {
         previousComponent.props.children.push(componentWithKey)
         return accumulator
       }
 
-      if (nextComponent && nextComponent.type.name === 'Button') {
+      if (
+        (nextComponent && nextComponent.type.name === 'Button') ||
+        (nextComponent && nextComponent.type.name === 'EmailSignup')
+      ) {
         return [
           ...accumulator,
-          <ButtonWrapper key={index}>{[component]}</ButtonWrapper>
+          <Wrapper key={index}>
+            {[
+              component,
+              <p
+                style={{
+                  ...theme.typography.body,
+                  display: 'inline-block',
+                  margin: '0 1rem 1rem'
+                }}
+              >
+                or
+              </p>
+            ]}
+          </Wrapper>
         ]
       }
     }
@@ -42,7 +65,7 @@ const Stack = ({ children }) =>
 const styles = []
 
 const buildComponentTree = (page, options = {}) =>
-  page.sections.map(({ id, components = [], props }, index) => {
+  page.sections.map(({ name, id, components = [], props }, index) => {
     const { default: Section } = require(`@layouthq/sections/dist/${id}`)
     if (Section.isStyledComponent) {
       addComponentStyles(styles, Section, options)
@@ -58,8 +81,8 @@ const buildComponentTree = (page, options = {}) =>
     })
 
     return (
-      <Section key={index} {...props}>
-        <Stack>{children}</Stack>
+      <Section {...props} key={index} id={name ? toKebabCase(name) : undefined}>
+        <Stack theme={options.theme}>{children}</Stack>
       </Section>
     )
   })

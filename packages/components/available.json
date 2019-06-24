@@ -77,5 +77,34 @@
       "maxHeight": "",
       "maxWidth": ""
     }
+  },
+  {
+    "id": 5,
+    "name": "emailSignup",
+    "description": "Capture a potential customer's email.",
+    "propTypes": {
+      "buttonText": {
+        "type": "string"
+      },
+      "buttonType": {
+        "type": "list",
+        "options": [
+          "primary",
+          "secondary"
+        ]
+      },
+      "label": {
+        "type": "string"
+      },
+      "placeholderText": {
+        "type": "string"
+      }
+    },
+    "defaultProps": {
+      "buttonText": "Submit",
+      "buttonType": "primary",
+      "label": "Keep up to date with us:",
+      "placeholderText": "your@email.com"
+    }
   }
 ]

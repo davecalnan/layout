@@ -1,4 +1,4 @@
-import { toSentenceCase } from '@layouthq/util'
+import { toCapitalCase } from '@layouthq/util'
 import { UPDATE_COMPONENT_PROPS } from '../reducers/site'
 import { H1, H2 } from './typography'
 import Button from '../components/button'
@@ -12,7 +12,7 @@ const ComponentEditPanel = ({ currentPage, currentSection, component, componentP
         <div className="p-4">
           <Button onClick={onBack}>&larr; Back</Button>
         </div>
-        <H1 className="px-4">{toSentenceCase(name)}</H1>
+        <H1 className="px-4">{toCapitalCase(name)}</H1>
         <section>
           <H2 className="mb-4">Properties</H2>
           {Object.entries(componentPropTypes).map(([propName, propType]) => {
@@ -34,9 +34,12 @@ const ComponentEditPanel = ({ currentPage, currentSection, component, componentP
             })
 
             return (
-              <div key={`${name}-${propName}`} className="flex flex-col mb-6">
+              <div
+                key={`${name}-${propName}`}
+                className="flex flex-col mb-6"
+              >
                 <label className="text-xs uppercase tracking-wide mb-1">
-                  {toSentenceCase(propName)}
+                  {toCapitalCase(propName)}
                 </label>
                 {InputComponent}
               </div>

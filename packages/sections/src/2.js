@@ -3,8 +3,8 @@ import { PropTypes } from '@layouthq/prop-types'
 import { styled } from '@layouthq/renderer'
 import tw from 'tailwind.macro'
 
-const Spotlight = ({ imageSource, children, className }) => (
-  <section className={className}>
+const Spotlight = ({ imageSource, children, id, className }) => (
+  <section id={id} className={className}>
     <div>
       <div>{children}</div>
     </div>
@@ -13,10 +13,6 @@ const Spotlight = ({ imageSource, children, className }) => (
 )
 
 Spotlight.propTypes = {
-  heading: PropTypes.string,
-  text: PropTypes.text,
-  buttonText: PropTypes.string,
-  buttonPath: PropTypes.string,
   imageSource: PropTypes.string,
   imagePosition: PropTypes.list(['left', 'right'])
 }
@@ -26,7 +22,7 @@ Spotlight.defaultProps = {
 }
 
 export default styled(Spotlight)`
-  ${tw`flex flex-col-reverse w-full border-b border-gray-200`}
+  ${tw`flex flex-col-reverse w-full border-b`}
   ${({ imagePosition }) =>
     imagePosition === 'left' ? tw`sm:flex-row-reverse` : tw`sm:flex-row`}
   background-color: ${({ theme }) => theme.colors.background.base};

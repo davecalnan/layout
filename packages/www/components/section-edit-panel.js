@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
-import { toSentenceCase } from '@layouthq/util'
-import { ADD_COMPONENT_TO_SECTION, UPDATE_SECTION_PROPS } from '../reducers/site'
+import { toCapitalCase } from '@layouthq/util'
+import { ADD_COMPONENT_TO_SECTION, UPDATE_SECTION_METADATA, UPDATE_SECTION_PROPS } from '../reducers/site'
 import { H1, H2, P, Small } from './typography'
 import Button from '../components/button'
 import { makeInputComponent } from './form-controls'
@@ -45,7 +45,9 @@ const SectionEditPanel = ({ currentPage, section, sectionPropTypes = {}, availab
         <div className="p-4">
           <Button onClick={onBack}>&larr; Back</Button>
         </div>
-        <H1 className="px-4">{toSentenceCase(section.name)}</H1>
+        <H1 className="px-4">
+          {section.name || toCapitalCase(section.type)}
+        </H1>
         {components && (
           <section>
             <H2 className="mb-4">Components</H2>
@@ -66,6 +68,31 @@ const SectionEditPanel = ({ currentPage, section, sectionPropTypes = {}, availab
         )}
         <section>
           <H2 className="mb-4">Properties</H2>
+          <div className="flex flex-col mb-6">
+            <label className="text-xs uppercase tracking-wide mb-1">
+              Name
+            </label>
+            {makeInputComponent(
+              {
+                type: 'string'
+              },
+              {
+                value: name,
+                onChange: event => {
+                  onEdit({
+                    type: UPDATE_SECTION_METADATA,
+                    target: {
+                      page: currentPage,
+                      section
+                    },
+                    payload: {
+                      name: event.target.value
+                    }
+                  })
+                }
+              }
+            )}
+          </div>
           {Object.entries(otherPropTypes).map(([propName, propType]) => {
             const InputComponent = makeInputComponent(propType, {
               value: props[propName],
@@ -84,9 +111,9 @@ const SectionEditPanel = ({ currentPage, section, sectionPropTypes = {}, availab
             })
 
             return (
-              <div key={`${name}-${propName}`} className="flex flex-col mb-6">
+              <div key={propName} className="flex flex-col mb-6">
                 <label className="text-xs uppercase tracking-wide mb-1">
-                  {toSentenceCase(propName)}
+                  {toCapitalCase(propName)}
                 </label>
                 {InputComponent}
               </div>
@@ -132,7 +159,7 @@ const SectionEditPanel = ({ currentPage, section, sectionPropTypes = {}, availab
                 className="w-full block rounded-t"
               />
               <div className="px-4 py-2">
-                <P>{toSentenceCase(component.name)}</P>
+                <P>{toCapitalCase(component.name)}</P>
                 <Small>{component.description}</Small>
               </div>
             </button>

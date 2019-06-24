@@ -1,4 +1,3 @@
-import { toSentenceCase } from '@layouthq/util'
 import { P } from './typography'
 import Button from './button'
 
@@ -9,7 +8,7 @@ const BasePreviewCard = ({ name, onClick, onMoveUp, onMoveDown, onDelete }) =>
       onClick={onClick}
     >
       <div className="mr-4">
-        <P>{toSentenceCase(name)}</P>
+        <P>{name}</P>
       </div>
       <div className="flex-shrink-0">
         <Button

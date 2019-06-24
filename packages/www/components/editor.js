@@ -142,7 +142,7 @@ const Editor = ({ site, isLoading, onEdit, className }) => {
             >
               {availableSections.map((section, index) => (
                 <button
-                  key={`${index}-${section.name}`}
+                  key={`${index}-${section.type}`}
                   className="bg-white rounded shadow text-left mr-4 mb-4"
                   onClick={() => {
                     onEdit({
@@ -152,7 +152,7 @@ const Editor = ({ site, isLoading, onEdit, className }) => {
                       },
                       payload: {
                         id: section.id,
-                        name: section.name,
+                        type: section.type,
                         components: section.defaultComponents,
                         props: section.defaultProps
                       }
@@ -165,7 +165,7 @@ const Editor = ({ site, isLoading, onEdit, className }) => {
                     className="w-full block rounded-t"
                   />
                   <div className="px-4 py-2">
-                    <P>{toSentenceCase(section.name)}</P>
+                    <P>{toSentenceCase(section.type)}</P>
                     <Small>{section.description}</Small>
                   </div>
                 </button>

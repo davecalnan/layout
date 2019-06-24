@@ -3,8 +3,8 @@ import { PropTypes } from '@layouthq/prop-types'
 import { styled } from '@layouthq/renderer'
 import tw from 'tailwind.macro'
 
-const Banner = ({ imageSource, children, className }) => (
-  <section className={className}>
+const Banner = ({ imageSource, children, id, className }) => (
+  <section id={id} className={className}>
     <div>
       <div>
         {children}

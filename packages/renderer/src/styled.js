@@ -64,15 +64,13 @@ const generateRule = (inputCSS, Component, { theme }, variant) => {
   )
 }
 
-const getListPropTypes = Component => Object.entries(Component.propTypes || {}).filter(
+const extractListPropTypes = Component => Object.entries(Component.propTypes || {}).filter(
   ([propName, propType]) => propType.type === 'list'
 )
 
 export const addComponentStyles = (styles, Component, options) => {
   const processComponent = (Component, options) => {
-    console.log('processing:', Component.name)
-
-    const listPropTypes = getListPropTypes(Component)
+    const listPropTypes = extractListPropTypes(Component)
 
     const rule = generateRule(Component.inputCSS, Component, options)
 
@@ -107,7 +105,7 @@ export const styled = Component => {
   return (...inputCSS) => {
     const annoyingObjectSoThatICanNameTheFunctionDynamically = {
       [Component.name]: props => {
-        const variantClassNames = getListPropTypes(Component).map(([propName, propType]) =>
+        const variantClassNames = extractListPropTypes(Component).map(([propName, propType]) =>
           generateClassName(Component, {
             name: propName,
             value: props[propName]

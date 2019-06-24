@@ -1,9 +1,11 @@
+import { toCapitalCase } from '@layouthq/util'
 import { MOVE_SECTION_DOWN, MOVE_SECTION_UP, REMOVE_SECTION_FROM_PAGE } from '../reducers/site'
 import BasePreviewCard from './base-preview-card'
 
-const SectionPreviewCard = ({ currentPage, section, onClick, onEdit, canMoveUp, canMoveDown }) => (
+const SectionPreviewCard = ({ currentPage, section, onClick, onEdit, canMoveUp, canMoveDown }) =>
+  (
   <BasePreviewCard
-    name={section.name}
+    name={section.name || toCapitalCase(section.type)}
     onClick={onClick}
     onMoveUp={() => {
       if (canMoveUp) {

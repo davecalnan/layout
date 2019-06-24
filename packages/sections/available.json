@@ -1,6 +1,6 @@
 [
   {
-    "name": "banner",
+    "type": "banner",
     "description": "The main attraction on this particular page",
     "defaultComponents": [
       {
@@ -55,7 +55,7 @@
     }
   },
   {
-    "name": "spotlight",
+    "type": "spotlight",
     "description": "Call attention to a feature or piece of information",
     "defaultComponents": [
       {
@@ -101,7 +101,7 @@
     }
   },
   {
-    "name": "footer",
+    "type": "footer",
     "description": "It's not the head, it's not the body, it's the footer",
     "propTypes": {
       "copyrightText": {
@@ -110,6 +110,34 @@
     },
     "defaultProps": {
       "copyrightText": "© 2019"
+    }
+  },
+  {
+    "type": "callToAction",
+    "description": "Direct your visitors to a particular goal.",
+    "defaultComponents": [
+      {
+        "id": 1,
+        "name": "heading",
+        "props": {
+          "text": "Edit this heading",
+          "level": 2
+        }
+      },
+      {
+        "id": 5,
+        "name": "emailSignup",
+        "props": {
+          "buttonText": "Submit",
+          "buttonType": "primary",
+          "label": "Keep up to date with us:",
+          "placeholderText": "your@email.com"
+        }
+      }
+    ],
+    "propTypes": {
+    },
+    "defaultProps": {
     }
   }
 ]

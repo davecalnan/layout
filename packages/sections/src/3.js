@@ -3,8 +3,8 @@ import { PropTypes } from '@layouthq/prop-types'
 import { styled } from '@layouthq/renderer'
 import tw from 'tailwind.macro'
 
-const Footer = ({ copyrightText, className }) => (
-  <footer className={className}>
+const Footer = ({ copyrightText, id, className }) => (
+  <footer id={id} className={className}>
     <p>{copyrightText}</p>
   </footer>
 )

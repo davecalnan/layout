@@ -3,6 +3,7 @@ import { moveUp, moveDown } from '@layouthq/util'
 export const UPDATE_SITE_METADATA = 'UPDATE_SITE_METADATA'
 export const ADD_SECTION_TO_PAGE = 'ADD_SECTION_TO_PAGE'
 export const REMOVE_SECTION_FROM_PAGE = 'REMOVE_SECTION_FROM_PAGE'
+export const UPDATE_SECTION_METADATA = 'UPDATE_SECTION_METADATA'
 export const UPDATE_SECTION_PROPS = 'UPDATE_SECTION_PROPS'
 export const MOVE_SECTION_UP = 'MOVE_SECTION_UP'
 export const MOVE_SECTION_DOWN = 'MOVE_SECTION_DOWN'
@@ -69,6 +70,36 @@ export const siteReducer = (site, { type, target, payload  }) => {
       return {
         ...site,
         pages: removeSectionFromPage({ target, payload })
+      }
+
+    case UPDATE_SECTION_METADATA:
+      /*
+        `target` should be an object of the form: {
+          page: a reference to the page to update,
+          section: a reference to the section to update.
+        }
+        `payload` should be the an object with the key of the metadatum to update and its new value.
+      */
+      const updateSectionMetadata = ({ target, payload }) =>
+        site.pages.map(page => {
+          if (page !== target.page) return page
+
+          return {
+            ...page,
+            sections: page.sections.map(section => {
+              if (section !== target.section) return section
+
+              return {
+                ...section,
+                ...payload
+              }
+            })
+          }
+        })
+
+      return {
+        ...site,
+        pages: updateSectionMetadata({ target, payload })
       }
 
     case UPDATE_SECTION_PROPS:

@@ -6,7 +6,7 @@
       "sections": [
         {
           "id": 1,
-          "name": "banner",
+          "type": "banner",
           "props": {
             "imageSource": "https://source.unsplash.com/featured/?landscape,green,hills",
             "imagePosition": "right"
@@ -49,7 +49,7 @@
         },
         {
           "id": 2,
-          "name": "spotlight",
+          "type": "spotlight",
           "props": {
             "imageSource": "https://source.unsplash.com/featured/?girl,camera",
             "imagePosition": "left"
@@ -83,7 +83,7 @@
         },
         {
           "id": 2,
-          "name": "spotlight",
+          "type": "spotlight",
           "props": {
             "imageSource": "https://source.unsplash.com/featured/?fox,snow",
             "imagePosition": "right"
@@ -117,7 +117,7 @@
         },
         {
           "id": 2,
-          "name": "spotlight",
+          "type": "spotlight",
           "props": {
             "imageSource": "https://source.unsplash.com/featured/?city,sunset,skyline",
             "imagePosition": "left"

@@ -1,9 +1,10 @@
+import { toCapitalCase } from '@layouthq/util'
 import { MOVE_COMPONENT_DOWN, MOVE_COMPONENT_UP, REMOVE_COMPONENT_FROM_SECTION } from '../reducers/site'
 import BasePreviewCard from './base-preview-card'
 
 const ComponentPreviewCard = ({ currentPage, currentSection, component, onClick, onEdit, canMoveUp, canMoveDown }) => (
   <BasePreviewCard
-    name={component.name}
+    name={toCapitalCase(component.name)}
     onClick={onClick}
     onMoveUp={() => {
       if (canMoveUp) {
