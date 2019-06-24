@@ -1,5 +1,5 @@
 import Frame from 'react-frame-component'
-import { renderPage } from '@layouthq/renderer'
+import { renderPageToReact } from '@layouthq/renderer'
 import LoadingGrid from './loading-grid'
 
 const Renderer = ({ site }) => {
@@ -14,10 +14,9 @@ const Renderer = ({ site }) => {
 
   return (
     <Frame
-      initialContent='<!DOCTYPE html><html><head><link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet"></head><body><div></div></body></html>'
       className="flex-1"
     >
-      {renderPage(pages[0], { theme })}
+      {renderPageToReact(pages[0], { theme })}
     </Frame>
   )
 }

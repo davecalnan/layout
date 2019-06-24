@@ -1,9 +1,7 @@
 import React from 'react'
 import { PropTypes } from '@layouthq/prop-types'
-import { buildContext, styled } from '@layouthq/renderer'
+import { styled } from '@layouthq/renderer'
 import tw from 'tailwind.macro'
-
-const { withTheme } = buildContext
 
 const Banner = ({ imageSource, children, className }) => (
   <section className={className}>
@@ -25,9 +23,10 @@ Banner.defaultProps = {
   imagePosition: 'right'
 }
 
-export default withTheme(styled(Banner)`
+export default styled(Banner)`
 ${tw`flex flex-col-reverse w-full border-b sm:h-screen`}
-${({ imagePosition }) => imagePosition === 'left' ? tw`sm:flex-row-reverse` : tw`sm:flex-row`}
+${({ imagePosition }) => imagePosition === 'left' && tw`sm:flex-row-reverse`}
+${({ imagePosition }) => imagePosition === 'right' && tw`sm:flex-row`}
 background-color: ${({ theme }) => theme.colors.background.base};
 border-color: ${({ theme }) => theme.colors.border.base};
 
@@ -42,4 +41,4 @@ border-color: ${({ theme }) => theme.colors.border.base};
   & > img {
     ${tw`h-64 w-full object-cover bg-gray-300 sm:w-1/2 sm:h-full`}
   }
-`)
+`

@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { generateHTML } from '@layouthq/renderer'
+import { renderPageToHTML } from '@layouthq/renderer'
 import { wait } from '@layouthq/util'
 
 const http = axios.create({
@@ -12,9 +12,20 @@ const http = axios.create({
 export default async ({ db, params }, res) => {
   const sites = await db.collection('sites')
   const site = await sites.findOne({ id: Number(params.id) })
-  const { id, subdomain, pages } = site
+  const { id, subdomain, pages, theme } = site
 
-  const html = generateHTML(pages[0])
+  const generateHTML = (page, options) => {
+    try {
+      console.log(`Building site id ${id}.`)
+      const html = renderPageToHTML(page, options)
+      console.log(`Finished building site id ${id}.`)
+      return html
+    } catch (error) {
+      console.log('Could not build site:', error.message)
+    }
+  }
+
+  const html = generateHTML(pages[0], { theme })
 
   try {
     console.log(`Deploying site id ${id}.`)
@@ -52,9 +63,9 @@ export default async ({ db, params }, res) => {
     await pollDeployment(deployment.id)
     console.log(`Site is live at ${deployment.alias.join(', ')}.`)
 
-    res.status(200).send(JSON.stringify(deployment))
+    return res.status(200).send(JSON.stringify(deployment))
   } catch (error) {
-    console.error('Something went wrong:', error.message)
-    res.status(500).send(JSON.stringify({ error }))
+    console.error('Could not deploy site:', error.message)
+    return res.status(500).send(JSON.stringify({ error }))
   }
 }

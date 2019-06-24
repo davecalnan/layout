@@ -1,9 +1,7 @@
 import React from 'react'
 import { PropTypes } from '@layouthq/prop-types'
-import { buildContext, styled } from '@layouthq/renderer'
+import { styled } from '@layouthq/renderer'
 import tw from 'tailwind.macro'
-
-const { withTheme } = buildContext
 
 const Spotlight = ({ imageSource, children, className }) => (
   <section className={className}>
@@ -27,7 +25,7 @@ Spotlight.defaultProps = {
   imagePosition: 'left'
 }
 
-export default withTheme(styled(Spotlight)`
+export default styled(Spotlight)`
   ${tw`flex flex-col-reverse w-full border-b border-gray-200`}
   ${({ imagePosition }) =>
     imagePosition === 'left' ? tw`sm:flex-row-reverse` : tw`sm:flex-row`}
@@ -43,7 +41,7 @@ export default withTheme(styled(Spotlight)`
   }
 
   & > div:last-child {
-    ${tw`h-64 bg-cover bg-gray-300 sm:w-1/3 sm:h-auto`}
+    ${tw`h-64 bg-cover bg-center bg-gray-300 sm:w-1/3 sm:h-auto`}
     min-width: '20rem';
   }
-`)
+`

@@ -1,7 +1,6 @@
 import React from 'react'
 import ReactDOMServer from 'react-dom/server'
-import { createTheming } from '@callstack/react-theme-provider'
-import { processCSS } from './styled'
+import { addComponentStyles, processCSS } from './styled'
 
 const ButtonWrapper = ({ children }) => {
   return <div className="flex flex-wrap">{children}</div>
@@ -40,47 +39,17 @@ const Stack = ({ children }) =>
     return [...accumulator, componentWithKey]
   }, [])
 
-let buildContext = {}
+const styles = []
 
-const setBuildContext = options => {
-  const { theme } = options
-
-  const objectToMergeWithContext = {
-    ...createTheming(theme)
-  }
-
-  Object
-    .entries(objectToMergeWithContext)
-    .forEach(([key, value]) => buildContext[key] = value)
-}
-
-export const styles = []
-
-export const renderPage = (page, options) => {
-  setBuildContext(options)
-
-  const prettyCSS = processCSS(styles.join(''))
-  // console.log(prettyCSS)
-
-  const Tree = (
-    <>
-      <link href="https://fonts.googleapis.com/css?family=Special+Elite&display=swap" rel="stylesheet" />
-      <style>{prettyCSS}</style>
-      {buildComponentTree(page, options)}
-    </>
-  )
-
-  return Tree
-}
-
-export const buildComponentTree = (page, options = {}) => {
-
-  return page.sections.map(({ id, components = [], props }, index) => {
+const buildComponentTree = (page, options = {}) =>
+  page.sections.map(({ id, components = [], props }, index) => {
     const { default: Section } = require(`@layouthq/sections/dist/${id}`)
+    addComponentStyles(styles, Section, options)
 
     const children = components.map(({ id, props }) => {
       const { default: Component } = require(`@layouthq/components/dist/${id}`)
 
+      addComponentStyles(styles, Component, options)
       return <Component {...props} />
     })
 
@@ -90,20 +59,41 @@ export const buildComponentTree = (page, options = {}) => {
       </Section>
     )
   })
+
+export const renderPageToReact = (page, options) => {
+  const componentTree = buildComponentTree(page, options)
+  const prettyCSS = processCSS(styles.join(''))
+
+  return (
+    <>
+      <link
+        href="https://fonts.googleapis.com/css?family=Special+Elite&display=swap"
+        rel="stylesheet"
+      />
+      <style>{prettyCSS}</style>
+      {componentTree}
+    </>
+  )
 }
 
-export const generateHTML = (page, options) =>
-  [
-    '<!DOCTYPE html><html><head><link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet"></head><body>',
-    ReactDOMServer.renderToStaticMarkup(
-      buildComponentTree(page, options)
-    ),
-    '</body></html>'
-  ].join('')
+export const renderPageToHTML = (page, options) => {
+  const componentTree = buildComponentTree(page, options)
+  const prettyCSS = processCSS(styles.join(''))
+
+  const html = ReactDOMServer.renderToStaticMarkup(
+    <html>
+      <head>
+        <meta content="width=device-width, initial-scale=1" name="viewport" />
+        <link href="https://fonts.googleapis.com/css?family=Special+Elite&display=swap" rel="stylesheet" />
+      </head>
+      <body>
+        <style dangerouslySetInnerHTML={{ __html: prettyCSS }} />
+        {componentTree}
+      </body>
+    </html>
+  )
+
+  return '<!doctype html>' + html
+}
 
 export { styled } from './styled'
-
-/*
-  setBuildContext must be called before accessing this export in sections/components.
-*/
-export { buildContext }

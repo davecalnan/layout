@@ -159,7 +159,7 @@
       ]
     }
   ],
-  "otherTheme": {
+  "theme": {
     "colors": {
       "primary": {
         "base": "#2d3748",
@@ -188,14 +188,14 @@
     },
     "typography": {
       "headings": {
-        "fontFamily": "-apple-system"
+        "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji"
       },
       "body": {
-        "fontFamily": "-apple-system"
+        "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji"
       }
     }
   },
-  "theme": {
+  "theme2": {
     "colors": {
       "primary": {
         "base": "#2d3748",
