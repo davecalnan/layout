@@ -2,6 +2,7 @@ require('dotenv').config()
 const path = require('path')
 const Dotenv = require('dotenv-webpack')
 const withCSS = require('@zeit/next-css')
+const TerserPlugin = require('terser-webpack-plugin')
 
 module.exports = withCSS({
   webpack: config => {
@@ -11,6 +12,17 @@ module.exports = withCSS({
         systemvars: true
       })
     )
+
+    config.optimization.minimizer = [
+      new TerserPlugin({
+        parallel: true,
+        sourceMap: false,
+        cache: true,
+        terserOptions: {
+          mangle: false
+        }
+      })
+    ]
 
     return config
   }
