@@ -2,7 +2,7 @@ const fs = require('fs')
 const { promisify } = require('util')
 
 const readdir = promisify(fs.readdir)
-const writefile = promisify(fs.writefile)
+const writeFile = promisify(fs.writeFile)
 
 const directoriesToExclude = ['api', 'www']
 
@@ -24,23 +24,25 @@ const bumpVersion = ([major, minor, patch], flag = '--patch') => {
 
 const requirePackageDotJSON = directory => require(`./packages/${directory}/package.json`)
 
-const updateDependencies = async (directories, dependenciesToUpdate, newVersion) => {
+const updateDependencies = async (directory, dependenciesToUpdate, newVersion) => {
   try {
-    directories.map(directory => {
-      const package = requirePackageDotJSON(directory)
+    const package = requirePackageDotJSON(directory)
 
-      const updateDependenciesObject = (dependenciesObject = {}, dependenciesObjectName) => {
-        Object
-          .entries(dependenciesObject)
-          .filter(([dependency, version]) => dependenciesToUpdate.includes(dependency))
-          .forEach(([dependency, version]) => package[dependenciesObjectName][dependency] = newVersion)
-      }
+    if (!directoriesToExclude.includes(directory)) {
+      package.version = newVersion
+    }
 
-      updateDependenciesObject(package.dependencies, 'dependencies')
-      updateDependenciesObject(package.devDependencies, 'devDependencies')
+    const updateDependenciesObject = (dependenciesObject = {}, dependenciesObjectName) => {
+      Object
+        .entries(dependenciesObject)
+        .filter(([dependency, version]) => dependenciesToUpdate.includes(dependency))
+        .forEach(([dependency, version]) => package[dependenciesObjectName][dependency] = newVersion)
+    }
 
-      return await writefile(`./packages/${directory}/package.json`, JSON.stringify(package, null, 2))
-    })
+    updateDependenciesObject(package.dependencies, 'dependencies')
+    updateDependenciesObject(package.devDependencies, 'devDependencies')
+
+    return await writeFile(`./packages/${directory}/package.json`, JSON.stringify(package, null, 2))
   } catch (error) {
     console.error(`Could not update dependencies: ${error.message}`)
   }
@@ -58,6 +60,7 @@ const main = async () => {
     const packages = directories
       .filter(directory => !directoriesToExclude.includes(directory))
       .map(requirePackageDotJSON)
+      .map(package => ({ ...package })) // Freeze initial package versions.
 
     const packageNames = packages.map(({ name }) => name)
     const packageVersions = packages.map(({ version }) => version)
@@ -69,14 +72,8 @@ const main = async () => {
 
     const newVersion = bumpVersion(highestVersion, process.argv[2])
 
-    const packagesWithUpdatedVersions = packages.map(package => {
-      const updatedPackage = {...package}
-      updatedPackage.version = newVersion
-      return updatedPackage
-    })
-
     await Promise.all(
-      updateDependencies(directories, packageNames, newVersion)
+      directories.map(directory => updateDependencies(directory, packageNames, newVersion))
     )
 
     console.log(`Successfully updated package versions:`)
@@ -87,7 +84,7 @@ const main = async () => {
     )
     console.log(`Successfully updated dependencies for:`)
     console.log(
-      [...packagesWithUpdatedVersions, ...nonPackages]
+      [...packages, ...nonPackages]
         .map(({ name }) => `- ${name}`)
         .join('\n')
     )
