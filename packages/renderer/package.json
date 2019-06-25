@@ -1,6 +1,6 @@
 {
   "name": "@layouthq/renderer",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -23,13 +23,13 @@
   },
   "dependencies": {
     "@callstack/react-theme-provider": "3.0.0",
-    "@layouthq/components": "0.1.10",
-    "@layouthq/sections": "0.1.10",
-    "@layouthq/util": "0.1.10",
+    "@layouthq/components": "0.1.11",
+    "@layouthq/sections": "0.1.11",
+    "@layouthq/util": "0.1.11",
     "classnames": "2.2.6",
-    "perfectionist": "^2.4.0",
-    "postcss": "^7.0.17",
-    "postcss-nested": "^4.1.2",
+    "perfectionist": "2.4.0",
+    "postcss": "7.0.17",
+    "postcss-nested": "4.1.2",
     "react": "16.8.6",
     "react-dom": "16.8.6"
   }

@@ -1,6 +1,21 @@
 {
   "name": "root",
   "private": true,
+  "scripts": {
+    "update-packages": "node ./update-packages.js",
+    "publish-packages": "node ./publish-packages.js",
+    "build": "npm run build:api && npm run build:www",
+    "build:api": "cd packages/api && npm i && npm build",
+    "build:www": "cd packages/www && npm i && npm build",
+    "start": "npm run start:api && npm run start:www",
+    "start:api": "cd packages/api && pm2 start npm --name layout-api -- start",
+    "start:www": "cd packages/www && pm2 start npm --name layout-www -- start",
+    "start-staging": "npm run start:api && npm run start:www",
+    "start-staging:api": "cd packages/api && pm2 start npm --name layout-staging-api -- start",
+    "start-staging:www": "cd packages/www && pm2 start npm --name layout-staging-www -- start",
+    "restart": "pm2 restart layout-www layout-api --update-env",
+    "restart-staging": "pm2 restart layout-staging-www layout-staging-api --update-env"
+  },
   "devDependencies": {
     "lerna": "^3.15.0"
   }

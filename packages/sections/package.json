@@ -1,6 +1,6 @@
 {
   "name": "@layouthq/sections",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "description": "",
   "scripts": {
     "dev": "babel src --out-dir=dist --watch --verbose",
@@ -23,8 +23,8 @@
     "tailwind.macro": "1.0.0-alpha.10"
   },
   "dependencies": {
-    "@layouthq/prop-types": "0.1.10",
-    "@layouthq/renderer": "0.1.10",
+    "@layouthq/prop-types": "0.1.11",
+    "@layouthq/renderer": "0.1.11",
     "react": "16.8.6"
   }
 }
