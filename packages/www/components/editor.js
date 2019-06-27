@@ -20,7 +20,7 @@ const PageSelector = ({ pages, currentPath, onNavigate }) => (
     className="w-full appearance-none bg-white rounded shadow font-bold leading-tight text-3xl px-4 py-1"
   >
     {pages.map(({ path, name }) => {
-      return <option value={path}>{name}</option>
+      return <option key={path} value={path}>{name}</option>
     })}
   </select>
 )
