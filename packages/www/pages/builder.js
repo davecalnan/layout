@@ -30,7 +30,7 @@ import Layout from '../components/layout'
 import Button from '../components/button'
 import Browser from '../components/browser'
 import Editor from '../components/editor'
-import Renderer from '../components/renderer'
+import Previewer from '../components/previewer'
 import { P } from '../components/typography'
 
 const BuilderPage = withRouter(({ router }) => {
@@ -243,7 +243,7 @@ const BuilderPage = withRouter(({ router }) => {
       <Browser
         url={constructUrl(site)}
         content={
-          <Renderer
+          <Previewer
             site={site}
             currentPath={currentPath}
             onNavigate={path => {

@@ -4,7 +4,7 @@ import { renderPageToReact } from '@layouthq/renderer'
 import parseUrl from 'url-parse'
 import LoadingGrid from './loading-grid'
 
-const replaceLinks = (frame, site, onNavigate) => {
+const hijackClicks = (frame, site, onNavigate) => {
   const document = frame.node.contentDocument
   const html = document.children[0]
 
@@ -13,19 +13,30 @@ const replaceLinks = (frame, site, onNavigate) => {
     NodeFilter.SHOW_ELEMENT,
     {
       acceptNode: node =>
-        node.tagName === 'A'
+        node.tagName === 'A' || node.type === 'submit'
           ? NodeFilter.FILTER_ACCEPT
           : NodeFilter.FILTER_SKIP
     }
   )
 
   while (treeWalker.nextNode()) {
-    const link = treeWalker.currentNode
-    const { pathname } = parseUrl(link.href)
-    link.href = site.url + pathname
-    link.onclick = event => {
-      event.preventDefault()
-      onNavigate(pathname)
+    const node = treeWalker.currentNode
+
+    if (node.tagName === 'A') {
+      const link = treeWalker.currentNode
+      const { pathname } = parseUrl(link.href)
+      link.href = site.url + pathname
+      link.onclick = event => {
+        event.preventDefault()
+        onNavigate(pathname)
+      }
+    }
+
+    if (node.type === 'submit') {
+      node.onclick = event => {
+        event.preventDefault()
+        alert('Form submissions are disabled in this preview. View your live site if you would like to submit a form.')
+      }
     }
   }
 }
@@ -43,7 +54,7 @@ const Previewer = ({ site, currentPath, onNavigate }) => {
   const frame = useRef(null)
 
   useEffect(() => {
-    replaceLinks(frame.current, site, onNavigate)
+    hijackClicks(frame.current, site, onNavigate)
   })
 
   const currentPage = pages.find(({ path }) => path === currentPath)
