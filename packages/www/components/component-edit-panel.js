@@ -1,6 +1,6 @@
 import { toCapitalCase } from '@layouthq/util'
 import { UPDATE_COMPONENT_PROPS } from '../reducers/site'
-import { H1, H2 } from './typography'
+import { H2, H3 } from './typography'
 import Button from '../components/button'
 import { makeInputComponent } from './form-controls'
 
@@ -12,9 +12,9 @@ const ComponentEditPanel = ({ currentPage, currentSection, component, componentP
         <div className="p-4">
           <Button onClick={onBack}>&larr; Back</Button>
         </div>
-        <H1 className="px-4">{toCapitalCase(name)}</H1>
+        <H2 className="px-4">{toCapitalCase(name)}</H2>
         <section>
-          <H2 className="mb-4">Properties</H2>
+          <H3 className="mb-4">Properties</H3>
           {Object.entries(componentPropTypes).map(([propName, propType]) => {
             const InputComponent = makeInputComponent(propType, {
               value: props[propName],

@@ -35,25 +35,11 @@ const Stack = ({ theme, children }) =>
         return accumulator
       }
 
-      if (
-        (nextComponent && nextComponent.type.name === 'Button') ||
-        (nextComponent && nextComponent.type.name === 'EmailSignup')
-      ) {
+      if (nextComponent && nextComponent.type.name === 'Button') {
         return [
           ...accumulator,
           <Wrapper key={index}>
-            {[
-              component,
-              <p
-                style={{
-                  ...theme.typography.body,
-                  display: 'inline-block',
-                  margin: '0 1rem 1rem'
-                }}
-              >
-                or
-              </p>
-            ]}
+            {[component]}
           </Wrapper>
         ]
       }

@@ -21,7 +21,8 @@ import {
   START_SAVING,
   FINISH_SAVING,
   START_DEPLOYING,
-  FINISH_DEPLOYING
+  FINISH_DEPLOYING,
+  NAVIGATE
 } from '../reducers/builder'
 
 import { siteReducer } from '../reducers/site'
@@ -43,6 +44,7 @@ const BuilderPage = withRouter(({ router }) => {
   const [state, dispatchBuilderAction] = useReducer(
     builderReducer,
     {
+      currentPath: '/register',
       hasError: null,
       hasUnsavedEdits: false,
       isDeploying: false,
@@ -54,6 +56,7 @@ const BuilderPage = withRouter(({ router }) => {
   )
 
   const {
+    currentPath,
     hasError,
     hasUnsavedEdits,
     isDeploying,
@@ -219,10 +222,17 @@ const BuilderPage = withRouter(({ router }) => {
       sidebarContent={
         <Editor
           site={site}
+          currentPath={currentPath}
           onEdit={action => {
             dispatchSiteAction(action)
             dispatchBuilderAction({
               type: EDIT_SITE
+            })
+          }}
+          onNavigate={path => {
+            dispatchBuilderAction({
+              type: NAVIGATE,
+              payload: path
             })
           }}
           isLoading={isLoading}
@@ -231,7 +241,7 @@ const BuilderPage = withRouter(({ router }) => {
     >
       <Browser
         url={constructUrl(site)}
-        content={<Renderer site={site} />}
+        content={<Renderer site={site} currentPath={currentPath} />}
         canView={canView}
       />
     </Layout>

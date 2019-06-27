@@ -6,14 +6,14 @@ import axios from 'axios'
 import { toSentenceCase } from '@layouthq/util'
 import { ADD_SECTION_TO_PAGE, UPDATE_SITE_METADATA } from '../reducers/site'
 import { makeInputComponent } from './form-controls'
-import { H1, H2, P, Small } from './typography/index'
+import { H1, H2, H3, P, Small } from './typography/index'
 import LoadingDots from './loading-dots'
 import SectionEditPanel from './section-edit-panel'
 import SectionPreviewCard from './section-preview-card'
 import AddNewButton from './add-new-button'
 import Modal from './modal'
 
-const Editor = ({ site, isLoading, onEdit, className }) => {
+const Editor = ({ site, currentPath, isLoading, onEdit, onNavigate, className }) => {
   if (isLoading) return (
     <div className="h-full w-full flex flex-col justify-center items-center p-4">
       <LoadingDots />
@@ -26,7 +26,7 @@ const Editor = ({ site, isLoading, onEdit, className }) => {
   const [availableComponents, setAvailableComponents] = useState([])
   const [modalIsOpen, setModalIsOpen] = useState(false)
 
-  const currentPage = pages[0]
+  const currentPage = pages.find(({ path }) => path === currentPath)
   const { sections } = currentPage
   const activeSection = activeSectionIndex !== undefined ? sections[activeSectionIndex] : null
 
@@ -71,9 +71,8 @@ const Editor = ({ site, isLoading, onEdit, className }) => {
     */
     return (
       <>
-        <H1 className="mt-4 px-4">{currentPage.name}</H1>
         <section>
-          <H2>Sections</H2>
+          <H3>Sections</H3>
           <div className="mt-4">
             {sections.map((section, index) => (
               <SectionPreviewCard
@@ -92,7 +91,7 @@ const Editor = ({ site, isLoading, onEdit, className }) => {
           />
         </section>
         <section>
-          <H2>Details</H2>
+          <H3>Details</H3>
           <div className="mt-4">
             {Object.entries(metadata).map(([key, value]) => {
               const InputComponent = makeInputComponent(
@@ -181,8 +180,21 @@ const Editor = ({ site, isLoading, onEdit, className }) => {
     return null
   }
 
+  const PageSelector = ({ pages }) => (
+    <select
+      value={currentPath}
+      onChange={event => onNavigate(event.target.value)}
+      className="w-full appearance-none bg-white rounded shadow font-bold leading-tight text-3xl px-4 py-1"
+    >
+      {pages.map(({ path, name }) => {
+        return <option value={path}>{name}</option>
+      })}
+    </select>
+  )
+
   return (
     <div className={className}>
+      <PageSelector pages={pages} />
       {determineContent(activeSection)}
       {determineModalContent(activeSection)}
     </div>

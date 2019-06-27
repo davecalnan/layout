@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import { toCapitalCase } from '@layouthq/util'
 import { ADD_COMPONENT_TO_SECTION, UPDATE_SECTION_METADATA, UPDATE_SECTION_PROPS } from '../reducers/site'
-import { H1, H2, P, Small } from './typography'
+import { H2, H3, P, Small } from './typography'
 import Button from '../components/button'
 import { makeInputComponent } from './form-controls'
 import ComponentEditPanel from './component-edit-panel'
@@ -45,12 +45,12 @@ const SectionEditPanel = ({ currentPage, section, sectionPropTypes = {}, availab
         <div className="p-4">
           <Button onClick={onBack}>&larr; Back</Button>
         </div>
-        <H1 className="px-4">
+        <H2 className="px-4">
           {section.name || toCapitalCase(section.type)}
-        </H1>
+        </H2>
         {components && (
           <section>
-            <H2 className="mb-4">Components</H2>
+            <H3 className="mb-4">Components</H3>
             {components.map((component, index) => (
               <ComponentPreviewCard
                 key={`${index}-${component}`}
@@ -67,7 +67,7 @@ const SectionEditPanel = ({ currentPage, section, sectionPropTypes = {}, availab
           </section>
         )}
         <section>
-          <H2 className="mb-4">Properties</H2>
+          <H3 className="mb-4">Properties</H3>
           <div className="flex flex-col mb-6">
             <label className="text-xs uppercase tracking-wide mb-1">
               Name

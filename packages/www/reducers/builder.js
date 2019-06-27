@@ -10,6 +10,7 @@ export const START_SAVING = 'START_SAVING'
 export const FINISH_SAVING = 'FINISH_SAVING'
 export const START_DEPLOYING = 'START_DEPLOYING'
 export const FINISH_DEPLOYING = 'FINISH_DEPLOYING'
+export const NAVIGATE = 'NAVIGATE'
 
 export const builderReducer = (state, { type, payload }) => {
   switch (type) {
@@ -83,6 +84,11 @@ export const builderReducer = (state, { type, payload }) => {
         ...state,
         isDeploying: false,
         message: null
+      }
+    case NAVIGATE:
+      return {
+        ...state,
+        currentPath: payload
       }
     default:
       throw new Error('Bad dispatch.')
