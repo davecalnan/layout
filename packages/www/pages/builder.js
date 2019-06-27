@@ -173,11 +173,12 @@ const BuilderPage = withRouter(({ router }) => {
     if (!isExistingSite) {
       return 'Save your site to get a url 👉🏻'
     }
+    const path = (currentPath !== '/' ? currentPath : '')
     if (site.url) {
-      return site.url
+      return site.url + path
     }
     if (site.subdomain) {
-      return `https://${site.subdomain}.onlayout.co`
+      return `https://${site.subdomain}.onlayout.co` + path
     }
   }
 
@@ -241,7 +242,18 @@ const BuilderPage = withRouter(({ router }) => {
     >
       <Browser
         url={constructUrl(site)}
-        content={<Renderer site={site} currentPath={currentPath} />}
+        content={
+          <Renderer
+            site={site}
+            currentPath={currentPath}
+            onNavigate={path => {
+              dispatchBuilderAction({
+                type: NAVIGATE,
+                payload: path
+              })
+            }}
+          />
+        }
         canView={canView}
       />
     </Layout>

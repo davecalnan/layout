@@ -29,7 +29,8 @@
     "react-frame-component": "4.1.0",
     "react-modal": "3.8.1",
     "styled-components": "4.2.1",
-    "tailwindcss": "1.0.3"
+    "tailwindcss": "1.0.3",
+    "url-parse": "1.4.7"
   },
   "devDependencies": {
     "babel-plugin-macros": "2.6.1",
