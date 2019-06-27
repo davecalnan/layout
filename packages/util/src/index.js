@@ -2,6 +2,8 @@ import _ from 'lodash'
 
 export const capitalise = ([first, ...rest]) => first.toUpperCase() + rest.join('').toLowerCase()
 
+export const generateFilePath = path => path.replace(/\/$/, '/index').concat('.html')
+
 export const moveDown = (array, index) => {
   if (index === array.length - 1) return array
 
@@ -55,7 +57,7 @@ export const withoutKeysStartingWithUnderscore = object =>
   _.pickBy(object, (value, key) => !key.startsWith('_'))
 
 export const withoutInternalKeys = data => {
-  if (_isArray(data)) {
+  if (_.isArray(data)) {
     return data.map(item =>
       _.isObject(item) && _.keys(item).length > 0
         ? without(withoutKeysStartingWithUnderscore(item), 'netlify')

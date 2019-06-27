@@ -4,6 +4,7 @@ import { promisify } from 'util'
 import rimraf from 'rimraf'
 import Netlify from 'netlify'
 import { renderPageToHTML } from '@layouthq/renderer'
+import { generateFilePath } from '@layouthq/util'
 
 const mkdir = promisify(fs.mkdir)
 const stat = promisify(fs.stat)
@@ -71,8 +72,14 @@ const writeFile = async (filepath, content, config) => {
 
 const writeToTemporaryDirectory = async ({ id, pages, theme }, directory) => {
   console.log(`Building site id ${id}.`)
-  const html = generateHTML(pages[0], { theme })
-  await writeFile(`${directory}/index.html`, html)
+
+  await Promise.all(
+    pages.map(async page => {
+      const html = generateHTML(page, { theme })
+
+      return await writeFile(directory + generateFilePath(page.path), html)
+    })
+  )
   console.log(`Finished building site id ${id}.`)
 }
 
