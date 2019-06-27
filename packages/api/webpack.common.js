@@ -6,6 +6,9 @@ const nodeExternals = require('webpack-node-externals')
 module.exports = {
   target: 'node',
   entry: './src/index.js',
+  node: {
+    __dirname: false,
+  },
   externals: [nodeExternals()],
   plugins: [
     new Dotenv({
