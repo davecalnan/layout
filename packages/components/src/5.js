@@ -23,7 +23,7 @@ EmailSignup.propTypes = {
 }
 
 export default styled(EmailSignup)`
-${tw`inline-block max-w-full mb-6`}
+${tw`inline-block max-w-full mb-6 mr-4`}
 ${({ theme }) => theme.typography.body}
 
   & > label {

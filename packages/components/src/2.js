@@ -13,7 +13,7 @@ Text.propTypes = {
 }
 
 export default styled(Text)`
-${tw`font-light leading-normal text-lg mb-6`}
+${tw`font-light leading-normal text-lg my-6`}
 ${({ theme }) => theme.typography.body}
 color: ${({ theme }) => theme.colors.text.base};
 
@@ -27,5 +27,9 @@ color: ${({ theme }) => theme.colors.text.base};
 
   ul {
     ${tw`list-disc ml-6`}
+  }
+
+  a {
+    ${tw`underline`}
   }
 `

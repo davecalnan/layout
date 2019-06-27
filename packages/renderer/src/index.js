@@ -6,7 +6,8 @@ import { addComponentStyles, processCSS } from './styled'
 const Wrapper = ({ children }) => (
   <div
     style={{
-      maxWidth: '100%'
+      maxWidth: '100%',
+      marginBottom: '1.5rem'
     }}
   >
     {children}
@@ -68,7 +69,7 @@ const buildComponentTree = (page, options = {}) =>
 
     return (
       <Section {...props} key={index} id={name ? toKebabCase(name) : undefined}>
-        <Stack theme={options.theme}>{children}</Stack>
+        {children}
       </Section>
     )
   })
