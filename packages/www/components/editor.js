@@ -6,12 +6,24 @@ import axios from 'axios'
 import { toSentenceCase } from '@layouthq/util'
 import { ADD_SECTION_TO_PAGE, UPDATE_SITE_METADATA } from '../reducers/site'
 import { makeInputComponent } from './form-controls'
-import { H1, H2, H3, P, Small } from './typography/index'
+import { H2, H3, P, Small } from './typography/index'
 import LoadingDots from './loading-dots'
 import SectionEditPanel from './section-edit-panel'
 import SectionPreviewCard from './section-preview-card'
 import AddNewButton from './add-new-button'
 import Modal from './modal'
+
+const PageSelector = ({ pages, currentPath, onNavigate }) => (
+  <select
+    value={currentPath}
+    onChange={event => onNavigate(event.target.value)}
+    className="w-full appearance-none bg-white rounded shadow font-bold leading-tight text-3xl px-4 py-1"
+  >
+    {pages.map(({ path, name }) => {
+      return <option value={path}>{name}</option>
+    })}
+  </select>
+)
 
 const Editor = ({ site, currentPath, isLoading, onEdit, onNavigate, className }) => {
   if (isLoading) return (
@@ -72,6 +84,7 @@ const Editor = ({ site, currentPath, isLoading, onEdit, onNavigate, className })
     return (
       <>
         <section>
+          <H2 className="mb-4">Page</H2>
           <H3>Sections</H3>
           <div className="mt-4">
             {sections.map((section, index) => (
@@ -180,21 +193,9 @@ const Editor = ({ site, currentPath, isLoading, onEdit, onNavigate, className })
     return null
   }
 
-  const PageSelector = ({ pages }) => (
-    <select
-      value={currentPath}
-      onChange={event => onNavigate(event.target.value)}
-      className="w-full appearance-none bg-white rounded shadow font-bold leading-tight text-3xl px-4 py-1"
-    >
-      {pages.map(({ path, name }) => {
-        return <option value={path}>{name}</option>
-      })}
-    </select>
-  )
-
   return (
     <div className={className}>
-      <PageSelector pages={pages} />
+      <PageSelector pages={pages} currentPath={currentPath} onNavigate={onNavigate} />
       {determineContent(activeSection)}
       {determineModalContent(activeSection)}
     </div>

@@ -44,7 +44,7 @@ const BuilderPage = withRouter(({ router }) => {
   const [state, dispatchBuilderAction] = useReducer(
     builderReducer,
     {
-      currentPath: '/register',
+      currentPath: '/',
       hasError: null,
       hasUnsavedEdits: false,
       isDeploying: false,
