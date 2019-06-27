@@ -9,11 +9,13 @@ const Text = ({ markdown, theme, ...props }) => (
 )
 
 Text.propTypes = {
-  markdown: PropTypes.text
+  markdown: PropTypes.text,
+  inline: PropTypes.boolean
 }
 
 export default styled(Text)`
 ${tw`font-light leading-normal text-lg my-6`}
+${({ inline }) => inline && tw`inline-block mr-4`}
 ${({ theme }) => theme.typography.body}
 color: ${({ theme }) => theme.colors.text.base};
 

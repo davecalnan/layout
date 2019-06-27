@@ -64,12 +64,17 @@ const generateRule = (inputCSS, Component, { theme }, variant) => {
   )
 }
 
+const extractBooleanPropTypes = Component => Object.entries(Component.propTypes || {}).filter(
+  ([propName, propType]) => propType.type === 'boolean'
+)
+
 const extractListPropTypes = Component => Object.entries(Component.propTypes || {}).filter(
   ([propName, propType]) => propType.type === 'list'
 )
 
 export const addComponentStyles = (styles, Component, options) => {
   const processComponent = (Component, options) => {
+    const booleanPropTypes = extractBooleanPropTypes(Component)
     const listPropTypes = extractListPropTypes(Component)
 
     const rule = generateRule(Component.inputCSS, Component, options)
@@ -78,20 +83,31 @@ export const addComponentStyles = (styles, Component, options) => {
       styles.push(rule)
     }
 
-    if (listPropTypes.length > 0) {
-      listPropTypes.forEach(([propName, propType]) => {
-        propType.options.forEach(option => {
-          const rule = generateRule(Component.inputCSS, Component, options, {
-            name: propName,
-            value: option
-          })
-
-          if (!styles.includes(rule)) {
-            styles.push(rule)
-          }
+    booleanPropTypes.forEach(([propName, propType]) => {
+      ['true', 'false'].forEach(option => {
+        const rule = generateRule(Component.inputCSS, Component, options, {
+          name: propName,
+          value: option
         })
+
+        if (!styles.includes(rule)) {
+          styles.push(rule)
+        }
       })
-    }
+    })
+
+    listPropTypes.forEach(([propName, propType]) => {
+      propType.options.forEach(option => {
+        const rule = generateRule(Component.inputCSS, Component, options, {
+          name: propName,
+          value: option
+        })
+
+        if (!styles.includes(rule)) {
+          styles.push(rule)
+        }
+      })
+    })
 
     processedComponents.push(Component)
   }
@@ -105,12 +121,20 @@ export const styled = Component => {
   return (...inputCSS) => {
     const annoyingObjectSoThatICanNameTheFunctionDynamically = {
       [Component.name]: props => {
-        const variantClassNames = extractListPropTypes(Component).map(([propName, propType]) =>
-          generateClassName(Component, {
-            name: propName,
-            value: props[propName]
-          })
-        )
+        const variantClassNames = [
+          ...extractBooleanPropTypes(Component).map(([propName, propType]) =>
+            generateClassName(Component, {
+              name: propName,
+              value: props[propName]
+            })
+          ),
+          ...extractListPropTypes(Component).map(([propName, propType]) =>
+            generateClassName(Component, {
+              name: propName,
+              value: props[propName]
+            })
+          )
+        ]
 
         return Component({
           ...props,

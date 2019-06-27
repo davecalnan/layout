@@ -1,3 +1,10 @@
+const boolean = (props, propName, componentName) => {
+  if (!typeof props[propName] === 'boolean') {
+    return new Error(`Invalid prop ${propName} supplied to ${componentName}. Validation failed.`)
+  }
+}
+boolean.type = 'boolean'
+
 const string = (props, propName, componentName) => {
   if (!typeof props[propName] === 'string') {
     return new Error(`Invalid prop ${propName} supplied to ${componentName}. Validation failed.`)
@@ -29,6 +36,7 @@ const form = {
 }
 
 const PropTypes = {
+  boolean,
   string,
   text,
   list,
