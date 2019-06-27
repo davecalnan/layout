@@ -4,8 +4,8 @@ export default async ({ db, params, body }, res) => {
   try {
     const { id } = params
 
-    const collection = await db.collection('sections')
-    const { value: section } = await collection.findOneAndUpdate({ id: Number(id) }, {
+    const sectinos = await db.collection('sections')
+    const { value: section } = await sectinos.findOneAndUpdate({ id: Number(id) }, {
       $set: withoutId(body),
     }, {
       returnOriginal: false

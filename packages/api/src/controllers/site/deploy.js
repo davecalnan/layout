@@ -30,7 +30,7 @@ const createNetlifySite = async ({ id, subdomain }) => {
   }
 }
 
-const saveNetlifyDetails = async ({ id }, netlifySite) => {
+const saveNetlifyDetails = async (sites, { id }, netlifySite) => {
   const { value } = await sites.findOneAndUpdate(
     { id: Number(id) },
     {
@@ -97,7 +97,7 @@ export default async ({ db, params }, res) => {
 
   if (!site.netlify || !site.netlify.siteId) {
     const netlifySite = await createNetlifySite(site)
-    const updatedSite = await saveNetlifyDetails(site, netlifySite)
+    const updatedSite = await saveNetlifyDetails(sites, site, netlifySite)
 
     site = updatedSite
   }

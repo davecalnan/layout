@@ -9,8 +9,8 @@ export default async (req, res) => {
     const sites = await db.collection('sites')
     const site = await sites.findOne({ domain })
 
-    const collection = await db.collection('formResponses')
-    await collection.insertOne({
+    const formResponses = await db.collection('formResponses')
+    await formResponses.insertOne({
       form: body['form-name'],
       siteId: site.id,
       referer,

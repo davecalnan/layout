@@ -5,8 +5,8 @@ export default async ({ db, body }, res) => {
   try {
     const id = await getNextId(db, 'components')
 
-    const collection = await db.collection('components')
-    const response = await collection.insertOne({
+    const components = await db.collection('components')
+    const response = await components.insertOne({
       id,
       ...withoutId(body)
     })

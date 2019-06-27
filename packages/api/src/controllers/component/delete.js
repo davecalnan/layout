@@ -4,8 +4,8 @@ export default async ({ db, params }, res) => {
   try {
     const { id } = params
 
-    const collection = await db.collection('components')
-    const { value: component } = await collection.findOneAndDelete({ id: Number(id) })
+    const components = await db.collection('components')
+    const { value: component } = await components.findOneAndDelete({ id: Number(id) })
 
     res.status(200).send(JSON.stringify(withoutInternalKeys(component)))
   } catch (error) {
