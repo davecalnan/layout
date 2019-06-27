@@ -4,6 +4,10 @@ export const capitalise = ([first, ...rest]) => first.toUpperCase() + rest.join(
 
 export const generateFilePath = path => path.replace(/\/$/, '/index').concat('.html')
 
+export const isAbsoluteUrl = string => /^[a-z][a-z\d+.-]*:/.test(string)
+
+export const isRelativeUrl = string => !isAbsoluteUrl(string)
+
 export const moveDown = (array, index) => {
   if (index === array.length - 1) return array
 
