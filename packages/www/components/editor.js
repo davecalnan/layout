@@ -4,7 +4,7 @@ import tw from 'tailwind.macro'
 import axios from 'axios'
 
 import { toSentenceCase } from '@layouthq/util'
-import { ADD_SECTION_TO_PAGE, UPDATE_SITE_METADATA } from '../reducers/site'
+import { ADD_SECTION_TO_PAGE, UPDATE_PAGE_METADATA, UPDATE_SITE_METADATA } from '../reducers/site'
 import { makeInputComponent } from './form-controls'
 import { H2, H3, P, Small } from './typography/index'
 import LoadingDots from './loading-dots'
@@ -32,7 +32,6 @@ const Editor = ({ site, currentPath, isLoading, onEdit, onNavigate, className })
     </div>
   )
   const { pages, subdomain } = site
-  const metadata = { subdomain }
   const [activeSectionIndex, setActiveSectionIndex] = useState()
   const [availableSections, setAvailableSections] = useState([])
   const [availableComponents, setAvailableComponents] = useState([])
@@ -41,6 +40,15 @@ const Editor = ({ site, currentPath, isLoading, onEdit, onNavigate, className })
   const currentPage = pages.find(({ path }) => path === currentPath)
   const { sections } = currentPage
   const activeSection = activeSectionIndex !== undefined ? sections[activeSectionIndex] : null
+
+  const pageDetails = {
+    name: currentPage.name,
+    path: currentPage.path
+  }
+
+  const siteDetails = {
+    subdomain
+  }
 
   useEffect(() => {
     const loadSections = async () => {
@@ -104,9 +112,41 @@ const Editor = ({ site, currentPath, isLoading, onEdit, onNavigate, className })
           />
         </section>
         <section>
-          <H3>Details</H3>
+          <H3>Page Details</H3>
           <div className="mt-4">
-            {Object.entries(metadata).map(([key, value]) => {
+            {Object.entries(pageDetails).map(([key, value]) => {
+              const InputComponent = makeInputComponent(
+                { type: 'string' },
+                {
+                  value,
+                  onChange: event => {
+                    onEdit({
+                      type: UPDATE_PAGE_METADATA,
+                      target: {
+                        page: currentPage
+                      },
+                      payload: {
+                        [key]: event.target.value
+                      }
+                    })
+                  }
+                }
+              )
+              return (
+                <div key={key} className="flex flex-col mb-6">
+                  <label className="text-xs uppercase tracking-wide mb-1">
+                    {toSentenceCase(key)}
+                  </label>
+                  {InputComponent}
+                </div>
+              )
+            })}
+          </div>
+        </section>
+        <section>
+          <H3>Site Details</H3>
+          <div className="mt-4">
+            {Object.entries(siteDetails).map(([key, value]) => {
               const InputComponent = makeInputComponent(
                 { type: 'string' },
                 {
