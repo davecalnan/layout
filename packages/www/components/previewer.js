@@ -24,11 +24,26 @@ const hijackClicks = (frame, site, onNavigate) => {
 
     if (node.tagName === 'A') {
       const link = treeWalker.currentNode
-      const { pathname } = parseUrl(link.href)
-      link.href = site.url + pathname
-      link.onclick = event => {
-        event.preventDefault()
-        onNavigate(pathname)
+      const { host, pathname } = parseUrl(link.href)
+
+      const isInternalLink = host === document.location.host
+
+      if (isInternalLink) {
+        link.href = site.url + pathname
+        link.onclick = event => {
+          event.preventDefault()
+          if (site.pages.find(({ path }) => path === pathname)) {
+            return onNavigate(pathname)
+          }
+
+          alert(
+            'That link goes to a page which does not exist on your site. Check the spelling and make sure the link is correct.'
+          )
+        }
+      } else {
+        link.target = '_blank'
+        link.rel = 'noreferrer noopener'
+        link.onclick = undefined
       }
     }
 
