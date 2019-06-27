@@ -170,8 +170,11 @@ const BuilderPage = withRouter(({ router }) => {
     if (!isExistingSite) {
       return 'Save your site to get a url 👉🏻'
     }
+    if (site.url) {
+      return site.url
+    }
     if (site.subdomain) {
-      return `https://${site.subdomain}.davecalnan.now.sh`
+      return `https://${site.subdomain}.onlayout.co`
     }
   }
 

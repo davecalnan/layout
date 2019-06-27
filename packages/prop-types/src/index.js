@@ -23,8 +23,16 @@ const list = (array) => {
   return fn
 }
 
-export const PropTypes = {
+const form = {
+  name: string,
+  action: string,
+}
+
+const PropTypes = {
   string,
   text,
-  list
+  list,
+  form
 }
+
+export default PropTypes

@@ -1,10 +1,11 @@
 import React from 'react'
-import { PropTypes } from '@layouthq/prop-types'
+import PropTypes from '@layouthq/prop-types'
 import { styled } from '@layouthq/renderer'
 import tw from 'tailwind.macro'
 
-const EmailSignup = ({ label, placeholderText, className }) => (
-  <form name="Email Subscribe" method="POST" className={className}>
+const EmailSignup = ({ name, action, label, placeholderText, className }) => (
+  <form className={className} action={action} method="post">
+    <input type="hidden" name="form-name" value={name} />
     {label && <label htmlFor="email">{label}</label>}
     <div>
       <input type="email" name="email" placeholder={placeholderText} required />
@@ -14,6 +15,7 @@ const EmailSignup = ({ label, placeholderText, className }) => (
 )
 
 EmailSignup.propTypes = {
+  ...PropTypes.form,
   buttonText: PropTypes.string,
   buttonType: PropTypes.list(['primary', 'secondary']),
   label: PropTypes.string,

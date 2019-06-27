@@ -1,5 +1,5 @@
 import React from 'react'
-import { PropTypes } from '@layouthq/prop-types'
+import PropTypes from '@layouthq/prop-types'
 import { styled } from '@layouthq/renderer'
 import tw from 'tailwind.macro'
 
