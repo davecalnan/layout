@@ -54,11 +54,14 @@ export const withoutId = object => without(object, 'id')
 export const withoutKeysStartingWithUnderscore = object =>
   _.pickBy(object, (value, key) => !key.startsWith('_'))
 
-export const withoutInternalKeys = data =>
-  _.isArray(data)
-    ? data.map(item => {
-        return _.isObject(item) && _.keys(item).length > 0
-          ? withoutKeysStartingWithUnderscore(item)
-          : item
-      })
-    : withoutKeysStartingWithUnderscore(data)
+export const withoutInternalKeys = data => {
+  if (_isArray(data)) {
+    return data.map(item =>
+      _.isObject(item) && _.keys(item).length > 0
+        ? without(withoutKeysStartingWithUnderscore(item), 'netlify')
+        : item
+    )
+  }
+
+  return without(withoutKeysStartingWithUnderscore(data), 'netlify')
+}
