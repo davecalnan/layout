@@ -29,13 +29,13 @@ export const moveUp = (array, index) => {
 }
 
 export const reorder = (array, item, { destination, source }) => {
-  if (!destination) return
+  if (!destination) return array
 
   if (
     destination.droppableId === source.droppableId &&
     destination.index === source.index
   ) {
-    return
+    return array
   }
 
   const updatedArray = [...array]

@@ -6,6 +6,7 @@ export const ICON_ADD = 'ICON_ADD'
 export const ICON_CHEVRON_DOWN = 'ICON_CHEVRON_DOWN'
 export const ICON_CHEVRON_LEFT = 'ICON_CHEVRON_LEFT'
 export const ICON_CHEVRON_RIGHT = 'ICON_CHEVRON_RIGHT'
+export const ICON_DOTS_VERTICAL_DOUBLE = 'ICON_DOTS_VERTICAL_DOUBLE'
 export const ICON_DUPLICATE = 'ICON_DUPLICATE'
 export const ICON_TRASH = 'ICON_TRASH'
 
@@ -29,6 +30,14 @@ const pickIcon = type => {
     case 'ICON_CHEVRON_RIGHT': {
       return (
         <path className="primary" d="M10.3 8.7a1 1 0 0 1 1.4-1.4l4 4a1 1 0 0 1 0 1.4l-4 4a1 1 0 0 1-1.4-1.4l3.29-3.3-3.3-3.3z"/>
+      )
+    }
+    case 'ICON_DOTS_VERTICAL_DOUBLE': {
+      return (
+        <>
+          <path d="M8.55,7a2,2,0,1,1,2-2A2,2,0,0,1,8.55,7Zm0,7a2,2,0,1,1,2-2A2,2,0,0,1,8.55,14Zm0,7a2,2,0,1,1,2-2A2,2,0,0,1,8.55,21Z" />
+          <path d="M15.45,7a2,2,0,1,1,2-2A2,2,0,0,1,15.45,7Zm0,7a2,2,0,1,1,2-2A2,2,0,0,1,15.45,14Zm0,7a2,2,0,1,1,2-2A2,2,0,0,1,15.45,21Z" />
+        </>
       )
     }
     case 'ICON_DUPLICATE': {
@@ -67,12 +76,15 @@ const Icon = ({ type, className }) => (
 
 export default styled(Icon)`
   .primary {
-    ${({ disabled, primary }) =>
+    ${({ disabled, primary, className }) =>
       disabled
         ? tw`text-gray-400`
         : primary
         ? { color: primary }
-        : tw`text-gray-700`}
+        : tw`text-gray-700`
+        ? className && className.split(' ').some(cls => cls.startsWith('text-'))
+        : null
+    }
   }
 
   .secondary {

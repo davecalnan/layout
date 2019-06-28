@@ -84,7 +84,7 @@ export const addComponentStyles = (styles, Component, options) => {
     }
 
     booleanPropTypes.forEach(([propName, propType]) => {
-      ['true', 'false'].forEach(option => {
+      [true, false].forEach(option => {
         const rule = generateRule(Component.inputCSS, Component, options, {
           name: propName,
           value: option
@@ -121,20 +121,14 @@ export const styled = Component => {
   return (...inputCSS) => {
     const annoyingObjectSoThatICanNameTheFunctionDynamically = {
       [Component.name]: props => {
-        const variantClassNames = [
-          ...extractBooleanPropTypes(Component).map(([propName, propType]) =>
-            generateClassName(Component, {
+        const variantClassNames =
+          [...extractBooleanPropTypes(Component), ...extractListPropTypes(Component)].map(([propName, propType]) => {
+            return generateClassName(Component, {
               name: propName,
               value: props[propName]
             })
-          ),
-          ...extractListPropTypes(Component).map(([propName, propType]) =>
-            generateClassName(Component, {
-              name: propName,
-              value: props[propName]
-            })
+          }
           )
-        ]
 
         return Component({
           ...props,
