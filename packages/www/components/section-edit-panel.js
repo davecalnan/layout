@@ -2,7 +2,12 @@ import { useState } from 'react'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 
 import { toCapitalCase } from '@layouthq/util'
-import { REORDER_COMPONENTS_IN_SECTION, UPDATE_SECTION_METADATA, UPDATE_SECTION_PROPS } from '../reducers/site'
+import {
+  REORDER_COMPONENTS_IN_SECTION,
+  REMOVE_COMPONENT_FROM_SECTION,
+  UPDATE_SECTION_METADATA,
+  UPDATE_SECTION_PROPS
+} from '../reducers/site'
 import { H2, H3, Label } from './typography'
 import Button from '../components/button'
 import { makeInputComponent } from './form-controls'
@@ -78,8 +83,8 @@ const SectionEditPanel = ({
             <H3 className="mb-4">Components</H3>
             <DragDropContext onDragEnd={onDragEnd}>
               <Droppable droppableId="components">
-                {provided => (
-                  <div ref={provided.innerRef} {...provided.droppableProps}>
+                {({ droppableProps, innerRef, placeholder }) => (
+                  <div ref={innerRef} {...droppableProps}>
                     {components.map((component, index) => {
                       const id = generateId(component)
                       return (
@@ -102,7 +107,7 @@ const SectionEditPanel = ({
                         />
                       )
                     })}
-                    {provided.placeholder}
+                    {placeholder}
                   </div>
                 )}
               </Droppable>

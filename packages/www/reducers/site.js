@@ -1,5 +1,4 @@
-import { moveUp, moveDown } from '@layouthq/util'
-import { reorder } from '@layouthq/util'
+import { reorder, toCapitalCase } from '@layouthq/util'
 
 export const UPDATE_SITE_METADATA = 'UPDATE_SITE_METADATA'
 export const ADD_PAGE_TO_SITE = 'ADD_PAGE_TO_SITE'
@@ -7,6 +6,7 @@ export const UPDATE_PAGE_METADATA = 'UPDATE_PAGE_METADATA'
 export const ADD_SECTION_TO_PAGE = 'ADD_SECTION_TO_PAGE'
 export const REORDER_SECTIONS_ON_PAGE = 'REORDER_SECTIONS_ON_PAGE'
 export const REMOVE_SECTION_FROM_PAGE = 'REMOVE_SECTION_FROM_PAGE'
+export const DUPLICATE_SECTION_ON_PAGE = 'DUPLICATE_SECTION_ON_PAGE'
 export const UPDATE_SECTION_METADATA = 'UPDATE_SECTION_METADATA'
 export const UPDATE_SECTION_PROPS = 'UPDATE_SECTION_PROPS'
 export const ADD_COMPONENT_TO_SECTION = 'ADD_COMPONENT_TO_SECTION'
@@ -131,6 +131,41 @@ export const siteReducer = (site, { type, target, payload  }) => {
       return {
         ...site,
         pages: removeSectionFromPage({ target, payload })
+      }
+
+    case DUPLICATE_SECTION_ON_PAGE:
+      /*
+        `target` should be an object of the form: {
+          page: a reference to the page to update,
+          section: a reference to the section to duplicate.
+        }
+      */
+      const duplicateSectionOnPage = ({ target, payload }) =>
+        site.pages.map(page => {
+          if (page !== target.page) return page
+
+          return {
+            ...page,
+            sections: page.sections.reduce((sections, section) => {
+              if (section === target.section) {
+                return [
+                  ...sections,
+                  section,
+                  {
+                    ...section,
+                    name: section.name ? `${section.name} copy` : `${toCapitalCase(section.type)} copy`
+                  }
+                ]
+              }
+
+              return [...sections, section]
+            }, [])
+          }
+        })
+
+      return {
+        ...site,
+        pages: duplicateSectionOnPage({ target, payload })
       }
 
     case UPDATE_SECTION_METADATA:

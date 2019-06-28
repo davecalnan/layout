@@ -5,7 +5,13 @@ import axios from 'axios'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 
 import { toCapitalCase, toSentenceCase } from '@layouthq/util'
-import { UPDATE_PAGE_METADATA, UPDATE_SITE_METADATA, REORDER_SECTIONS_ON_PAGE } from '../reducers/site'
+import {
+  UPDATE_SITE_METADATA,
+  UPDATE_PAGE_METADATA,
+  REORDER_SECTIONS_ON_PAGE,
+  REMOVE_SECTION_FROM_PAGE,
+  DUPLICATE_SECTION_ON_PAGE
+} from '../reducers/site'
 import { makeInputComponent } from './form-controls'
 import { H3, Label } from './typography/index'
 import LoadingDots from './loading-dots'
@@ -125,6 +131,15 @@ const Editor = ({ site, currentPath, isLoading, onEdit, onNavigate, className })
                           onDelete={() => {
                             onEdit({
                               type: REMOVE_SECTION_FROM_PAGE,
+                              target: {
+                                page: currentPage,
+                                section
+                              }
+                            })
+                          }}
+                          onDuplicate={() => {
+                            onEdit({
+                              type: DUPLICATE_SECTION_ON_PAGE,
                               target: {
                                 page: currentPage,
                                 section
