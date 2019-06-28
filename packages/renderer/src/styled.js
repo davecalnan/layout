@@ -10,7 +10,7 @@ const baseCSS =
 const processedComponents = []
 
 const generateClassName = (Component, variant) =>
-  variant ? `${Component.name}--${variant.name}__${variant.value}` : Component.name
+  variant ? `${Component.name}__${variant.name}--${variant.value}` : Component.name
 
 const createCSSRule = (name, statement) => `${name} {${statement}}`
 
@@ -163,13 +163,11 @@ const removeBaseDeclarationsFromVariants = postcss.plugin(
       root.walkRules(rule => {
         const getBaseSelector = selector => {
           const variantSelector =
-            (selector.match(/(.[^ ]*)( )/, (match, target) => target) ||
-              [])[1] || selector
-          const [, baseSelector] =
-            selector.match(
-              /(.[a-zA-Z]*)(--)/,
-              (match, target) => target
-            ) || []
+            (selector.match(/(.[^ ]*)( )/, (match, target) => target) || [])[1] || selector
+          const [_, baseSelector] = selector.match(
+            /(.[a-zA-Z]*)(__)/,
+            (match, target) => target
+          ) || []
 
           return selector.replace(variantSelector, baseSelector)
         }
