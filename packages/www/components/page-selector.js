@@ -15,7 +15,7 @@ const PageSelector = ({
         <select
           value={currentPage.path}
           onChange={event => onNavigate(event.target.value)}
-          className="w-full h-full block appearance-none rounded-none bg-white text-2xl leading-tight hover:bg-gray-200 focus:outline-none focus:bg-gray-200 pl-4 pr-8"
+          className="w-full h-full block appearance-none rounded-none cursor-pointer bg-white text-2xl leading-tight hover:bg-gray-200 focus:outline-none focus:bg-gray-200 pl-4 pr-8"
           title="Navigate to a different page"
         >
           {pages.map(({ path, name }) => {
@@ -32,7 +32,11 @@ const PageSelector = ({
       </div>
       <div className="border-l border-gray-400">
         <button
-          onClick={() => setModalContent(<AddAPage onEdit={onEdit} onNavigate={onNavigate} />)}
+          onClick={() =>
+            setModalContent(
+              <AddAPage onEdit={onEdit} onNavigate={onNavigate} />
+            )
+          }
           className="w-10 h-full text-gray-700 hover:bg-gray-200 focus:outline-none focus:bg-gray-200"
           title="Add a new page"
         >
@@ -41,7 +45,15 @@ const PageSelector = ({
       </div>
       <div className="border-l border-gray-400">
         <button
-          onClick={() => setModalContent(<DuplicatePage page={currentPage} onEdit={onEdit} onNavigate={onNavigate} />)}
+          onClick={() =>
+            setModalContent(
+              <DuplicatePage
+                page={currentPage}
+                onEdit={onEdit}
+                onNavigate={onNavigate}
+              />
+            )
+          }
           className="w-10 h-full text-gray-700 hover:bg-gray-200 focus:outline-none focus:bg-gray-200"
           title="Duplicate this page"
         >
