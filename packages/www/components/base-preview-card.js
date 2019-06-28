@@ -1,7 +1,8 @@
 import { P } from './typography'
 import Button from './button'
+import Icon, { ICON_DUPLICATE, ICON_TRASH } from './icon'
 
-const BasePreviewCard = ({ name, onClick, onMoveUp, onMoveDown, onDelete }) =>
+const BasePreviewCard = ({ name, onClick, onMoveUp, onMoveDown, onDelete, onDuplicate }) =>
   (
     <button
       className="w-full h-16 flex justify-between items-center text-left bg-white rounded shadow px-4 mb-2"
@@ -10,14 +11,14 @@ const BasePreviewCard = ({ name, onClick, onMoveUp, onMoveDown, onDelete }) =>
       <div className="mr-4">
         <P>{name}</P>
       </div>
-      <div className="flex-shrink-0">
+      <div className="flex items-center flex-shrink-0">
         <Button
           className="mr-1"
           onClick={event => {
             event.stopPropagation()
             onMoveUp()
           }}
-          compact
+          icon
         >
           &uarr;
         </Button>
@@ -27,19 +28,27 @@ const BasePreviewCard = ({ name, onClick, onMoveUp, onMoveDown, onDelete }) =>
             event.stopPropagation()
             onMoveDown()
           }}
-          compact
+          icon
         >
           &darr;
         </Button>
         <Button
-          className="pr-1"
           onClick={event => {
             event.stopPropagation()
             onDelete()
           }}
-          compact
+          icon
         >
-          🗑
+          <Icon type={ICON_TRASH} className="w-6 h-6" />
+        </Button>
+        <Button
+          onClick={event => {
+            event.stopPropagation()
+            onDuplicate()
+          }}
+          icon
+        >
+          <Icon type={ICON_DUPLICATE} className="w-6 h-6" />
         </Button>
       </div>
     </button>

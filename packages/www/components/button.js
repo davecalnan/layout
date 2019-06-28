@@ -1,6 +1,9 @@
+import classNames from 'classnames'
+
 const Button = ({
   action,
   compact,
+  icon,
   disabled,
   onClick,
   href,
@@ -17,15 +20,19 @@ const Button = ({
       href={disabled ? undefined : href}
       target={openInNewTab ? '_blank' : undefined}
       rel={openInNewTab ? 'noreferrer noopener' : undefined}
-      className={[
+      className={classNames(
         className,
         'rounded shadow text-center',
         action === 'primary'
           ? 'bg-black text-white'
           : 'bg-white text-black',
-        compact ? 'text-base px-2' : 'text-lg px-4 py-1',
+        compact
+          ? 'text-base px-2'
+          : icon
+          ? 'text-base px-1'
+          : 'text-lg px-4 py-1',
         disabled ? 'text-gray-700 bg-gray-400 cursor-not-allowed' : ''
-      ].join(' ')}
+     )}
     >
       {children}
     </Tag>
