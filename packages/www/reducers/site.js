@@ -1,19 +1,18 @@
 import { moveUp, moveDown } from '@layouthq/util'
+import { reorder } from '@layouthq/util'
 
 export const UPDATE_SITE_METADATA = 'UPDATE_SITE_METADATA'
 export const ADD_PAGE_TO_SITE = 'ADD_PAGE_TO_SITE'
 export const UPDATE_PAGE_METADATA = 'UPDATE_PAGE_METADATA'
 export const ADD_SECTION_TO_PAGE = 'ADD_SECTION_TO_PAGE'
+export const REORDER_SECTIONS_ON_PAGE = 'REORDER_SECTIONS_ON_PAGE'
 export const REMOVE_SECTION_FROM_PAGE = 'REMOVE_SECTION_FROM_PAGE'
 export const UPDATE_SECTION_METADATA = 'UPDATE_SECTION_METADATA'
 export const UPDATE_SECTION_PROPS = 'UPDATE_SECTION_PROPS'
-export const MOVE_SECTION_UP = 'MOVE_SECTION_UP'
-export const MOVE_SECTION_DOWN = 'MOVE_SECTION_DOWN'
 export const ADD_COMPONENT_TO_SECTION = 'ADD_COMPONENT_TO_SECTION'
+export const REORDER_COMPONENTS_IN_SECTION = 'REORDER_COMPONENTS_IN_SECTION'
 export const REMOVE_COMPONENT_FROM_SECTION = 'REMOVE_COMPONENT_FROM_SECTION'
 export const UPDATE_COMPONENT_PROPS = 'UPDATE_COMPONENT_PROPS'
-export const MOVE_COMPONENT_UP = 'MOVE_COMPONENT_UP'
-export const MOVE_COMPONENT_DOWN = 'MOVE_COMPONENT_DOWN'
 
 export const siteReducer = (site, { type, target, payload  }) => {
   switch (type) {
@@ -83,6 +82,29 @@ export const siteReducer = (site, { type, target, payload  }) => {
       return {
         ...site,
         pages: addSectionToPage({ target, payload })
+      }
+
+    case REORDER_SECTIONS_ON_PAGE:
+      /*
+        `target` should be an object of the form: {
+          page: a reference to the page to update,
+          section: a reference to the section being moved.
+        }
+        `payload` should be the result passed to onDragEnd from react-beautiful-dnd.
+      */
+      const reorderSectionsOnPage = ({ target, payload }) =>
+        site.pages.map(page => {
+          if (page !== target.page) return page
+
+          return {
+            ...page,
+            sections: reorder(page.sections, target.section, payload)
+          }
+        })
+
+      return {
+        ...site,
+        pages: reorderSectionsOnPage({ target, payload })
       }
 
     case REMOVE_SECTION_FROM_PAGE:
@@ -176,56 +198,6 @@ export const siteReducer = (site, { type, target, payload  }) => {
         pages: updateSectionProps({ target, payload })
       }
 
-    case MOVE_SECTION_UP:
-      /*
-        `target` should be an object of the form: {
-          page: a reference to the page to update,
-          section: a reference to the section to move.
-        }
-      */
-      const moveSectionUp = ({ target }) =>
-        site.pages.map(page => {
-          if (page !== target.page) return page
-
-          return {
-            ...page,
-            sections: moveUp(
-              page.sections,
-              page.sections.indexOf(target.section)
-            )
-          }
-        })
-
-      return {
-        ...site,
-        pages: moveSectionUp({ target })
-      }
-
-    case MOVE_SECTION_DOWN:
-      /*
-        `target` should be an object of the form: {
-          page: a reference to the page to update,
-          section: a reference to the section to move.
-        }
-      */
-      const moveSectionDown = ({ target }) =>
-        site.pages.map(page => {
-          if (page !== target.page) return page
-
-          return {
-            ...page,
-            sections: moveDown(
-              page.sections,
-              page.sections.indexOf(target.section)
-            )
-          }
-        })
-
-      return {
-        ...site,
-        pages: moveSectionDown({ target })
-      }
-
     case ADD_COMPONENT_TO_SECTION:
       /*
         `target` should be an object of the form: {
@@ -254,6 +226,37 @@ export const siteReducer = (site, { type, target, payload  }) => {
       return {
         ...site,
         pages: addComponentToSection({ target, payload })
+      }
+
+    case REORDER_COMPONENTS_IN_SECTION:
+      /*
+        `target` should be an object of the form: {
+          page: a reference to the page to update,
+          section: a reference to the section to update,
+          component: a reference to the section being moved.
+        }
+        `payload` should be the result passed to onDragEnd from react-beautiful-dnd.
+      */
+      const reorderComponentsInSection = ({ target, payload }) =>
+        site.pages.map(page => {
+          if (page !== target.page) return page
+
+          return {
+            ...page,
+            sections: page.sections.map(section => {
+              if (section !== target.section) return section
+
+              return {
+                ...section,
+                components: reorder(section.components, target.component, payload)
+              }
+            })
+          }
+        })
+
+      return {
+        ...site,
+        pages: reorderComponentsInSection({ target, payload })
       }
 
     case REMOVE_COMPONENT_FROM_SECTION:
@@ -334,72 +337,6 @@ export const siteReducer = (site, { type, target, payload  }) => {
       return {
         ...site,
         pages: updateComponentProps({ target, payload })
-      }
-
-    case MOVE_COMPONENT_UP:
-      /*
-        `target` should be an object of the form: {
-          page: a reference to the page to update,
-          section: a reference to the section to update.
-          component: a reference to the component to move.
-        }
-      */
-      const moveComponentUp = ({ target }) =>
-        site.pages.map(page => {
-          if (page !== target.page) return page
-
-          return {
-            ...page,
-            sections: page.sections.map(section => {
-              if (section !== target.section) return section
-
-              return {
-                ...section,
-                components: moveUp(
-                  section.components,
-                  section.components.indexOf(target.component)
-                )
-              }
-            })
-          }
-        })
-
-      return {
-        ...site,
-        pages: moveComponentUp({ target, payload })
-      }
-
-    case MOVE_COMPONENT_DOWN:
-      /*
-        `target` should be an object of the form: {
-          page: a reference to the page to update,
-          section: a reference to the section to update,
-          component: a reference to the component to move.
-        }
-      */
-      const moveComponentDown = ({ target }) =>
-        site.pages.map(page => {
-          if (page !== target.page) return page
-
-          return {
-            ...page,
-            sections: page.sections.map(section => {
-              if (section !== target.section) return section
-
-              return {
-                ...section,
-                components: moveDown(
-                  section.components,
-                  section.components.indexOf(target.component)
-                )
-              }
-            })
-          }
-        })
-
-      return {
-        ...site,
-        pages: moveComponentDown({ target })
       }
 
     default:

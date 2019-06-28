@@ -19,7 +19,7 @@ const Browser = ({
           <div className="w-3 h-3 rounded-full bg-green-500 border border-green-600" />
         </div>
         <div className="ml-4 flex items-center">
-          <Button onClick={canNavigateBack && onBack} icon>
+          <Button onClick={canNavigateBack ? onBack : undefined} icon>
             <Icon
               type={ICON_CHEVRON_LEFT}
               disabled={!canNavigateBack}
@@ -28,7 +28,7 @@ const Browser = ({
           </Button>
           <Button
             className="ml-1"
-            onClick={canNavigateForward && onForward}
+            onClick={canNavigateForward ? onForward : undefined}
             icon
           >
             <Icon

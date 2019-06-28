@@ -1,12 +1,13 @@
 import { useState } from 'react'
+import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 
 import { toCapitalCase } from '@layouthq/util'
-import { UPDATE_SECTION_METADATA, UPDATE_SECTION_PROPS } from '../reducers/site'
+import { REORDER_COMPONENTS_IN_SECTION, UPDATE_SECTION_METADATA, UPDATE_SECTION_PROPS } from '../reducers/site'
 import { H2, H3, Label } from './typography'
 import Button from '../components/button'
 import { makeInputComponent } from './form-controls'
 import ComponentEditPanel from './component-edit-panel'
-import ComponentPreviewCard from './component-preview-card'
+import PreviewCard from './preview-card'
 import AddNewButton from './add-new-button'
 import AddAComponent from './modals/add-a-component'
 
@@ -25,6 +26,22 @@ const SectionEditPanel = ({
 
   const activeComponent =
     activeComponentIndex !== undefined ? components[activeComponentIndex] : null
+
+  const generateId = ({ name }, index) => `${name}--${index}`
+
+  const onDragEnd = result => {
+    const component = components.find(component => generateId(component) === result.draggableId)
+
+    onEdit({
+      type: REORDER_COMPONENTS_IN_SECTION,
+      target: {
+        page: currentPage,
+        section,
+        component
+      },
+      payload: result
+    })
+  }
 
   const determineContent = activeComponent => {
     /*
@@ -53,31 +70,56 @@ const SectionEditPanel = ({
         <div className="p-4">
           <Button onClick={onBack}>&larr; Back</Button>
         </div>
-        <H2 className="px-4">{section.name || toCapitalCase(section.type)}</H2>
+        <H2 className="px-4">
+          {section.name || toCapitalCase(section.type)}
+        </H2>
         {components && (
           <section>
             <H3 className="mb-4">Components</H3>
-            {components.map((component, index) => (
-              <ComponentPreviewCard
-                key={`${index}-${component}`}
-                currentPage={currentPage}
-                currentSection={section}
-                component={component}
-                onClick={() => setActiveComponentIndex(index)}
-                onEdit={onEdit}
-                canMoveUp={index !== 0}
-                canMoveDown={index !== components.length - 1}
-              />
-            ))}
-            <AddNewButton onClick={() => setModalContent(
-              <AddAComponent
-                availableComponents={availableComponents}
-                currentPage={currentPage}
-                currentSection={section}
-                onEdit={onEdit}
-                onClose={() => setModalContent(null)}
-              />
-            )} />
+            <DragDropContext onDragEnd={onDragEnd}>
+              <Droppable droppableId="components">
+                {provided => (
+                  <div ref={provided.innerRef} {...provided.droppableProps}>
+                    {components.map((component, index) => {
+                      const id = generateId(component)
+                      return (
+                        <PreviewCard
+                          key={id}
+                          id={id}
+                          index={index}
+                          name={toCapitalCase(component.name)}
+                          onClick={() => setActiveComponentIndex(index)}
+                          onDelete={() => {
+                            onEdit({
+                              type: REMOVE_COMPONENT_FROM_SECTION,
+                              target: {
+                                page: currentPage,
+                                section: currentSection,
+                                component
+                              }
+                            })
+                          }}
+                        />
+                      )
+                    })}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            </DragDropContext>
+            <AddNewButton
+              onClick={() =>
+                setModalContent(
+                  <AddAComponent
+                    availableComponents={availableComponents}
+                    currentPage={currentPage}
+                    currentSection={section}
+                    onEdit={onEdit}
+                    onClose={() => setModalContent(null)}
+                  />
+                )
+              }
+            />
           </section>
         )}
         <section>

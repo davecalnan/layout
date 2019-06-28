@@ -2,15 +2,16 @@ import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import tw from 'tailwind.macro'
 import axios from 'axios'
+import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 
-import { toSentenceCase } from '@layouthq/util'
-import { UPDATE_PAGE_METADATA, UPDATE_SITE_METADATA } from '../reducers/site'
+import { toCapitalCase, toSentenceCase } from '@layouthq/util'
+import { UPDATE_PAGE_METADATA, UPDATE_SITE_METADATA, REORDER_SECTIONS_ON_PAGE } from '../reducers/site'
 import { makeInputComponent } from './form-controls'
 import { H3, Label } from './typography/index'
 import LoadingDots from './loading-dots'
 import PageSelector from './page-selector';
 import SectionEditPanel from './section-edit-panel'
-import SectionPreviewCard from './section-preview-card'
+import PreviewCard from './preview-card'
 import AddNewButton from './add-new-button'
 import Modal from './modal'
 import AddASection from './modals/add-a-section'
@@ -59,6 +60,21 @@ const Editor = ({ site, currentPath, isLoading, onEdit, onNavigate, className })
     loadComponents()
   }, [])
 
+  const generateId = ({ type, name }) => `${type}--${name}`
+
+  const onDragEnd = result => {
+    const section = sections.find(section => generateId(section) === result.draggableId)
+
+    onEdit({
+      type: REORDER_SECTIONS_ON_PAGE,
+      target: {
+        page: currentPage,
+        section
+      },
+      payload: result
+    })
+  }
+
   const determineContent = activeSection => {
     /*
       If a section is selected, show the edit panel for that section.
@@ -85,27 +101,56 @@ const Editor = ({ site, currentPath, isLoading, onEdit, onNavigate, className })
         <section>
           <H3>Sections</H3>
           <div className="mt-4">
-            {sections.map((section, index) => (
-              <SectionPreviewCard
-                key={`${index}-${section}`}
-                currentPage={currentPage}
-                section={section}
-                onClick={() => setActiveSectionIndex(index)}
-                onEdit={onEdit}
-                canMoveUp={index !== 0}
-                canMoveDown={index !== sections.length - 1}
-              />
-            ))}
+            <DragDropContext onDragEnd={onDragEnd}>
+              <Droppable droppableId="sections">
+                {provided => (
+                  <div
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                  >
+                    {sections.map((section, index) => {
+                      const id = generateId(section)
+                      return (
+                        <PreviewCard
+                          key={id}
+                          id={id}
+                          index={index}
+                          name={
+                            section.name ||
+                            toCapitalCase(section.type)
+                          }
+                          onClick={() =>
+                            setActiveSectionIndex(index)
+                          }
+                          onDelete={() => {
+                            onEdit({
+                              type: REMOVE_SECTION_FROM_PAGE,
+                              target: {
+                                page: currentPage,
+                                section
+                              }
+                            })
+                          }}
+                        />
+                      )
+                    })}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            </DragDropContext>
           </div>
           <AddNewButton
-            onClick={() => setModalContent(
-              <AddASection
-                availableSections={availableSections}
-                currentPage={currentPage}
-                onEdit={onEdit}
-                onClose={() => setModalContent(null)}
-              />
-            )}
+            onClick={() =>
+              setModalContent(
+                <AddASection
+                  availableSections={availableSections}
+                  currentPage={currentPage}
+                  onEdit={onEdit}
+                  onClose={() => setModalContent(null)}
+                />
+              )
+            }
           />
         </section>
         <section>

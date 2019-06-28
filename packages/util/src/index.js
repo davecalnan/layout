@@ -28,6 +28,23 @@ export const moveUp = (array, index) => {
   return copy
 }
 
+export const reorder = (array, item, { destination, source }) => {
+  if (!destination) return
+
+  if (
+    destination.droppableId === source.droppableId &&
+    destination.index === source.index
+  ) {
+    return
+  }
+
+  const updatedArray = [...array]
+  updatedArray.splice(source.index, 1)
+  updatedArray.splice(destination.index, 0, item)
+
+  return updatedArray
+}
+
 export const splitIntoWords = (string) => {
   return string.replace(/([a-z])([A-Z])/g, (match, firstLetter, secondLetter) => `${ firstLetter } ${ secondLetter }`).toLowerCase().split(/ |_|-/)
 }
