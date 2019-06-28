@@ -173,7 +173,7 @@ const BuilderPage = withRouter(({ router }) => {
     if (!isExistingSite) {
       return 'Save your site to get a url 👉🏻'
     }
-    const path = (currentPath !== '/' ? currentPath : '')
+    const path = (currentPath && currentPath !== '/') ? currentPath : ''
     if (site.url) {
       return site.url + path
     }

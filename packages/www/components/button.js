@@ -1,4 +1,5 @@
 const Button = ({
+  action,
   compact,
   disabled,
   onClick,
@@ -19,10 +20,11 @@ const Button = ({
       className={[
         className,
         'rounded shadow text-center',
+        action === 'primary'
+          ? 'bg-black text-white'
+          : 'bg-white text-black',
         compact ? 'text-base px-2' : 'text-lg px-4 py-1',
-        disabled
-          ? 'text-gray-700 bg-gray-400 cursor-not-allowed'
-          : 'text-black bg-white'
+        disabled ? 'text-gray-700 bg-gray-400 cursor-not-allowed' : ''
       ].join(' ')}
     >
       {children}

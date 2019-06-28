@@ -9,7 +9,7 @@ const Modal = ({ isOpen, onRequestClose, children }) => (
     isOpen={isOpen}
     onRequestClose={onRequestClose}
     className="w-full h-full max-w-2xl overflow-y-scroll rounded shadow bg-white p-8"
-    overlayClassName="fixed flex justify-center items-center top-0 left-0 right-0 bottom-0"
+    overlayClassName="fixed flex justify-center items-center top-0 left-0 right-0 bottom-0 z-50"
     style={{
       overlay: {
         backgroundColor: 'rgba(0, 0, 0, 0.25)'

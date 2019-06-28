@@ -4,26 +4,16 @@ import tw from 'tailwind.macro'
 import axios from 'axios'
 
 import { toSentenceCase } from '@layouthq/util'
-import { ADD_SECTION_TO_PAGE, UPDATE_PAGE_METADATA, UPDATE_SITE_METADATA } from '../reducers/site'
+import { UPDATE_PAGE_METADATA, UPDATE_SITE_METADATA } from '../reducers/site'
 import { makeInputComponent } from './form-controls'
-import { H2, H3, P, Small } from './typography/index'
+import { H3, Label } from './typography/index'
 import LoadingDots from './loading-dots'
+import PageSelector from './page-selector';
 import SectionEditPanel from './section-edit-panel'
 import SectionPreviewCard from './section-preview-card'
 import AddNewButton from './add-new-button'
 import Modal from './modal'
-
-const PageSelector = ({ pages, currentPath, onNavigate }) => (
-  <select
-    value={currentPath}
-    onChange={event => onNavigate(event.target.value)}
-    className="w-full appearance-none bg-white rounded shadow font-bold leading-tight text-3xl px-4 py-1"
-  >
-    {pages.map(({ path, name }) => {
-      return <option key={path} value={path}>{name}</option>
-    })}
-  </select>
-)
+import AddASection from './modals/add-a-section'
 
 const Editor = ({ site, currentPath, isLoading, onEdit, onNavigate, className }) => {
   if (isLoading) return (
@@ -35,7 +25,7 @@ const Editor = ({ site, currentPath, isLoading, onEdit, onNavigate, className })
   const [activeSectionIndex, setActiveSectionIndex] = useState()
   const [availableSections, setAvailableSections] = useState([])
   const [availableComponents, setAvailableComponents] = useState([])
-  const [modalIsOpen, setModalIsOpen] = useState(false)
+  const [modalContent, setModalContent] = useState(null)
 
   const currentPage = pages.find(({ path }) => path === currentPath)
   const { sections } = currentPage
@@ -83,6 +73,7 @@ const Editor = ({ site, currentPath, isLoading, onEdit, onNavigate, className })
           availableComponents={availableComponents}
           onEdit={onEdit}
           onBack={() => setActiveSectionIndex()}
+          setModalContent={setModalContent}
         />
       )
     }
@@ -92,7 +83,6 @@ const Editor = ({ site, currentPath, isLoading, onEdit, onNavigate, className })
     return (
       <>
         <section>
-          <H2 className="mb-4">Page</H2>
           <H3>Sections</H3>
           <div className="mt-4">
             {sections.map((section, index) => (
@@ -108,7 +98,14 @@ const Editor = ({ site, currentPath, isLoading, onEdit, onNavigate, className })
             ))}
           </div>
           <AddNewButton
-            onClick={() => setModalIsOpen(true)}
+            onClick={() => setModalContent(
+              <AddASection
+                availableSections={availableSections}
+                currentPage={currentPage}
+                onEdit={onEdit}
+                onClose={() => setModalContent(null)}
+              />
+            )}
           />
         </section>
         <section>
@@ -134,9 +131,7 @@ const Editor = ({ site, currentPath, isLoading, onEdit, onNavigate, className })
               )
               return (
                 <div key={key} className="flex flex-col mb-6">
-                  <label className="text-xs uppercase tracking-wide mb-1">
-                    {toSentenceCase(key)}
-                  </label>
+                  <Label>{toSentenceCase(key)}</Label>
                   {InputComponent}
                 </div>
               )
@@ -163,9 +158,7 @@ const Editor = ({ site, currentPath, isLoading, onEdit, onNavigate, className })
               )
               return (
                 <div key={key} className="flex flex-col mb-6">
-                  <label className="text-xs uppercase tracking-wide mb-1">
-                    {toSentenceCase(key)}
-                  </label>
+                  <Label>{toSentenceCase(key)}</Label>
                   {InputComponent}
                 </div>
               )
@@ -176,68 +169,28 @@ const Editor = ({ site, currentPath, isLoading, onEdit, onNavigate, className })
     )
   }
 
-  const determineModalContent = activeSection => {
-    if (!activeSection) {
-      return (
-        <Modal
-          isOpen={modalIsOpen}
-          onRequestClose={() => setModalIsOpen(false)}
-        >
-          <H2 className="mb-4">Add a section</H2>
-          {availableSections ? (
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns:
-                  'repeat(auto-fill, minmax(10rem, 1fr))'
-              }}
-            >
-              {availableSections.map((section, index) => (
-                <button
-                  key={`${index}-${section.type}`}
-                  className="bg-white rounded shadow text-left mr-4 mb-4"
-                  onClick={() => {
-                    onEdit({
-                      type: ADD_SECTION_TO_PAGE,
-                      target: {
-                        page: currentPage
-                      },
-                      payload: {
-                        id: section.id,
-                        type: section.type,
-                        components: section.defaultComponents,
-                        props: section.defaultProps
-                      }
-                    })
-                    setModalIsOpen(false)
-                  }}
-                >
-                  <img
-                    src="https://placehold.it/300x200"
-                    className="w-full block rounded-t"
-                  />
-                  <div className="px-4 py-2">
-                    <P>{toSentenceCase(section.type)}</P>
-                    <Small>{section.description}</Small>
-                  </div>
-                </button>
-              ))}
-            </div>
-          ) : (
-            <P>Having trouble finding sections, sorry!</P>
-          )}
-        </Modal>
-      )
-    }
-
-    return null
-  }
 
   return (
     <div className={className}>
-      <PageSelector pages={pages} currentPath={currentPath} onNavigate={onNavigate} />
+      <PageSelector
+        pages={pages}
+        currentPage={currentPage}
+        onEdit={onEdit}
+        onNavigate={path => {
+          setModalContent(null)
+          onNavigate(path)
+        }}
+        setModalContent={setModalContent}
+      />
       {determineContent(activeSection)}
-      {determineModalContent(activeSection)}
+      <Modal
+        isOpen={modalContent !== null}
+        onRequestClose={() => {
+          setModalContent(null)
+        }}
+      >
+        {modalContent}
+      </Modal>
     </div>
   )
 }

@@ -1,6 +1,6 @@
 import { toCapitalCase } from '@layouthq/util'
 import { UPDATE_COMPONENT_PROPS } from '../reducers/site'
-import { H2, H3 } from './typography'
+import { H2, H3, Label } from './typography'
 import Button from '../components/button'
 import { makeInputComponent } from './form-controls'
 
@@ -38,9 +38,7 @@ const ComponentEditPanel = ({ currentPage, currentSection, component, componentP
                 key={`${name}-${propName}`}
                 className="flex flex-col mb-6"
               >
-                <label className="text-xs uppercase tracking-wide mb-1">
-                  {toCapitalCase(propName)}
-                </label>
+                <Label>{toCapitalCase(propName)}</Label>
                 {InputComponent}
               </div>
             )

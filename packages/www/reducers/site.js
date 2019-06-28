@@ -1,6 +1,7 @@
 import { moveUp, moveDown } from '@layouthq/util'
 
 export const UPDATE_SITE_METADATA = 'UPDATE_SITE_METADATA'
+export const ADD_PAGE_TO_SITE = 'ADD_PAGE_TO_SITE'
 export const UPDATE_PAGE_METADATA = 'UPDATE_PAGE_METADATA'
 export const ADD_SECTION_TO_PAGE = 'ADD_SECTION_TO_PAGE'
 export const REMOVE_SECTION_FROM_PAGE = 'REMOVE_SECTION_FROM_PAGE'
@@ -23,6 +24,21 @@ export const siteReducer = (site, { type, target, payload  }) => {
       return {
         ...site,
         ...payload
+      }
+
+    case ADD_PAGE_TO_SITE:
+      /*
+        `payload` should be the new page to add.
+      */
+      return {
+        ...site,
+        pages: [
+          ...site.pages,
+          {
+            ...payload,
+            sections: payload.sections || []
+          }
+        ]
       }
 
     case UPDATE_PAGE_METADATA:

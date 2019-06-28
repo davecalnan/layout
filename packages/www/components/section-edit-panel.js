@@ -1,22 +1,30 @@
 import { useState } from 'react'
 
 import { toCapitalCase } from '@layouthq/util'
-import { ADD_COMPONENT_TO_SECTION, UPDATE_SECTION_METADATA, UPDATE_SECTION_PROPS } from '../reducers/site'
-import { H2, H3, P, Small } from './typography'
+import { UPDATE_SECTION_METADATA, UPDATE_SECTION_PROPS } from '../reducers/site'
+import { H2, H3, Label } from './typography'
 import Button from '../components/button'
 import { makeInputComponent } from './form-controls'
 import ComponentEditPanel from './component-edit-panel'
 import ComponentPreviewCard from './component-preview-card'
 import AddNewButton from './add-new-button'
-import Modal from './modal'
+import AddAComponent from './modals/add-a-component'
 
-const SectionEditPanel = ({ currentPage, section, sectionPropTypes = {}, availableComponents = [], onEdit, onBack }) => {
+const SectionEditPanel = ({
+  currentPage,
+  section,
+  sectionPropTypes = {},
+  availableComponents = [],
+  onEdit,
+  onBack,
+  setModalContent
+}) => {
   const { name, components, props } = section
   const { children, ...otherPropTypes } = sectionPropTypes
   const [activeComponentIndex, setActiveComponentIndex] = useState()
-  const [modalIsOpen, setModalIsOpen] = useState(false)
 
-  const activeComponent = activeComponentIndex !== undefined ? components[activeComponentIndex] : null
+  const activeComponent =
+    activeComponentIndex !== undefined ? components[activeComponentIndex] : null
 
   const determineContent = activeComponent => {
     /*
@@ -45,9 +53,7 @@ const SectionEditPanel = ({ currentPage, section, sectionPropTypes = {}, availab
         <div className="p-4">
           <Button onClick={onBack}>&larr; Back</Button>
         </div>
-        <H2 className="px-4">
-          {section.name || toCapitalCase(section.type)}
-        </H2>
+        <H2 className="px-4">{section.name || toCapitalCase(section.type)}</H2>
         {components && (
           <section>
             <H3 className="mb-4">Components</H3>
@@ -63,15 +69,21 @@ const SectionEditPanel = ({ currentPage, section, sectionPropTypes = {}, availab
                 canMoveDown={index !== components.length - 1}
               />
             ))}
-            <AddNewButton onClick={() => setModalIsOpen(true)} />
+            <AddNewButton onClick={() => setModalContent(
+              <AddAComponent
+                availableComponents={availableComponents}
+                currentPage={currentPage}
+                currentSection={section}
+                onEdit={onEdit}
+                onClose={() => setModalContent(null)}
+              />
+            )} />
           </section>
         )}
         <section>
           <H3 className="mb-4">Properties</H3>
           <div className="flex flex-col mb-6">
-            <label className="text-xs uppercase tracking-wide mb-1">
-              Name
-            </label>
+            <Label>Name</Label>
             {makeInputComponent(
               {
                 type: 'string'
@@ -112,9 +124,7 @@ const SectionEditPanel = ({ currentPage, section, sectionPropTypes = {}, availab
 
             return (
               <div key={propName} className="flex flex-col mb-6">
-                <label className="text-xs uppercase tracking-wide mb-1">
-                  {toCapitalCase(propName)}
-                </label>
+                <Label>{toCapitalCase(propName)}</Label>
                 {InputComponent}
               </div>
             )
@@ -124,64 +134,7 @@ const SectionEditPanel = ({ currentPage, section, sectionPropTypes = {}, availab
     )
   }
 
-  const modalContent = (
-    <>
-      <H2 className="mb-4">Add a component</H2>
-      {availableComponents ? (
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(10rem, 1fr))'
-          }}
-        >
-          {availableComponents.map((component, index) => (
-            <button
-              key={`${index}-${component.name}`}
-              className="bg-white rounded shadow text-left mr-4 mb-4"
-              onClick={() => {
-                onEdit({
-                  type: ADD_COMPONENT_TO_SECTION,
-                  target: {
-                    page: currentPage,
-                    section
-                  },
-                  payload: {
-                    id: component.id,
-                    name: component.name,
-                    props: component.defaultProps
-                  }
-                })
-                setModalIsOpen(false)
-              }}
-            >
-              <img
-                src="https://placehold.it/300x200"
-                className="w-full block rounded-t"
-              />
-              <div className="px-4 py-2">
-                <P>{toCapitalCase(component.name)}</P>
-                <Small>{component.description}</Small>
-              </div>
-            </button>
-          ))}
-        </div>
-      ) : (
-        <P>Having trouble finding components, sorry!</P>
-      )}
-    </>
-  )
-
-  return (
-    <>
-      {determineContent(activeComponent)}
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={() => setModalIsOpen(false)}
-      >
-        {modalContent}
-      </Modal>
-    </>
-  )
+  return <>{determineContent(activeComponent)}</>
 }
 
 export default SectionEditPanel

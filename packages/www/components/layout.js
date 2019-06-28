@@ -15,7 +15,7 @@ const Layout = ({ headerContent, sidebarContent, children, className }) => (
       </P>
     </div>
     <Header content={headerContent} />
-    <aside className="min-w-xs overflow-x-hidden overflow-y-scroll bg-gray-100 shadow shadow-inner">
+    <aside className="min-w-xs overflow-x-hidden overflow-y-scroll bg-gray-100 shadow z-10">
       {sidebarContent}
     </aside>
     <main className="overflow-y-scroll shadow-inner">{children}</main>

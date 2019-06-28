@@ -3,7 +3,7 @@ import tw from 'tailwind.macro'
 
 import { toSentenceCase } from '@layouthq/util'
 
-const baseStyles = tw`bg-white rounded border border-gray-400 px-2 py-1`
+const baseStyles = tw`max-w-xs bg-white rounded border border-gray-400 px-2 py-1`
 
 export const Input = styled.input`${baseStyles} ${props => props.disabled && tw`text-gray-900 bg-gray-100 cursor-disabled`}`
 export const Checkbox = styled.input`${baseStyles} ${tw``}`
