@@ -2,16 +2,14 @@ import { withRouter } from 'next/router'
 import { useEffect, useReducer } from 'react'
 import axios from 'axios'
 
-import {
-  useUndoableReducer,
-  RESET,
-  UNDO,
-  REDO,
-  PERHAPS_UNWISELY_REPLACE_STATE_WITHOUT_ADDING_TO_HISTORY
-} from '../hooks/use-undoable-reducer'
+import { useUndoableReducer } from '../hooks/use-undoable-reducer'
 
 import {
   builderReducer,
+  RESET,
+  UNDO,
+  REDO,
+  PERHAPS_UNWISELY_REPLACE_STATE_WITHOUT_ADDING_TO_HISTORY,
   ERROR,
   START_LOADING_SITE,
   FINISH_LOADING_SITE,
@@ -21,9 +19,15 @@ import {
   START_SAVING,
   FINISH_SAVING,
   START_DEPLOYING,
-  FINISH_DEPLOYING,
-  NAVIGATE
+  FINISH_DEPLOYING
 } from '../reducers/builder'
+
+import {
+  navigationReducer,
+  BACK,
+  FORWARD,
+  NAVIGATE
+} from '../reducers/navigation'
 
 import { siteReducer } from '../reducers/site'
 import Layout from '../components/layout'
@@ -41,10 +45,16 @@ const BuilderPage = withRouter(({ router }) => {
     canRedo
   } = useUndoableReducer(siteReducer, {})
 
+  const {
+    state: currentPath,
+    dispatch: dispatchNavigationAction,
+    canUndo: canNavigateBack,
+    canRedo: canNavigateForward
+  } = useUndoableReducer(navigationReducer, '/')
+
   const [state, dispatchBuilderAction] = useReducer(
     builderReducer,
     {
-      currentPath: '/',
       hasError: null,
       hasUnsavedEdits: false,
       isDeploying: false,
@@ -56,7 +66,6 @@ const BuilderPage = withRouter(({ router }) => {
   )
 
   const {
-    currentPath,
     hasError,
     hasUnsavedEdits,
     isDeploying,
@@ -231,7 +240,7 @@ const BuilderPage = withRouter(({ router }) => {
             })
           }}
           onNavigate={path => {
-            dispatchBuilderAction({
+            dispatchNavigationAction({
               type: NAVIGATE,
               payload: path
             })
@@ -247,7 +256,7 @@ const BuilderPage = withRouter(({ router }) => {
             site={site}
             currentPath={currentPath}
             onNavigate={path => {
-              dispatchBuilderAction({
+              dispatchNavigationAction({
                 type: NAVIGATE,
                 payload: path
               })
@@ -255,6 +264,18 @@ const BuilderPage = withRouter(({ router }) => {
           />
         }
         canView={canView}
+        canNavigateBack={canNavigateBack}
+        canNavigateForward={canNavigateForward}
+        onBack={() => {
+          dispatchNavigationAction({
+            type: BACK
+          })
+        }}
+        onForward={() => {
+          dispatchNavigationAction({
+            type: FORWARD
+          })
+        }}
       />
     </Layout>
   )

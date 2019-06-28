@@ -1,7 +1,15 @@
 import Button from './button'
 import Icon, { ICON_CHEVRON_LEFT, ICON_CHEVRON_RIGHT } from './icon'
 
-const Browser = ({ url, content, canView }) => (
+const Browser = ({
+  url,
+  content,
+  canView,
+  canNavigateBack,
+  canNavigateForward,
+  onBack,
+  onForward
+}) => (
   <div className="flex flex-col h-full w-full">
     <header className="h-10 flex justify-between items-center shadow bg-gray-300 z-0 px-4">
       <div className="w-20 flex items-center">
@@ -11,11 +19,23 @@ const Browser = ({ url, content, canView }) => (
           <div className="w-3 h-3 rounded-full bg-green-500 border border-green-600" />
         </div>
         <div className="ml-4 flex items-center">
-          <Button icon>
-            <Icon type={ICON_CHEVRON_LEFT} className="w-6 h-6" />
+          <Button onClick={canNavigateBack && onBack} icon>
+            <Icon
+              type={ICON_CHEVRON_LEFT}
+              disabled={!canNavigateBack}
+              className="w-6 h-6"
+            />
           </Button>
-          <Button className="ml-1" icon>
-            <Icon type={ICON_CHEVRON_RIGHT} className="w-6 h-6" />
+          <Button
+            className="ml-1"
+            onClick={canNavigateForward && onForward}
+            icon
+          >
+            <Icon
+              type={ICON_CHEVRON_RIGHT}
+              disabled={!canNavigateForward}
+              className="w-6 h-6"
+            />
           </Button>
         </div>
       </div>

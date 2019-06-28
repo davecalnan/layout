@@ -1,5 +1,12 @@
 import Router from 'next/router'
 
+export {
+  RESET,
+  UNDO,
+  REDO,
+  PERHAPS_UNWISELY_REPLACE_STATE_WITHOUT_ADDING_TO_HISTORY
+} from '../hooks/use-undoable-reducer'
+
 export const ERROR = 'ERROR'
 export const START_LOADING_SITE = 'START_LOADING_SITE'
 export const FINISH_LOADING_SITE = 'FINISH_LOADING_SITE'
@@ -10,7 +17,6 @@ export const START_SAVING = 'START_SAVING'
 export const FINISH_SAVING = 'FINISH_SAVING'
 export const START_DEPLOYING = 'START_DEPLOYING'
 export const FINISH_DEPLOYING = 'FINISH_DEPLOYING'
-export const NAVIGATE = 'NAVIGATE'
 
 export const builderReducer = (state, { type, payload }) => {
   switch (type) {
@@ -84,11 +90,6 @@ export const builderReducer = (state, { type, payload }) => {
         ...state,
         isDeploying: false,
         message: null
-      }
-    case NAVIGATE:
-      return {
-        ...state,
-        currentPath: payload
       }
     default:
       throw new Error('Bad dispatch.')

@@ -67,10 +67,20 @@ const Icon = ({ type, className }) => (
 
 export default styled(Icon)`
   .primary {
-    ${({ primary }) => primary ? { color: primary } : tw`text-gray-700`}
+    ${({ disabled, primary }) =>
+      disabled
+        ? tw`text-gray-400`
+        : primary
+        ? { color: primary }
+        : tw`text-gray-700`}
   }
 
   .secondary {
-   ${({ secondary }) => secondary ? { color: secondary } : tw`text-gray-500`}
+    ${({ disabled, primary }) =>
+      disabled
+        ? tw`text-gray-200`
+        : primary
+        ? { color: primary }
+        : tw`text-gray-500`}
   }
 `
