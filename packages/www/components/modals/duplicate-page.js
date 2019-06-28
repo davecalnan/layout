@@ -4,7 +4,7 @@ import { H2, Label } from '../typography'
 import { Input } from '../form-controls'
 import Button from '../button'
 
-const AddAPage = ({ page, onEdit, onNavigate }) => {
+const DuplicatePage = ({ page, onEdit, onNavigate }) => {
   const [name, setName] = useState(`${page.name} copy`)
   const [path, setPath] = useState()
 
@@ -51,4 +51,4 @@ const AddAPage = ({ page, onEdit, onNavigate }) => {
   )
 }
 
-export default AddAPage
+export default DuplicatePage
