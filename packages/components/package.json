@@ -1,6 +1,6 @@
 {
   "name": "@layouthq/components",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "description": "",
   "scripts": {
     "dev": "babel src --out-dir=dist --watch --verbose",
@@ -9,7 +9,8 @@
   },
   "files": [
     "dist",
-    "*.config.js"
+    "*.config.js",
+    "available.json"
   ],
   "keywords": [],
   "author": "",
@@ -23,8 +24,8 @@
     "tailwind.macro": "1.0.0-alpha.10"
   },
   "dependencies": {
-    "@layouthq/prop-types": "0.1.13",
-    "@layouthq/renderer": "0.1.13",
+    "@layouthq/prop-types": "0.1.14",
+    "@layouthq/renderer": "0.1.14",
     "react": "16.8.6",
     "react-markdown": "4.0.8"
   }
