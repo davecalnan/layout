@@ -17,7 +17,7 @@ const EmailSignup = ({ name, action, label, placeholderText, className }) => (
 EmailSignup.propTypes = {
   ...PropTypes.form,
   buttonText: PropTypes.string,
-  buttonType: PropTypes.list(['primary', 'secondary']),
+  buttonType: PropTypes.oneOf(['primary', 'secondary']),
   label: PropTypes.string,
   placeholderText: PropTypes.string
 }

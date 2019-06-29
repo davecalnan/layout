@@ -7,7 +7,7 @@
         "type": "string"
       },
       "level": {
-        "type": "list",
+        "type": "enum",
         "options": [1, 2, 3, 4, 5, 6]
       }
     },
@@ -40,7 +40,7 @@
         "type": "string"
       },
       "type": {
-        "type": "list",
+        "type": "enum",
         "options": [
           "primary",
           "secondary"
@@ -87,7 +87,7 @@
         "type": "string"
       },
       "buttonType": {
-        "type": "list",
+        "type": "enum",
         "options": [
           "primary",
           "secondary"

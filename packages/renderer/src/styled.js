@@ -68,14 +68,14 @@ const extractBooleanPropTypes = Component => Object.entries(Component.propTypes 
   ([propName, propType]) => propType.type === 'boolean'
 )
 
-const extractListPropTypes = Component => Object.entries(Component.propTypes || {}).filter(
-  ([propName, propType]) => propType.type === 'list'
+const extractEnumPropTypes = Component => Object.entries(Component.propTypes || {}).filter(
+  ([propName, propType]) => propType.type === 'enum'
 )
 
 export const addComponentStyles = (styles, Component, options) => {
   const processComponent = (Component, options) => {
     const booleanPropTypes = extractBooleanPropTypes(Component)
-    const listPropTypes = extractListPropTypes(Component)
+    const enumPropTypes = extractEnumPropTypes(Component)
 
     const rule = generateRule(Component.inputCSS, Component, options)
 
@@ -96,7 +96,7 @@ export const addComponentStyles = (styles, Component, options) => {
       })
     })
 
-    listPropTypes.forEach(([propName, propType]) => {
+    enumPropTypes.forEach(([propName, propType]) => {
       propType.options.forEach(option => {
         const rule = generateRule(Component.inputCSS, Component, options, {
           name: propName,
@@ -122,7 +122,7 @@ export const styled = Component => {
     const annoyingObjectSoThatICanNameTheFunctionDynamically = {
       [Component.name]: props => {
         const variantClassNames =
-          [...extractBooleanPropTypes(Component), ...extractListPropTypes(Component)].map(([propName, propType]) => {
+          [...extractBooleanPropTypes(Component), ...extractEnumPropTypes(Component)].map(([propName, propType]) => {
             return generateClassName(Component, {
               name: propName,
               value: props[propName]

@@ -42,7 +42,7 @@
         "type": "string"
       },
       "imagePosition": {
-        "type": "list",
+        "type": "enum",
         "options": [
           "left",
           "right"
@@ -88,7 +88,7 @@
         "type": "string"
       },
       "imagePosition": {
-        "type": "list",
+        "type": "enum",
         "options": [
           "left",
           "right"

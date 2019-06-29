@@ -18,7 +18,7 @@ export const makeInputComponent = (propType, props) => {
       return <Input {...props} />
     case 'text':
       return <Textarea {...props} rows={5} />
-    case 'list':
+    case 'enum':
       return (
         <Select {...props}>
           {propType.options.map((option, index) => (

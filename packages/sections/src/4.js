@@ -10,7 +10,7 @@ const CallToAction = ({ children, id, className }) => (
 )
 
 CallToAction.propTypes = {
-  alignment: PropTypes.list(['left', 'center', 'right'])
+  alignment: PropTypes.oneOf(['left', 'center', 'right'])
 }
 
 CallToAction.defaultProps = {

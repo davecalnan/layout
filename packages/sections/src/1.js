@@ -16,7 +16,7 @@ const Banner = ({ imageSource, children, id, className }) => (
 
 Banner.propTypes = {
   imageSource: PropTypes.string,
-  imagePosition: PropTypes.list(['left', 'right'])
+  imagePosition: PropTypes.oneOf(['left', 'right'])
 }
 
 Banner.defaultProps = {

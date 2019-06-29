@@ -19,13 +19,13 @@ const text = (props, propName, componentName) => {
 }
 text.type = 'text'
 
-const list = (array) => {
+const oneOf = (array) => {
   const fn = (props, propName, componentName) => {
     if (!array.includes(props[propName])) {
       return new Error(`Invalid prop ${propName} supplied to ${componentName}. Validation failed.`)
     }
   }
-  fn.type = 'list'
+  fn.type = 'enum'
   fn.options = array
   return fn
 }
@@ -39,7 +39,7 @@ const PropTypes = {
   boolean,
   string,
   text,
-  list,
+  oneOf,
   form
 }
 

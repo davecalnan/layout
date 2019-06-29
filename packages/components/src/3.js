@@ -17,7 +17,7 @@ const Button = ({ text, link, className }) => {
 Button.propTypes = {
   text: PropTypes.string,
   link: PropTypes.string,
-  type: PropTypes.list(['primary', 'secondary'])
+  type: PropTypes.oneOf(['primary', 'secondary'])
 }
 
 export default styled(Button)`

@@ -14,7 +14,7 @@ const Spotlight = ({ imageSource, children, id, className }) => (
 
 Spotlight.propTypes = {
   imageSource: PropTypes.string,
-  imagePosition: PropTypes.list(['left', 'right'])
+  imagePosition: PropTypes.oneOf(['left', 'right'])
 }
 
 Spotlight.defaultProps = {

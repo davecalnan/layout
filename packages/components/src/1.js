@@ -12,7 +12,7 @@ const Heading = ({ text, level, className }) => {
 
 Heading.propTypes = {
   text: PropTypes.string,
-  level: PropTypes.list([1, 2, 3, 4, 5, 6])
+  level: PropTypes.oneOf([1, 2, 3, 4, 5, 6])
 }
 
 export default styled(Heading)`
