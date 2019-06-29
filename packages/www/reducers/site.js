@@ -1,4 +1,4 @@
-import { reorder, toCapitalCase } from '@layouthq/util'
+import { generateComponentUUIDs, generateSectionUUIDs, reorder, toCapitalCase } from '@layouthq/util'
 
 export const UPDATE_SITE_METADATA = 'UPDATE_SITE_METADATA'
 export const ADD_PAGE_TO_SITE = 'ADD_PAGE_TO_SITE'
@@ -12,6 +12,7 @@ export const UPDATE_SECTION_PROPS = 'UPDATE_SECTION_PROPS'
 export const ADD_COMPONENT_TO_SECTION = 'ADD_COMPONENT_TO_SECTION'
 export const REORDER_COMPONENTS_IN_SECTION = 'REORDER_COMPONENTS_IN_SECTION'
 export const REMOVE_COMPONENT_FROM_SECTION = 'REMOVE_COMPONENT_FROM_SECTION'
+export const DUPLICATE_COMPONENT_IN_SECTION = 'DUPLICATE_COMPONENT_IN_SECTION'
 export const UPDATE_COMPONENT_PROPS = 'UPDATE_COMPONENT_PROPS'
 
 export const siteReducer = (site, { type, target, payload  }) => {
@@ -75,7 +76,10 @@ export const siteReducer = (site, { type, target, payload  }) => {
 
           return {
             ...page,
-            sections: [...page.sections, payload]
+            sections: [
+              ...page.sections,
+              generateSectionUUIDs(payload)
+            ]
           }
         })
 
@@ -151,10 +155,12 @@ export const siteReducer = (site, { type, target, payload  }) => {
                 return [
                   ...sections,
                   section,
-                  {
+                  generateSectionUUIDs({
                     ...section,
-                    name: section.name ? `${section.name} copy` : `${toCapitalCase(section.type)} copy`
-                  }
+                    name: section.name
+                      ? `${section.name} copy`
+                      : `${toCapitalCase(section.type)} copy`
+                  })
                 ]
               }
 
@@ -252,7 +258,10 @@ export const siteReducer = (site, { type, target, payload  }) => {
 
               return {
                 ...section,
-                components: [...section.components, payload]
+                components: [
+                  ...section.components,
+                  generateComponentUUIDs(payload)
+                ]
               }
             })
           }
@@ -283,7 +292,11 @@ export const siteReducer = (site, { type, target, payload  }) => {
 
               return {
                 ...section,
-                components: reorder(section.components, target.component, payload)
+                components: reorder(
+                  section.components,
+                  target.component,
+                  payload
+                )
               }
             })
           }
@@ -302,7 +315,7 @@ export const siteReducer = (site, { type, target, payload  }) => {
           component: a reference to the component to remove.
         }
       */
-      const removeComponentFromSection = ({ target, payload }) =>
+      const removeComponentFromSection = ({ target }) =>
         site.pages.map(page => {
           if (page !== target.page) return page
 
@@ -328,7 +341,47 @@ export const siteReducer = (site, { type, target, payload  }) => {
 
       return {
         ...site,
-        pages: removeComponentFromSection({ target, payload })
+        pages: removeComponentFromSection({ target })
+      }
+
+    case DUPLICATE_COMPONENT_IN_SECTION:
+      /*
+        `target` should be an object of the form: {
+          page: a reference to the page to update,
+          section: a reference to the section to update,
+          component: a reference to the section to duplicate.
+        }
+      */
+      const duplicateComponentInSection = ({ target }) =>
+        site.pages.map(page => {
+          if (page !== target.page) return page
+
+          return {
+            ...page,
+            sections: page.sections.map(section => {
+              if (section !== target.section) return section
+
+              return {
+                ...section,
+                components: section.components.reduce((components, component) => {
+                  if (component === target.component) {
+                    return [
+                      ...components,
+                      component,
+                      generateComponentUUIDs(component)
+                    ]
+                  }
+
+                  return [...components, component]
+                }, [])
+              }
+            })
+          }
+        })
+
+      return {
+        ...site,
+        pages: duplicateComponentInSection({ target })
       }
 
     case UPDATE_COMPONENT_PROPS:

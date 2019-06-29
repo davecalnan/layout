@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOMServer from 'react-dom/server'
+import uuid from 'uuid/v4'
 import { toKebabCase } from '@layouthq/util'
 import { addComponentStyles, processCSS } from './styled'
 
@@ -64,11 +65,14 @@ const buildComponentTree = (page, options = {}) =>
       if (Component.isStyledComponent) {
         addComponentStyles(styles, Component, options)
       }
-      return <Component {...props} />
+
+      return <Component {...props} key={uuid()} />
     })
 
+    const _renderId = uuid()
+
     return (
-      <Section {...props} key={index} id={name ? toKebabCase(name) : undefined}>
+      <Section {...props} key={uuid()} id={name ? toKebabCase(name) : undefined}>
         {children}
       </Section>
     )

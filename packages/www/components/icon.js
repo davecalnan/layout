@@ -86,14 +86,12 @@ const Icon = ({ type, className, style }) => (
 
 export default styled(Icon)`
   .primary {
-    ${({ disabled, primary, className }) =>
+    ${({ disabled, primary }) =>
       disabled
         ? tw`text-gray-400`
         : primary
         ? { color: primary }
         : tw`text-gray-700`
-        ? className && className.split(' ').some(cls => cls.startsWith('text-'))
-        : null
     }
   }
 

@@ -3,14 +3,10 @@ import PropTypes from '@layouthq/prop-types'
 import { styled } from '@layouthq/renderer'
 import tw from 'tailwind.macro'
 
-const Heading = ({ text, level, theme, ...props }) => {
+const Heading = ({ text, level, className }) => {
   const Tag = `h${level}`
   return (
-    <Tag
-      {...props}
-    >
-      {text}
-    </Tag>
+    <Tag className={className}>{text}</Tag>
   )
 }
 

@@ -3,10 +3,10 @@ import PropTypes from '@layouthq/prop-types'
 import { styled } from '@layouthq/renderer'
 import tw from 'tailwind.macro'
 
-const Button = ({ text, link, type, theme, ...props }) => {
+const Button = ({ text, link, className }) => {
   return (
     <a
-      {...props}
+      className={className}
       href={link}
     >
       {text}

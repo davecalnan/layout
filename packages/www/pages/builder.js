@@ -44,7 +44,6 @@ const BuilderPage = withRouter(({ router }) => {
     canUndo,
     canRedo
   } = useUndoableReducer(siteReducer, {})
-  const renderTime = Date.now()
 
   const {
     state: currentPath,

@@ -66,10 +66,8 @@ const Editor = ({ site, currentPath, isLoading, onEdit, onNavigate, className })
     loadComponents()
   }, [])
 
-  const generateId = ({ type, name }) => `${type}--${name}`
-
   const onDragEnd = result => {
-    const section = sections.find(section => generateId(section) === result.draggableId)
+    const section = sections.find(({ uuid }) => uuid === result.draggableId)
 
     onEdit({
       type: REORDER_SECTIONS_ON_PAGE,
@@ -114,41 +112,38 @@ const Editor = ({ site, currentPath, isLoading, onEdit, onNavigate, className })
                     ref={provided.innerRef}
                     {...provided.droppableProps}
                   >
-                    {sections.map((section, index) => {
-                      const id = generateId(section)
-                      return (
-                        <PreviewCard
-                          key={id}
-                          id={id}
-                          index={index}
-                          name={
-                            section.name ||
-                            toCapitalCase(section.type)
-                          }
-                          onClick={() =>
-                            setActiveSectionIndex(index)
-                          }
-                          onDelete={() => {
-                            onEdit({
-                              type: REMOVE_SECTION_FROM_PAGE,
-                              target: {
-                                page: currentPage,
-                                section
-                              }
-                            })
-                          }}
-                          onDuplicate={() => {
-                            onEdit({
-                              type: DUPLICATE_SECTION_ON_PAGE,
-                              target: {
-                                page: currentPage,
-                                section
-                              }
-                            })
-                          }}
-                        />
-                      )
-                    })}
+                    {sections.map((section, index) => (
+                      <PreviewCard
+                        key={section.uuid}
+                        id={section.uuid}
+                        index={index}
+                        name={
+                          section.name ||
+                          toCapitalCase(section.type)
+                        }
+                        onClick={() =>
+                          setActiveSectionIndex(index)
+                        }
+                        onDelete={() => {
+                          onEdit({
+                            type: REMOVE_SECTION_FROM_PAGE,
+                            target: {
+                              page: currentPage,
+                              section
+                            }
+                          })
+                        }}
+                        onDuplicate={() => {
+                          onEdit({
+                            type: DUPLICATE_SECTION_ON_PAGE,
+                            target: {
+                              page: currentPage,
+                              section
+                            }
+                          })
+                        }}
+                      />
+                    ))}
                     {provided.placeholder}
                   </div>
                 )}

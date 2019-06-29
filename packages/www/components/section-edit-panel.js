@@ -3,10 +3,11 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 
 import { toCapitalCase } from '@layouthq/util'
 import {
+  DUPLICATE_COMPONENT_IN_SECTION,
   REORDER_COMPONENTS_IN_SECTION,
   REMOVE_COMPONENT_FROM_SECTION,
   UPDATE_SECTION_METADATA,
-  UPDATE_SECTION_PROPS
+  UPDATE_SECTION_PROPS,
 } from '../reducers/site'
 import { H2, H3, Label } from './typography'
 import Button from '../components/button'
@@ -32,10 +33,8 @@ const SectionEditPanel = ({
   const activeComponent =
     activeComponentIndex !== undefined ? components[activeComponentIndex] : null
 
-  const generateId = ({ name }, index) => `${name}--${index}`
-
   const onDragEnd = result => {
-    const component = components.find(component => generateId(component) === result.draggableId)
+    const component = components.find(({ uuid }) => uuid === result.draggableId)
 
     onEdit({
       type: REORDER_COMPONENTS_IN_SECTION,
@@ -85,28 +84,35 @@ const SectionEditPanel = ({
               <Droppable droppableId="components">
                 {({ droppableProps, innerRef, placeholder }) => (
                   <div ref={innerRef} {...droppableProps}>
-                    {components.map((component, index) => {
-                      const id = generateId(component)
-                      return (
-                        <PreviewCard
-                          key={id}
-                          id={id}
-                          index={index}
-                          name={toCapitalCase(component.name)}
-                          onClick={() => setActiveComponentIndex(index)}
-                          onDelete={() => {
-                            onEdit({
-                              type: REMOVE_COMPONENT_FROM_SECTION,
-                              target: {
-                                page: currentPage,
-                                section: currentSection,
-                                component
-                              }
-                            })
-                          }}
-                        />
-                      )
-                    })}
+                    {components.map((component, index) => (
+                      <PreviewCard
+                        key={component.uuid}
+                        id={component.uuid}
+                        index={index}
+                        name={toCapitalCase(component.name)}
+                        onClick={() => setActiveComponentIndex(index)}
+                        onDelete={() => {
+                          onEdit({
+                            type: REMOVE_COMPONENT_FROM_SECTION,
+                            target: {
+                              page: currentPage,
+                              section,
+                              component
+                            }
+                          })
+                        }}
+                        onDuplicate={() => {
+                          onEdit({
+                            type: DUPLICATE_COMPONENT_IN_SECTION,
+                            target: {
+                              page: currentPage,
+                              section,
+                              component
+                            }
+                          })
+                        }}
+                      />
+                    ))}
                     {placeholder}
                   </div>
                 )}

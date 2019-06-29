@@ -1,8 +1,20 @@
 import _ from 'lodash'
+import uuid from 'uuid/v4'
 
 export const capitalise = ([first, ...rest]) => first.toUpperCase() + rest.join('').toLowerCase()
 
+export const generateComponentUUIDs = component => ({
+  ...component,
+  uuid: uuid()
+})
+
 export const generateFilePath = path => path.replace(/\/$/, '/index').concat('.html')
+
+export const generateSectionUUIDs = section => ({
+  ...section,
+  uuid: uuid(),
+  components: section.components ? section.components.map(generateComponentUUIDs) : undefined
+})
 
 export const isAbsoluteUrl = string => /^[a-z][a-z\d+.-]*:/.test(string)
 
