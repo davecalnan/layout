@@ -1,6 +1,7 @@
 [
   {
-    "name": "heading",
+    "id": 1,
+    "type": "heading",
     "description": "A heading element. Use this to label sections.",
     "propTypes": {
       "text": {
@@ -17,7 +18,8 @@
     }
   },
   {
-    "name": "text",
+    "id": 2,
+    "type": "text",
     "description": "Use this for one or more paragraphs. Accepts markdown syntax.",
     "propTypes": {
       "markdown": {
@@ -30,7 +32,7 @@
   },
   {
     "id": 3,
-    "name": "button",
+    "type": "button",
     "description": "A button. Press it.",
     "propTypes": {
       "text": {
@@ -55,7 +57,7 @@
   },
   {
     "id": 4,
-    "name": "image",
+    "type": "image",
     "description": "An image of your choice.",
     "propTypes": {
       "url": {
@@ -80,9 +82,15 @@
   },
   {
     "id": 5,
-    "name": "emailSignup",
+    "type": "emailSignup",
     "description": "Capture a potential customer's email.",
     "propTypes": {
+      "name": {
+        "type": "string"
+      },
+      "action": {
+        "type": "string"
+      },
       "buttonText": {
         "type": "string"
       },
@@ -101,10 +109,37 @@
       }
     },
     "defaultProps": {
+      "name": "Email Signup",
+      "action": "",
       "buttonText": "Submit",
       "buttonType": "primary",
       "label": "Keep up to date with us:",
       "placeholderText": "your@email.com"
+    }
+  },
+  {
+    "id": 6,
+    "type": "form",
+    "description": "Receive submissions from your users.",
+    "propTypes": {
+      "fields": {
+        "type": "fields"
+      },
+      "name": {
+        "type": "string"
+      },
+      "action": {
+        "type": "string"
+      },
+      "redirectAfterSubmit": {
+        "type": "string"
+      }
+    },
+    "defaultProps": {
+      "fields": [],
+      "name": "Form",
+      "action": "",
+      "redirectAfterSubmit": ""
     }
   }
 ]

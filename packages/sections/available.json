@@ -1,11 +1,12 @@
 [
   {
+    "id": 1,
     "type": "banner",
     "description": "The main attraction on this particular page",
     "defaultComponents": [
       {
         "id": 1,
-        "name": "heading",
+        "type": "heading",
         "props": {
           "text": "Add a heading",
           "level": 1
@@ -13,14 +14,14 @@
       },
       {
         "id": 2,
-        "name": "text",
+        "type": "text",
         "props": {
           "markdown": "Use this element as the main attraction on this page. Edit this text to explain what your website is about in 2-3 sentences."
         }
       },
       {
         "id": 3,
-        "name": "button",
+        "type": "button",
         "props": {
           "text": "Get started",
           "link": "#get-started",
@@ -29,7 +30,7 @@
       },
       {
         "id": 3,
-        "name": "button",
+        "type": "button",
         "props": {
           "text": "Learn more",
           "link": "#learn-more",
@@ -55,12 +56,13 @@
     }
   },
   {
+    "id": 2,
     "type": "spotlight",
     "description": "Call attention to a feature or piece of information",
     "defaultComponents": [
       {
         "id": 1,
-        "name": "heading",
+        "type": "heading",
         "props": {
           "text": "Edit this heading",
           "level": 2
@@ -68,14 +70,14 @@
       },
       {
         "id": 2,
-        "name": "text",
+        "type": "text",
         "props": {
           "markdown": "Use this element to highlight something important — a feature, benefit, or whatever. Change the image to whatever you'd like and get rid of the button if you're not using it."
         }
       },
       {
         "id": 3,
-        "name": "button",
+        "type": "button",
         "props": {
           "text": "Learn more",
           "link": "#learn-more",
@@ -101,6 +103,7 @@
     }
   },
   {
+    "id": 3,
     "type": "footer",
     "description": "It's not the head, it's not the body, it's the footer",
     "propTypes": {
@@ -113,12 +116,13 @@
     }
   },
   {
+    "id": 4,
     "type": "callToAction",
     "description": "Direct your visitors to a particular goal.",
     "defaultComponents": [
       {
         "id": 1,
-        "name": "heading",
+        "type": "heading",
         "props": {
           "text": "Edit this heading",
           "level": 2
@@ -126,8 +130,10 @@
       },
       {
         "id": 5,
-        "name": "emailSignup",
+        "type": "emailSignup",
         "props": {
+          "name": "Email Signup",
+          "action": "action",
           "buttonText": "Submit",
           "buttonType": "primary",
           "label": "Keep up to date with us:",
