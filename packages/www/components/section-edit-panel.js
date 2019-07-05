@@ -13,6 +13,7 @@ import { H2, H3, Label } from './typography'
 import Button from '../components/button'
 import { makeInputComponent } from './form-controls'
 import ComponentEditPanel from './component-edit-panel'
+import FormEditPanel from './form-edit-panel'
 import PreviewCard from './preview-card'
 import AddNewButton from './add-new-button'
 import AddAComponent from './modals/add-a-component'
@@ -53,17 +54,27 @@ const SectionEditPanel = ({
     */
     if (activeComponent) {
       const activeComponentPropTypes = (availableComponents.find(({ id }) => id === activeComponent.id) || {}).propTypes
-      return (
-        <>
-          <ComponentEditPanel
+      if (activeComponent.type === 'form') {
+        return (
+          <FormEditPanel
             currentPage={currentPage}
             currentSection={section}
-            component={activeComponent}
-            componentPropTypes={activeComponentPropTypes}
+            form={activeComponent}
+            formPropTypes={activeComponentPropTypes}
             onEdit={onEdit}
             onBack={() => setActiveComponentIndex()}
           />
-        </>
+        )
+      }
+      return (
+        <ComponentEditPanel
+          currentPage={currentPage}
+          currentSection={section}
+          component={activeComponent}
+          componentPropTypes={activeComponentPropTypes}
+          onEdit={onEdit}
+          onBack={() => setActiveComponentIndex()}
+        />
       )
     }
     /*
@@ -89,7 +100,7 @@ const SectionEditPanel = ({
                         key={component.uuid}
                         id={component.uuid}
                         index={index}
-                        name={toCapitalCase(component.name)}
+                        name={component.props.name || toCapitalCase(component.type)}
                         onClick={() => setActiveComponentIndex(index)}
                         onDelete={() => {
                           onEdit({
@@ -187,7 +198,7 @@ const SectionEditPanel = ({
     )
   }
 
-  return <>{determineContent(activeComponent)}</>
+  return determineContent(activeComponent)
 }
 
 export default SectionEditPanel

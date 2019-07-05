@@ -43,6 +43,7 @@ const form = {
 }
 
 const PropTypes = {
+  array,
   boolean,
   form,
   oneOf,

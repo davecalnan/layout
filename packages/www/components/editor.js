@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import styled from 'styled-components'
 import tw from 'tailwind.macro'
-import axios from 'axios'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
+import availableSections from '../../sections/available.json'
+import availableComponents from '../../components/available.json'
 
 import { toCapitalCase, toSentenceCase } from '@layouthq/util'
 import {
@@ -29,9 +30,7 @@ const Editor = ({ site, currentPath, isLoading, onEdit, onNavigate, className })
     </div>
   )
   const { pages, subdomain } = site
-  const [activeSectionIndex, setActiveSectionIndex] = useState()
-  const [availableSections, setAvailableSections] = useState([])
-  const [availableComponents, setAvailableComponents] = useState([])
+  const [activeSectionIndex, setActiveSectionIndex] = useState(0)
   const [modalContent, setModalContent] = useState(null)
 
   const currentPage = pages.find(({ path }) => path === currentPath)
@@ -46,25 +45,6 @@ const Editor = ({ site, currentPath, isLoading, onEdit, onNavigate, className })
   const siteDetails = {
     subdomain
   }
-
-  useEffect(() => {
-    const loadSections = async () => {
-      const { data } = await axios.get(`${process.env.API_BASE}/sections`)
-      const sections = data.data
-
-      setAvailableSections(sections)
-    }
-
-    const loadComponents = async () => {
-      const { data } = await axios.get(`${process.env.API_BASE}/components`)
-      const components = data.data
-
-      setAvailableComponents(components)
-    }
-
-    loadSections()
-    loadComponents()
-  }, [])
 
   const onDragEnd = result => {
     const section = sections.find(({ uuid }) => uuid === result.draggableId)
