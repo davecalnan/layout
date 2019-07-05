@@ -13,7 +13,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@layouthq/components": "^0.1.14",
     "@layouthq/renderer": "0.1.14",
     "@layouthq/util": "0.1.14",
     "@zeit/next-css": "1.0.1",
