@@ -3,14 +3,35 @@ import PropTypes from '@layouthq/prop-types'
 import { styled } from '@layouthq/renderer'
 import tw from 'tailwind.macro'
 
-const Form = ({ name, action, label, placeholderText, className }) => (
+const InputGroup = ({ name, type, label, placeholder, defaultValue, required }) => (
+  <>
+    {label && <label htmlFor={name}>{label}</label>}
+    <input type={type} name={name} placeholder={placeholder} defaultValue={defaultValue} required={required} />
+  </>
+)
+
+const Form = ({ name, action, afterSubmit, fields, className }) => (
   <form className={className} action={action} method="post">
     <input type="hidden" name="form-name" value={name} />
-    {label && <label htmlFor="email">{label}</label>}
-    <div>
-      <input type="email" name="email" placeholder={placeholderText} required />
-      <button type="submit">Submit</button>
-    </div>
+    <input
+      type="hidden"
+      name="after-submit"
+      value={JSON.stringify(afterSubmit)}
+    />
+    {fields.map(
+      ({ uuid, name, type, label, placeholder, defaultValue, required }) => (
+        <InputGroup
+          key={uuid}
+          name={name}
+          type={type}
+          label={label}
+          placeholder={placeholder}
+          defaultValue={defaultValue}
+          required={required}
+        />
+      )
+    )}
+    <button type="submit">Submit</button>
   </form>
 )
 
@@ -25,41 +46,41 @@ export default styled(Form)`
 ${tw`inline-block max-w-full mb-6 mr-4`}
 ${({ theme }) => theme.typography.body}
 
-  & > label {
+  & label {
     ${tw`block mb-2`}
   }
 
-  & > div {
-    ${tw`flex`}
+  & input {
+    ${tw`flex-1 rounded-full border overflow-x-hidden py-3 px-4 sm:px-6 mb-4`}
+    border-color: ${({ theme }) => theme.colors.primary.base};
 
-    & > input {
-      ${tw`flex-1 rounded-l-full border overflow-x-hidden py-3 px-4 sm:px-6`}
-      border-color: ${({ theme, buttonType }) => theme.colors[buttonType].base};
-
-      &:hover {
-        background-color: ${({ theme }) => theme.colors.secondary.hover};
-      }
-
-      &:focus {
-        ${tw`outline-none shadow-outline`}
-      }
+    &:hover {
+      background-color: ${({ theme }) => theme.colors.secondary.hover};
     }
 
-    & > button {
-      ${tw`text-xs rounded-r-full uppercase tracking-wider py-3 px-4 sm:px-6`}
-      background-color: ${({ theme, buttonType }) =>
-        theme.colors[buttonType].base};
-      border-color: ${({ theme, buttonType }) => theme.colors[buttonType].base};
-      color: ${({ theme, buttonType }) => theme.colors[buttonType].text};
+    &:focus {
+      ${tw`outline-none shadow-outline`}
+    }
 
-      &:hover {
-        background-color: ${({ theme, buttonType }) =>
-          theme.colors[buttonType].hover};
-      }
+    &:last-of-type {
+      ${tw`mb-6`}
+    }
+  }
 
-      &:focus {
-        ${tw`outline-none shadow-outline`}
-      }
+  & button {
+    ${tw`block text-xs rounded-full uppercase tracking-wider py-4 px-8`}
+    background-color: ${({ theme }) =>
+      theme.colors.primary.base};
+    border-color: ${({ theme }) => theme.colors.primary.base};
+    color: ${({ theme }) => theme.colors.primary.text};
+
+    &:hover {
+      background-color: ${({ theme }) =>
+        theme.colors.primary.hover};
+    }
+
+    &:focus {
+      ${tw`outline-none shadow-outline`}
     }
   }
 `
