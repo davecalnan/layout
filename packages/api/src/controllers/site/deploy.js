@@ -37,7 +37,7 @@ const saveNetlifyDetails = async (sites, { id }, netlifySite) => {
     {
       $set: {
         netlify: {
-          siteId: netlifySite.site_id,
+          siteId: netlifySite.id,
           name: netlifySite.name,
           domain: `${netlifySite.name}.netlify.com`
         }
