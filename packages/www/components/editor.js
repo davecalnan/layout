@@ -30,7 +30,7 @@ const Editor = ({ site, currentPath, isLoading, onEdit, onNavigate, className })
     </div>
   )
   const { pages, subdomain } = site
-  const [activeSectionIndex, setActiveSectionIndex] = useState(0)
+  const [activeSectionIndex, setActiveSectionIndex] = useState()
   const [modalContent, setModalContent] = useState(null)
 
   const currentPage = pages.find(({ path }) => path === currentPath)
