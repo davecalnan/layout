@@ -6,11 +6,9 @@ import tw from 'tailwind.macro'
 const Banner = ({ imageSource, children, id, className }) => (
   <section id={id} className={className}>
     <div>
-      <div>
-        {children}
-      </div>
+      <div>{children}</div>
     </div>
-    <img src={imageSource} />
+    <div style={{ backgroundImage: `url(${imageSource})` }} />
   </section>
 )
 
@@ -24,13 +22,13 @@ Banner.defaultProps = {
 }
 
 export default styled(Banner)`
-${tw`flex flex-col-reverse w-full border-b sm:h-screen`}
+${tw`flex flex-col-reverse w-full border-b sm:min-h-screen sm:h-full`}
 ${({ imagePosition }) => imagePosition === 'left' && tw`sm:flex-row-reverse`}
 ${({ imagePosition }) => imagePosition === 'right' && tw`sm:flex-row`}
 background-color: ${({ theme }) => theme.colors.background.base};
 border-color: ${({ theme }) => theme.colors.border.base};
 
-  & > div {
+  & > div:first-child {
     ${tw`flex flex-col justify-center sm:w-1/2 sm:h-full`}
 
     & > div {
@@ -38,7 +36,8 @@ border-color: ${({ theme }) => theme.colors.border.base};
     }
   }
 
-  & > img {
-    ${tw`h-64 w-full object-cover bg-gray-300 sm:w-1/2 sm:h-full`}
+  & > div:last-child {
+    ${tw`h-64 bg-cover bg-center bg-gray-300 sm:w-1/2 sm:h-auto`}
+    min-width: '20rem';
   }
 `

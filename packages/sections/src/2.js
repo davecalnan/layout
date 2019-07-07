@@ -22,11 +22,11 @@ Spotlight.defaultProps = {
 }
 
 export default styled(Spotlight)`
-  ${tw`flex flex-col-reverse w-full border-b`}
-  ${({ imagePosition }) =>
-    imagePosition === 'left' ? tw`sm:flex-row-reverse` : tw`sm:flex-row`}
-  background-color: ${({ theme }) => theme.colors.background.base};
-  border-color: ${({ theme }) => theme.colors.border.base};
+${tw`flex flex-col-reverse w-full border-b`}
+${({ imagePosition }) => imagePosition === 'left' && tw`sm:flex-row-reverse`}
+${({ imagePosition }) => imagePosition === 'right' && tw`sm:flex-row`}
+background-color: ${({ theme }) => theme.colors.background.base};
+border-color: ${({ theme }) => theme.colors.border.base};
 
   & > div:first-child {
     ${tw`flex flex-col justify-center sm:w-2/3`}
