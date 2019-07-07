@@ -13,8 +13,7 @@ const netlify = new Netlify(process.env.NETLIFY_API_KEY)
 
 const createNetlifySite = async ({ id, subdomain }) => {
   try {
-    console.log('Creating new site on Netlify.')
-    const netlifySite = await netlify.createSite({
+    return await netlify.createSite({
       body: {
         name: `layout-${process.env.NODE_ENV}-${id}`,
         custom_domain: `${subdomain}.onlayout.co`,
@@ -25,14 +24,12 @@ const createNetlifySite = async ({ id, subdomain }) => {
         }
       }
     })
-    return netlifySite
   } catch (error) {
     console.error('Could not create site with Netlify:', error.message)
   }
 }
 
 const saveNetlifyDetails = async (sites, { id }, netlifySite) => {
-  console.log('netlify site:', netlifySite)
   const { value } = await sites.findOneAndUpdate(
     { id: Number(id) },
     {
