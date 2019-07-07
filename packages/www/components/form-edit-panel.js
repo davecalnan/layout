@@ -15,7 +15,7 @@ const FormEditPanel = ({ currentPage, currentSection, form, formPropTypes = {}, 
         </div>
         <H2 className="px-4">{toCapitalCase(type)}</H2>
         <section>
-          <H3 className="mb-4">Form Properties</H3>
+          <H3 className="mb-4">Properties</H3>
           {Object.entries(formPropTypes).map(([propName, propType]) => {
             const InputComponent = makeInputComponent(propType, {
               value: props[propName],
@@ -25,7 +25,7 @@ const FormEditPanel = ({ currentPage, currentSection, form, formPropTypes = {}, 
                   target: {
                     page: currentPage,
                     section: currentSection,
-                    form
+                    component: form
                   },
                   payload: {
                     [propName]: event.target.value
