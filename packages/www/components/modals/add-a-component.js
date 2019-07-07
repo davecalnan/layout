@@ -14,7 +14,7 @@ const AddAComponent = ({ availableComponents, currentPage, currentSection, onEdi
       >
         {availableComponents.map((component, index) => (
           <button
-            key={`${index}-${component.name}`}
+            key={`${index}-${component.type}`}
             className="bg-white rounded shadow text-left mr-4 mb-4"
             onClick={() => {
               onEdit({
@@ -25,7 +25,7 @@ const AddAComponent = ({ availableComponents, currentPage, currentSection, onEdi
                 },
                 payload: {
                   id: component.id,
-                  name: component.name,
+                  type: component.type,
                   props: component.defaultProps
                 }
               })
@@ -37,7 +37,7 @@ const AddAComponent = ({ availableComponents, currentPage, currentSection, onEdi
               className="w-full block rounded-t"
             />
             <div className="px-4 py-2">
-              <P>{toCapitalCase(component.name)}</P>
+              <P>{toCapitalCase(component.type)}</P>
               <Small>{component.description}</Small>
             </div>
           </button>
