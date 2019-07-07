@@ -20,13 +20,13 @@
     "@babel/core": "7.4.5",
     "@babel/plugin-transform-react-jsx": "7.3.0",
     "@babel/preset-env": "7.4.5",
-    "babel-plugin-macros": "2.6.1",
-    "tailwind.macro": "1.0.0-alpha.10"
+    "babel-plugin-macros": "2.6.1"
   },
   "dependencies": {
     "@layouthq/prop-types": "0.1.16",
     "@layouthq/renderer": "0.1.16",
     "react": "16.8.6",
-    "react-markdown": "4.0.8"
+    "react-markdown": "4.0.8",
+    "tailwind.macro": "1.0.0-alpha.10"
   }
 }
