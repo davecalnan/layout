@@ -39,7 +39,9 @@ const Editor = ({ site, currentPath, isLoading, onEdit, onNavigate, className })
 
   const pageDetails = {
     name: currentPage.name,
-    path: currentPage.path
+    path: currentPage.path,
+    title: currentPage.title,
+    description: currentPage.description
   }
 
   const siteDetails = {

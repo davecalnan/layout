@@ -99,8 +99,10 @@ export const renderPageToHTML = (page, options) => {
   const prettyCSS = processCSS(styles.join(''))
 
   const html = ReactDOMServer.renderToStaticMarkup(
-    <html>
+    <html lang="en">
       <head>
+        <title>{page.title}</title>
+        <meta name="description" content={page.description} />
         <meta content="width=device-width, initial-scale=1" name="viewport" />
         <link href="https://fonts.googleapis.com/css?family=Special+Elite&display=swap" rel="stylesheet" />
       </head>
