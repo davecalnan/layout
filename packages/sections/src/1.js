@@ -29,7 +29,7 @@ background-color: ${({ theme }) => theme.colors.background.base};
 border-color: ${({ theme }) => theme.colors.border.base};
 
   & > div:first-child {
-    ${tw`flex flex-col justify-center sm:w-1/2 sm:h-full`}
+    ${tw`flex flex-col justify-center sm:w-1/2 sm:min-h-screen sm:h-full`}
 
     & > div {
       ${tw`p-12`}
