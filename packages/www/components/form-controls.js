@@ -28,6 +28,8 @@ export const makeInputComponent = (propType, props) => {
           ))}
         </Select>
       )
+    case 'json':
+      return <pre>{JSON.stringify(props.value, null, 2)}</pre>
     default:
       return '¯\\_(ツ)_/¯'
   }

@@ -123,7 +123,7 @@
     "description": "Receive submissions from your users.",
     "propTypes": {
       "fields": {
-        "type": "fields"
+        "type": "json"
       },
       "name": {
         "type": "string"
@@ -131,8 +131,8 @@
       "action": {
         "type": "string"
       },
-      "redirectAfterSubmit": {
-        "type": "string"
+      "afterSubmit": {
+        "type": "json"
       }
     },
     "defaultProps": {
