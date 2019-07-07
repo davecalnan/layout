@@ -32,6 +32,7 @@ const createNetlifySite = async ({ id, subdomain }) => {
 }
 
 const saveNetlifyDetails = async (sites, { id }, netlifySite) => {
+  console.log('netlify site:', netlifySite)
   const { value } = await sites.findOneAndUpdate(
     { id: Number(id) },
     {
