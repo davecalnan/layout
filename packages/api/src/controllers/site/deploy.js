@@ -63,7 +63,7 @@ const writeFile = async (filepath, content, config) => {
   const dirname = path.dirname(filepath)
   try {
     await stat(dirname)
-  } catch {
+  } catch (error) {
     await mkdir(dirname, { recursive: true })
   }
 
