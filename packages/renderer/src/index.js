@@ -69,8 +69,6 @@ const buildComponentTree = (page, options = {}) =>
       return <Component {...props} key={uuid()} />
     })
 
-    const _renderId = uuid()
-
     return (
       <Section {...props} key={uuid()} id={name ? toKebabCase(name) : undefined}>
         {children}
