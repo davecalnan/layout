@@ -7,6 +7,7 @@ import {
 } from './middleware'
 import db from './db'
 
+import { controller as userController } from './controllers/user/controller'
 import { controller as siteController } from './controllers/site/controller'
 import { controller as sectionController } from './controllers/section/controller'
 import { controller as componentController } from './controllers/component/controller'
@@ -31,6 +32,7 @@ const start = async () => {
   app.put('*', requestBodyMustNotBeEmpty)
   app.patch('*', requestBodyMustNotBeEmpty)
 
+  app.use('/users', userController)
   app.use('/sites', siteController)
   app.use('/sections', sectionController)
   app.use('/components', componentController)
