@@ -5,6 +5,7 @@ import rimraf from 'rimraf'
 import Netlify from 'netlify'
 import { renderPageToHTML } from '@layouthq/renderer'
 import { generateFilePath } from '@layouthq/util'
+import { authorize, MANAGE_SITE } from '../../auth'
 
 const mkdir = promisify(fs.mkdir)
 const stat = promisify(fs.stat)
@@ -96,9 +97,15 @@ const deploySite = async site => {
   return deployment
 }
 
-export default async ({ db, params }, res) => {
+export default async ({ db, params, authInfo }, res) => {
+  const { id } = params
+
+  if (!authorize(authInfo, [MANAGE_SITE], [Number(id)])) {
+      return res.status(403).send(JSON.stringify({ message: `You are not authorized to deploy site id ${id}.` }))
+    }
+
   const sites = await db.collection('sites')
-  let site = await sites.findOne({ id: Number(params.id) })
+  let site = await sites.findOne({ id: Number(id) })
 
   if (!site.netlify || !site.netlify.siteId) {
     const netlifySite = await createNetlifySite(site)

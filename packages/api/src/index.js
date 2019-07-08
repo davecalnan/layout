@@ -1,6 +1,8 @@
 import express from 'express'
 import cors from 'cors'
 import bodyParser from 'body-parser'
+import passport from 'passport'
+import BearerStrategy from 'passport-http-bearer'
 import {
   setResponseContentTypeToJson,
   requestBodyMustNotBeEmpty
@@ -32,10 +34,37 @@ const start = async () => {
   app.put('*', requestBodyMustNotBeEmpty)
   app.patch('*', requestBodyMustNotBeEmpty)
 
-  app.use('/users', userController)
-  app.use('/sites', siteController)
-  app.use('/sections', sectionController)
-  app.use('/components', componentController)
+  passport.use(
+    new BearerStrategy(async (token, done) => {
+      console.log('token:', token)
+      try {
+        const tokens = await database.collection('tokens')
+        const validToken = await tokens.findOne({ token })
+
+        if (validToken) {
+          const users = await database.collection('users')
+          const user = await users.findOne({ id: validToken.userId })
+
+          if (!user) {
+            return done(null, false)
+          }
+
+          return done(null, user, { scopes: user.scopes })
+        }
+
+        return done(null, false)
+
+      } catch (error) {
+        console.error('Authentication error:', error.message)
+        return done(error)
+      }
+    })
+  )
+
+  app.use('/users', passport.authenticate('bearer', { session: false }), userController)
+  app.use('/sites', passport.authenticate('bearer', { session: false }), siteController)
+  app.use('/sections', passport.authenticate('bearer', { session: false }), sectionController)
+  app.use('/components', passport.authenticate('bearer', { session: false }), componentController)
   app.use('/forms', formController)
 
   app.listen(process.env.PORT, () => console.log(`> Ready on http://localhost:${process.env.PORT}`))
