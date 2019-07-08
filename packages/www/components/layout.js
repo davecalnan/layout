@@ -5,16 +5,17 @@ import tw from 'tailwind.macro'
 import Header from './header'
 import { P } from './typography'
 
-const Layout = ({ headerContent, sidebarContent, children, className }) => (
+const Layout = ({ title, headerContent, sidebarContent, children, className }) => (
   <div className={className}>
     <div className="w-full text-center bg-yellow-200">
       <P>
         <span className="text-base">
-          🚧 Please note this is an early preview release and is definitely full of bugs! 🚧
+          🚧 Please note this is an early preview release and is definitely full
+          of bugs! 🚧
         </span>
       </P>
     </div>
-    <Header content={headerContent} />
+    <Header title={title} content={headerContent} />
     <aside className="min-w-xs overflow-x-hidden overflow-y-scroll bg-gray-100 shadow z-10">
       {sidebarContent}
     </aside>

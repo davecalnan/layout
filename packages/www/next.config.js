@@ -24,6 +24,15 @@ module.exports = withCSS({
       })
     ]
 
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: [
+        {
+          loader: '@svgr/webpack'
+        }
+      ]
+    })
+
     return config
   }
 })
