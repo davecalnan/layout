@@ -1,12 +1,19 @@
 import uuid from 'uuid/v4'
-import { withoutId, withoutInternalKeys } from '@layouthq/util'
+import bcrypt from 'bcrypt'
+import { without, withoutInternalKeys } from '@layouthq/util'
 
 export default async ({ db, body }, res) => {
   try {
+    if (!body.email || !body.password) {
+      return res.status(422).send(JSON.stringify({ message: 'Email & password are required.' }))
+    }
+
+    body.password = await bcrypt.hash(body.password, 10)
+
     const users = await db.collection('users')
     const response = await users.insertOne({
       id: uuid(),
-      ...withoutId(body)
+      ...without(body, 'id')
     })
     const user = response.ops[0]
 

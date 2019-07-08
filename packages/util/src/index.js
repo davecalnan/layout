@@ -93,10 +93,10 @@ export const withoutInternalKeys = data => {
   if (_.isArray(data)) {
     return data.map(item =>
       _.isObject(item) && _.keys(item).length > 0
-        ? without(withoutKeysStartingWithUnderscore(item), 'netlify')
+        ? without(withoutKeysStartingWithUnderscore(item), 'netlify', 'password')
         : item
     )
   }
 
-  return without(withoutKeysStartingWithUnderscore(data), 'netlify')
+  return without(withoutKeysStartingWithUnderscore(data), 'netlify', 'password')
 }

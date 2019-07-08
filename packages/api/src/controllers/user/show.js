@@ -6,7 +6,7 @@ export default async ({ db, params }, res) => {
     const { id } = params
 
     const users = await db.collection('users')
-    const user = await users.findOne({ id: Number(id) })
+    const user = await users.findOne({ id })
     if (_.isEmpty(user)) {
       return res.status(404).send(JSON.stringify({ message: `Could not find user with id ${id}.`}))
     }
