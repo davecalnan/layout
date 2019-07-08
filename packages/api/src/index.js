@@ -36,7 +36,6 @@ const start = async () => {
 
   passport.use(
     new BearerStrategy(async (token, done) => {
-      console.log('token:', token)
       try {
         const tokens = await database.collection('tokens')
         const validToken = await tokens.findOne({ token })
