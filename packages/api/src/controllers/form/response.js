@@ -9,7 +9,7 @@ export default async (req, res) => {
     const sites = await db.collection('sites')
     const site = await sites.findOne({ domain })
 
-    const afterSubmit = JSON.parse(body['after-submit'])
+    const afterSubmit = body['after-submit'] ? JSON.parse(body['after-submit']) : undefined
 
     const formResponses = await db.collection('formResponses')
     await formResponses.insertOne({
