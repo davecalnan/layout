@@ -289,4 +289,22 @@ const BuilderPage = ({ router }) => {
   )
 }
 
+BuilderPage.getInitialProps = ctx => {
+  const { req, res } = ctx
+  const { token } = cookies.get(ctx)
+
+  if (req.params.id !== 'new' && !token) {
+    if (res) {
+      res.writeHead(302, {
+        Location: '/login'
+      })
+      res.end()
+    } else {
+      Router.push('/login')
+    }
+  }
+
+  return {}
+}
+
 export default withRouter(BuilderPage)

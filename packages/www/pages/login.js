@@ -5,13 +5,13 @@ import Link from 'next/link'
 import cookies from 'nookies'
 
 import DefaultLayout from '../components/default-layout'
-import { H1, Small, Label } from '../components/typography'
+import { H1, Label } from '../components/typography'
 import { Input } from '../components/form-controls'
 import Button from '../components/button'
 
 const LoginForm = ({ className }) => {
-  const [email, setEmail] = useState()
-  const [password, setPassword] = useState()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [error, setError] = useState()
 
   const handleSubmit = async event => {
@@ -70,13 +70,13 @@ const LoginPage = () => (
       <div className="absolute left-0 p-4 sm:static sm:left-auto sm:p-0">
         <div className="border bg-white px-8 py-12 sm:px-12 md:p-16 lg:p-20 xl:p-24">
           <H1>Welcome back</H1>
-          <div className="mt-2 text-sm">
+          {/* <div className="mt-2 text-sm">
             Don't have an account?
             {' '}
             <Link href="/sites/new/builder">
               <a className="text-blue-500 underline">Start here.</a>
             </Link>
-          </div>
+          </div> */}
           <LoginForm className="mt-6" />
         </div>
       </div>
