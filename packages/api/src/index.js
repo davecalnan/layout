@@ -10,6 +10,7 @@ import {
 import db from './db'
 
 import { controller as userController } from './controllers/user/controller'
+import { controller as authController } from './controllers/auth/controller'
 import { controller as siteController } from './controllers/site/controller'
 import { controller as sectionController } from './controllers/section/controller'
 import { controller as componentController } from './controllers/component/controller'
@@ -61,6 +62,7 @@ const start = async () => {
   )
 
   app.use('/users', passport.authenticate('bearer', { session: false }), userController)
+  app.use('/auth', authController)
   app.use('/sites', passport.authenticate('bearer', { session: false }), siteController)
   app.use('/sections', passport.authenticate('bearer', { session: false }), sectionController)
   app.use('/components', passport.authenticate('bearer', { session: false }), componentController)
