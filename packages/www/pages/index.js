@@ -16,7 +16,7 @@ const Dashboard = () => (
   >
     <div className="p-8">
       <H2 className="mb-4">Your sites</H2>
-      <Link as="/sites/1/builder" href="/builder?siteId=1">
+      <Link as="/sites/2/builder" href="/builder?siteId=2">
         <a className="text-lg text-blue-500 underline">
           Go to your site &rarr;
         </a>
