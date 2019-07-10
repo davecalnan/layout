@@ -10,8 +10,8 @@ import { Input } from '../components/form-controls'
 import Button from '../components/button'
 
 const LoginForm = ({ className }) => {
-  const [email, setEmail] = useState('dave@onlayout.co')
-  const [password, setPassword] = useState('password')
+  const [email, setEmail] = useState()
+  const [password, setPassword] = useState()
   const [error, setError] = useState()
 
   const handleSubmit = async event => {
