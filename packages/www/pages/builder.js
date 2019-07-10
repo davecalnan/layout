@@ -290,10 +290,11 @@ const BuilderPage = ({ router }) => {
 }
 
 BuilderPage.getInitialProps = ctx => {
-  const { req, res } = ctx
+  const { query, res } = ctx
   const { token } = cookies.get(ctx)
+  console.log('query:', query)
 
-  if (req.params.id !== 'new' && !token) {
+  if (query.siteId !== 'new' && !token) {
     if (res) {
       res.writeHead(302, {
         Location: '/login'

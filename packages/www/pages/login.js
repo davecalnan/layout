@@ -70,13 +70,13 @@ const LoginPage = () => (
       <div className="absolute left-0 p-4 sm:static sm:left-auto sm:p-0">
         <div className="border bg-white px-8 py-12 sm:px-12 md:p-16 lg:p-20 xl:p-24">
           <H1>Welcome back</H1>
-          {/* <div className="mt-2 text-sm">
+          <div className="mt-2 text-sm">
             Don't have an account?
             {' '}
             <Link href="/sites/new/builder">
               <a className="text-blue-500 underline">Start here.</a>
             </Link>
-          </div> */}
+          </div>
           <LoginForm className="mt-6" />
         </div>
       </div>

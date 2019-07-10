@@ -5,31 +5,35 @@
       "path": "/",
       "sections": [
         {
+          "uuid": "47057956-5083-4b74-9cac-be97f8fe98c8",
           "id": 1,
           "type": "banner",
           "props": {
-            "imageSource": "https://source.unsplash.com/featured/?landscape,green,hills",
+            "imageSource": "https://images.unsplash.com/photo-1438786657495-640937046d18?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80",
             "imagePosition": "right"
           },
           "components": [
             {
+              "uuid": "cfd7dd2e-2eec-4609-8589-8fcf94237d4a",
               "id": 1,
-              "name": "heading",
+              "type": "heading",
               "props": {
                 "text": "Edit this text",
                 "level": 1
               }
             },
             {
+              "uuid": "c2c843ab-aed9-4501-9233-90d91831d1ae",
               "id": 2,
-              "name": "text",
+              "type": "text",
               "props": {
                 "markdown": "Using the panel on the left, type whatever you want. It updates in real time. When you're finished, click the Save button and once it's deployed click the **View →** button to see the live site."
               }
             },
             {
+              "uuid": "cc855b4d-96f6-4ea3-a673-9f7fc4d3e91b",
               "id": 3,
-              "name": "button",
+              "type": "button",
               "props": {
                 "text": "Get started",
                 "link": "#get-started",
@@ -37,8 +41,9 @@
               }
             },
             {
+              "uuid": "ac2cc3e7-dcb5-4879-9d91-a890cab7dd1f",
               "id": 3,
-              "name": "button",
+              "type": "button",
               "props": {
                 "text": "Learn more",
                 "link": "#learn-more",
@@ -48,31 +53,35 @@
           ]
         },
         {
+          "uuid": "c234dcb1-4898-472d-9280-c2e69498ce4d",
           "id": 2,
           "type": "spotlight",
           "props": {
-            "imageSource": "https://source.unsplash.com/featured/?girl,camera",
+            "imageSource": "https://images.unsplash.com/photo-1438109491414-7198515b166b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80",
             "imagePosition": "left"
           },
           "components": [
             {
+              "uuid": "cc6d57b5-2577-40f8-bc3b-298706911802",
               "id": 1,
-              "name": "heading",
+              "type": "heading",
               "props": {
                 "text": "Spotlight",
                 "level": 2
               }
             },
             {
+              "uuid": "adae7fb5-ea39-4ce6-9dba-91db730932ff",
               "id": 2,
-              "name": "text",
+              "type": "text",
               "props": {
-                "markdown": "This is a Spotlight element, and it's generally used – as its name implies – to spotlight a particular feature, subject, or pretty much whatever. You can customize its style, scheme, color, orientation, content alignment, and image position, as well as assign it an optional onload or onscroll transition modifier (details)."
+                "markdown": "This is a Spotlight element, and it's generally used – as its name implies – to spotlight a particular feature, subject, or pretty much whatever."
               }
             },
             {
+              "uuid": "8fb20edc-1137-426c-b9b7-3ba6ef7912ca",
               "id": 3,
-              "name": "button",
+              "type": "button",
               "props": {
                 "text": "Learn more",
                 "link": "#learn-more",
@@ -82,31 +91,35 @@
           ]
         },
         {
+          "uuid": "d3df9998-7edd-4209-8234-cc1dd2ababe7",
           "id": 2,
           "type": "spotlight",
           "props": {
-            "imageSource": "https://source.unsplash.com/featured/?fox,snow",
+            "imageSource": "https://images.unsplash.com/photo-1480775661506-541bb9d526b6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1052&q=80",
             "imagePosition": "right"
           },
           "components": [
             {
+              "uuid": "c078df9e-0cb9-4d02-9b4c-666900ea3d61",
               "id": 1,
-              "name": "heading",
+              "type": "heading",
               "props": {
                 "text": "Spotlight",
                 "level": 2
               }
             },
             {
+              "uuid": "a80d19d0-1fd9-4568-b0de-3f54740cfcf4",
               "id": 2,
-              "name": "text",
+              "type": "text",
               "props": {
-                "markdown": "This is also a Spotlight element, and it's here because this demo would look a bit empty with just one spotlight. Like all spotlights, you can customize its style, scheme, color, orientation, content alignment, and image position, as well as assign it an optional onload or onscroll transition modifier (details)."
+                "markdown": "This is also a Spotlight element, and it's here because this demo would look a bit empty with just one spotlight."
               }
             },
             {
+              "uuid": "40234367-6a74-4a5c-902a-0a19a2bbe616",
               "id": 3,
-              "name": "button",
+              "type": "button",
               "props": {
                 "text": "Learn more",
                 "link": "#learn-more",
@@ -116,31 +129,35 @@
           ]
         },
         {
+          "uuid": "9047cde7-1cd6-4581-b7fc-fa2b8703de58",
           "id": 2,
           "type": "spotlight",
           "props": {
-            "imageSource": "https://source.unsplash.com/featured/?city,sunset,skyline",
+            "imageSource": "https://images.unsplash.com/photo-1495916793609-98f17d076d04?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1059&q=80",
             "imagePosition": "left"
           },
           "components": [
             {
+              "uuid": "579d2cfc-6213-4147-992f-57c2b8ef640c",
               "id": 1,
-              "name": "heading",
+              "type": "heading",
               "props": {
                 "text": "Spotlight",
                 "level": 2
               }
             },
             {
+              "uuid": "1aff2d07-2378-4ca4-ab84-246d1b5d537d",
               "id": 2,
-              "name": "text",
+              "type": "text",
               "props": {
-                "markdown": "And yes, this is another Spotlight element, and it's also here because I need to fill a bit of space. Naturally, like any other spotlight, you can customize its style, scheme, color, orientation, content alignment, and image position, as well as assign it an optional onload or onscroll transition modifier (details)."
+                "markdown": "And yes, this is another Spotlight element, and it's also here because I need to fill a bit of space."
               }
             },
             {
+              "uuid": "f634337b-9c4d-4255-8e79-5dbeadf8631e",
               "id": 3,
-              "name": "button",
+              "type": "button",
               "props": {
                 "text": "Learn more",
                 "link": "#learn-more",
@@ -150,8 +167,9 @@
           ]
         },
         {
+          "uuid": "82836974-200f-4261-83b2-07dd21e7bb96",
           "id": 3,
-          "name": "footer",
+          "type": "footer",
           "props": {
             "copyrightText": "© 2019"
           }
@@ -192,43 +210,6 @@
       },
       "body": {
         "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji"
-      }
-    }
-  },
-  "theme2": {
-    "colors": {
-      "primary": {
-        "base": "#2d3748",
-        "hover": "#1a202c",
-        "text": "#ffffff"
-      },
-      "secondary": {
-        "base": "#ffffff",
-        "hover": "#f7fafc",
-        "text": "#000000"
-      },
-      "background": {
-        "base": "#f6e6df"
-      },
-      "border": {
-        "base": "#2d3748"
-      },
-      "text": {
-        "base": "#000000",
-        "white": "#ffffff"
-      },
-      "link" : {
-        "base": "#4299e1",
-        "visited": "#9f7aea"
-      }
-    },
-    "typography": {
-      "headings": {
-        "fontFamily": "Special Elite,Constantia,Lucida Bright,Lucidabright,Lucida Serif,Lucida,DejaVu Serif,Bitstream Vera Serif,Liberation Serif,Georgia,serif",
-        "fontWeight": "700"
-      },
-      "body": {
-        "fontFamily": "Special Elite,Constantia,Lucida Bright,Lucidabright,Lucida Serif,Lucida,DejaVu Serif,Bitstream Vera Serif,Liberation Serif,Georgia,serif"
       }
     }
   }
