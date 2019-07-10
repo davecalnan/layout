@@ -292,7 +292,6 @@ const BuilderPage = ({ router }) => {
 BuilderPage.getInitialProps = ctx => {
   const { query, res } = ctx
   const { token } = cookies.get(ctx)
-  console.log('query:', query)
 
   if (query.siteId !== 'new' && !token) {
     if (res) {
