@@ -25,6 +25,7 @@
     "express": "4.17.1",
     "graphql-request": "1.8.2",
     "next": "8.1.0",
+    "nookies": "^2.0.6",
     "react": "16.8.6",
     "react-beautiful-dnd": "11.0.4",
     "react-dom": "16.8.6",

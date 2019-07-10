@@ -1,6 +1,7 @@
 import { withRouter } from 'next/router'
 import { useEffect, useReducer } from 'react'
 import axios from 'axios'
+import cookies from 'nookies'
 
 import { useUndoableReducer } from '../hooks/use-undoable-reducer'
 
@@ -30,14 +31,14 @@ import {
 } from '../reducers/navigation'
 
 import { siteReducer } from '../reducers/site'
-import Layout from '../components/layout'
+import SidebarLayout from '../components/sidebar-layout'
 import Button from '../components/button'
 import Browser from '../components/browser'
 import Editor from '../components/editor'
 import Previewer from '../components/previewer'
 import { P } from '../components/typography'
 
-const BuilderPage = withRouter(({ router }) => {
+const BuilderPage = ({ router }) => {
   const {
     state: site,
     dispatch: dispatchSiteAction,
@@ -75,12 +76,18 @@ const BuilderPage = withRouter(({ router }) => {
     message,
   } = state
 
+  const http = axios.create({
+    headers: {
+      Authorization: `Bearer ${cookies.get().token}`
+    }
+  })
+
   const canSave = !isExistingSite || (!isSaving && hasUnsavedEdits)
   const canView = isExistingSite && !isDeploying
 
   useEffect(() => {
     const getExistingSite = async siteId => {
-      const { data: site } = await axios.get(`${process.env.API_BASE}/sites/${siteId}`)
+      const { data: site } = await http.get(`${process.env.API_BASE}/sites/${siteId}`)
 
       return site
     }
@@ -120,7 +127,7 @@ const BuilderPage = withRouter(({ router }) => {
         dispatchBuilderAction({
           type: START_SAVING
         })
-        const { data } = await axios.patch(`${process.env.API_BASE}/sites/${site.id}`, site)
+        const { data } = await http.patch(`${process.env.API_BASE}/sites/${site.id}`, site)
         dispatchBuilderAction({
           type: FINISH_SAVING
         })
@@ -129,7 +136,7 @@ const BuilderPage = withRouter(({ router }) => {
       dispatchBuilderAction({
         type: START_CREATING
       })
-      const { data } = await axios.post(`${process.env.API_BASE}/sites`, site)
+      const { data } = await http.post(`${process.env.API_BASE}/sites`, site)
       await dispatchSiteAction({
         type: PERHAPS_UNWISELY_REPLACE_STATE_WITHOUT_ADDING_TO_HISTORY,
         payload: data
@@ -155,7 +162,7 @@ const BuilderPage = withRouter(({ router }) => {
       dispatchBuilderAction({
         type: START_DEPLOYING
       })
-      await axios.post(`${process.env.API_BASE}/sites/${id}/deploy`, {})
+      await http.post(`${process.env.API_BASE}/sites/${id}/deploy`, {})
       dispatchBuilderAction({
         type: FINISH_DEPLOYING
       })
@@ -192,7 +199,7 @@ const BuilderPage = withRouter(({ router }) => {
   }
 
   return (
-    <Layout
+    <SidebarLayout
       title="Builder"
       headerContent={
         <div className="flex items-center">
@@ -278,8 +285,8 @@ const BuilderPage = withRouter(({ router }) => {
           })
         }}
       />
-    </Layout>
+    </SidebarLayout>
   )
-})
+}
 
-export default BuilderPage
+export default withRouter(BuilderPage)
