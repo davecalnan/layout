@@ -5,7 +5,7 @@ import { without, withoutInternalKeys } from '@layouthq/util'
 export default async ({ db, body }, res) => {
   try {
     if (!body.email || !body.password) {
-      return res.status(422).send(JSON.stringify({ message: 'Email & password are required.' }))
+      return res.status(422).send(JSON.stringify({ message: 'Email and password are required.' }))
     }
 
     body.password = await bcrypt.hash(body.password, 10)
@@ -18,6 +18,13 @@ export default async ({ db, body }, res) => {
     const user = response.ops[0]
 
     res.status(200).send(JSON.stringify(withoutInternalKeys(user)))
+
+    const tokens = await db.collection('tokens')
+    tokens.insertOne({
+      token: uuid(),
+      userId: user.id
+    })
+
   } catch (error) {
     console.error(error)
   }

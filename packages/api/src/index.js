@@ -61,7 +61,7 @@ const start = async () => {
     })
   )
 
-  app.use('/users', passport.authenticate('bearer', { session: false }), userController)
+  app.use('/users', userController)
   app.use('/auth', authController)
   app.use('/sites', passport.authenticate('bearer', { session: false }), siteController)
   app.use('/sections', passport.authenticate('bearer', { session: false }), sectionController)
