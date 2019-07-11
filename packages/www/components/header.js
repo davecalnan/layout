@@ -1,22 +1,24 @@
 import Link from 'next/link'
 
 import { H1 } from './typography'
-import Logo from '../assets/layout-logo.svg'
+import Logo from '../assets/layout-logo-color.svg'
 
 const Header = ({ title, content }) => (
-  <header className="flex justify-between items-center bg-blue-500 shadow text-white px-4 py-2">
-    <H1 className="flex font-black">
+  <header className="flex justify-between items-center text-blue-900 border-b border-gray-400 bg-white px-4 py-2">
+    <div className="max-w-xs w-full">
       <Link href="/">
-        <Logo className="fill-current h-8 mr-2" />
+        <Logo className="h-8 cursor-pointer" />
       </Link>
-      {title && (
-        <>
-          <span className="font-light mr-2">/</span>
-          <span className="font-black">{title}</span>
-        </>
-      )}
-    </H1>
-    {content}
+    </div>
+    <div className="flex text-sm font-bold">
+      <Link href="/">
+        <a>Dashboard</a>
+      </Link>
+      <Link href="/logout">
+        <a className="ml-4">Logout</a>
+      </Link>
+    </div>
+    <div className="max-w-xs w-full flex justify-end">{content}</div>
   </header>
 )
 

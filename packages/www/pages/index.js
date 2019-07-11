@@ -4,49 +4,54 @@ import cookies from 'nookies'
 import axios from 'axios'
 
 import DefaultLayout from '../components/default-layout'
-import { H1, H2, P } from '../components/typography'
+import { H2, P } from '../components/typography'
 import Button from '../components/button'
+import Icon, { ICON_EXTERNAL_WINDOW, ICON_GLOBE } from '../components/icon'
 
 import CreateWebsiteIllustration from '../assets/create-website-illustration.svg'
 
 const Dashboard = ({ sites }) => (
   <DefaultLayout
     title="Your sites"
-    headerContent={
-      <Link href="/logout">
-        <a className="ml-4 text-lg text-white">Logout</a>
-      </Link>
-    }
     mainClassName={sites.length === 0 && 'relative'}
   >
     {sites.length ? (
       <div className="flex flex-wrap p-8">
-        {sites.map(({ id, url, domain }) => (
-          <div key={id} className="w-80 bg-white rounded shadow-md mr-8">
+        {sites.map(({ id, url, subdomain }) => (
+          <div key={id} className="w-80 bg-white rounded-lg shadow-md mr-8">
             <Link as={`/sites/${id}/builder`} href={`/builder?siteId=${id}`}>
               <img
-                className="w-80 h-50 rounded-t cursor-pointer"
+                className="w-80 h-50 rounded-t-lg cursor-pointer"
                 src={`https://api.apiflash.com/v1/urltoimage?access_key=2d674fb464874085b3602e6e64661a95&height=900&thumbnail_width=640&width=1440&&url=${encodeURI(
                   url
                 )}`}
-                alt={`A preview of ${domain}`}
+                alt={`A preview of ${subdomain}`}
               />
             </Link>
-            <div className="p-4">
-              <P>{domain}</P>
+            <div className="px-4 py-6">
+              <div className="flex justify-between">
+                <div className="flex items-center font-bold text-base">
+                  <Icon type={ICON_GLOBE} className="h-6 w-6 mr-2" />
+                  {subdomain}
+                </div>
+                <span className="rounded-full text-sm font-bold text-green-900 bg-green-200 px-2">Published</span>
+              </div>
+            </div>
+            <div className="flex rounded-b-lg border-t bg-gray-100 text-center text-blue-600">
               <Link as={`/sites/${id}/builder`} href={`/builder?siteId=${id}`}>
-                <Button action="primary" className="mt-2">
+                <a className="w-1/2 p-2">
                   Edit site
-                </Button>
+                </a>
               </Link>
-              <Button
-                action="secondary"
-                className="ml-2"
+              <a
                 href={url}
-                openInNewTab
+                target="_blank"
+                rel="noreferrer noopener"
+                className="w-1/2 flex items-center justify-center p-2 border-l"
               >
                 View site
-              </Button>
+                <Icon type={ICON_EXTERNAL_WINDOW} className="ml-1 h-5 w-5 mb-1" />
+              </a>
             </div>
           </div>
         ))}

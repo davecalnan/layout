@@ -9,13 +9,13 @@ const PageSelector = ({
   onNavigate,
   setModalContent
 }) => (
-  <header className="w-full bg-white border-b border-gray-400">
+  <header className="w-full bg-gray-300 border-b border-gray-400">
     <div className="h-10 flex">
       <div className="w-full inline-block relative">
         <select
           value={currentPage.path}
           onChange={event => onNavigate(event.target.value)}
-          className="w-full h-full block appearance-none rounded-none cursor-pointer bg-white text-2xl leading-tight hover:bg-gray-200 focus:outline-none focus:bg-gray-200 pl-4 pr-8"
+          className="w-full h-full block appearance-none rounded-none cursor-pointer bg-gray-300 text-2xl leading-tight hover:bg-gray-200 focus:outline-none focus:bg-gray-200 pl-4 pr-8"
           title="Navigate to a different page"
         >
           {pages.map(({ path, name }) => {

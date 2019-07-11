@@ -9,6 +9,7 @@ export const ICON_CHEVRON_RIGHT = 'ICON_CHEVRON_RIGHT'
 export const ICON_DOTS_VERTICAL_DOUBLE = 'ICON_DOTS_VERTICAL_DOUBLE'
 export const ICON_DUPLICATE = 'ICON_DUPLICATE'
 export const ICON_EXTERNAL_WINDOW = 'ICON_EXTERNAL_WINDOW'
+export const ICON_GLOBE = 'ICON_GLOBE'
 export const ICON_TRASH = 'ICON_TRASH'
 
 const pickIcon = type => {
@@ -54,6 +55,17 @@ const pickIcon = type => {
         <>
           <path className="primary" d="M12 8a1 1 0 0 1-1 1H5v10h10v-6a1 1 0 0 1 2 0v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9c0-1.1.9-2 2-2h6a1 1 0 0 1 1 1z" />
           <path className="secondary" d="M19 6.41L8.7 16.71a1 1 0 1 1-1.4-1.42L17.58 5H14a1 1 0 0 1 0-2h6a1 1 0 0 1 1 1v6a1 1 0 0 1-2 0V6.41z" />
+        </>
+      )
+    }
+    case 'ICON_GLOBE': {
+      return (
+        <>
+          <circle cx="12" cy="12" r="10" class="primary" />
+          <path
+            class="secondary"
+            d="M2.05 11A10 10 0 0 1 15 2.46V6a2 2 0 0 1-2 2h-1v1a2 2 0 0 1-1 1.73V12h2a2 2 0 0 1 2 2v1h2a2 2 0 0 1 2 2v2.14A9.97 9.97 0 0 1 12 22v-4h-1a2 2 0 0 1-2-2v-2a2 2 0 0 1-2-2v-1H2.05z"
+          />
         </>
       )
     }
