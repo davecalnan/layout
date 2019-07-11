@@ -22,9 +22,9 @@ const Button = ({
       rel={openInNewTab ? 'noreferrer noopener' : undefined}
       className={classNames(
         className,
-        'rounded shadow text-center',
+        'inline-block rounded shadow text-center',
         action === 'primary'
-          ? 'bg-black text-white'
+          ? 'bg-blue-600 text-white'
           : 'bg-white text-black',
         compact
           ? 'text-base px-2'

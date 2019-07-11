@@ -4,28 +4,43 @@ import cookies from 'nookies'
 import axios from 'axios'
 
 import DefaultLayout from '../components/default-layout'
-import { H2 } from '../components/typography'
+import { H2, P } from '../components/typography'
+import Button from '../components/button'
 
 const Dashboard = ({ sites }) => (
   <DefaultLayout
-    title="Dashboard"
+    title="Your sites"
     headerContent={
       <Link href="/logout">
         <a className="ml-4 text-lg text-white">Logout</a>
       </Link>
     }
   >
-    <div className="p-8">
-      <H2 className="mb-4">Your sites</H2>
-      <ul>
-        {sites.map(({ id, domain }) => (
-          <li className="mb-4">
+    <div className="flex flex-wrap p-8">
+      {sites.map(({ id, url, domain }) => (
+        <div key={id} className="w-80 bg-white rounded shadow-md mr-8">
+          <Link as={`/sites/${id}/builder`} href={`/builder?siteId=${id}`}>
+            <img
+              className="w-80 h-50 rounded-t cursor-pointer"
+              src={`https://api.apiflash.com/v1/urltoimage?access_key=2d674fb464874085b3602e6e64661a95&height=900&thumbnail_width=640&width=1440&&url=${encodeURI(
+                url
+              )}`}
+              alt={`A preview of ${domain}`}
+            />
+          </Link>
+          <div className="p-4">
+            <P>{domain}</P>
             <Link as={`/sites/${id}/builder`} href={`/builder?siteId=${id}`}>
-              <a className="text-lg text-blue-500 underline">{domain} &rarr;</a>
+              <Button action="primary" className="mt-2">
+                Edit site
+              </Button>
             </Link>
-          </li>
-        ))}
-      </ul>
+            <Button action="secondary" className="ml-2" href={url} openInNewTab>
+              View site
+            </Button>
+          </div>
+        </div>
+      ))}
     </div>
   </DefaultLayout>
 )
