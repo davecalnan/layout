@@ -14,7 +14,7 @@ const Dashboard = ({ sites }) => (
   <DefaultLayout
     headerContent={
       <Link as="/sites/new/builder" href="/builder?siteId=new">
-        <button className="flex items-center rounded-full bg-blue-500 font-bold text-white focus:outline-none focus:shadow-outline pl-4 pr-1 py-1">
+        <button className="hidden sm:flex items-center rounded-full bg-blue-500 font-bold text-white focus:outline-none focus:shadow-outline pl-4 pr-1 py-1">
           Create new site
           <Icon
             type={ICON_ADD_CIRCLE}

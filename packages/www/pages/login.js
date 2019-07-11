@@ -4,10 +4,11 @@ import Router from 'next/router'
 import Link from 'next/link'
 import cookies from 'nookies'
 
-import DefaultLayout from '../components/default-layout'
+import MinimalLayout from '../components/minimal-layout'
 import { H1, Label } from '../components/typography'
 import { Input } from '../components/form-controls'
 import Button from '../components/button'
+import Logo from '../assets/layout-logo-color.svg'
 
 const LoginForm = ({ className }) => {
   const [email, setEmail] = useState('')
@@ -65,11 +66,15 @@ const LoginForm = ({ className }) => {
 }
 
 const LoginPage = () => (
-  <DefaultLayout mainClassName="relative">
+  <MinimalLayout mainClassName="relative">
     <section className="absolute w-full h-full flex justify-end items-center">
       <div className="absolute left-0 p-4 sm:static sm:left-auto sm:p-0">
         <div className="border bg-white rounded-lg px-8 py-12 sm:rounded-r-none sm:px-12 md:p-16 lg:p-20 xl:p-24">
-          <H1>Welcome back</H1>
+          <div className="flex items-center">
+            <Logo className="h-8 w-8" />
+            <span className="ml-2 text-2xl font-black text-blue-900">Layout</span>
+          </div>
+          <H1 className="mt-8">Welcome back</H1>
           <div className="mt-2 text-sm">
             Don't have an account?
             {' '}
@@ -88,7 +93,7 @@ const LoginPage = () => (
         />
       </div>
     </section>
-  </DefaultLayout>
+  </MinimalLayout>
 )
 
 export default LoginPage
