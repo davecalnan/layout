@@ -6,15 +6,15 @@ import storeHandler from './store'
 import showHandler from './show'
 import updateHandler from './update'
 import deleteHandler from './delete'
+import listSitesHandler from './list-sites'
 
-const router = Router()
+const controller = Router()
 
-router.get('/', passport.authenticate('bearer', { session: false }), indexHandler)
-router.post('/', storeHandler)
-router.get('/:id', passport.authenticate('bearer', { session: false }), showHandler)
-router.patch('/:id', passport.authenticate('bearer', { session: false }), updateHandler)
-router.delete('/:id', passport.authenticate('bearer', { session: false }), deleteHandler)
+controller.get('/', passport.authenticate('bearer', { session: false }), indexHandler)
+controller.post('/', storeHandler)
+controller.get('/:id', passport.authenticate('bearer', { session: false }), showHandler)
+controller.patch('/:id', passport.authenticate('bearer', { session: false }), updateHandler)
+controller.delete('/:id', passport.authenticate('bearer', { session: false }), deleteHandler)
+controller.get('/:id/sites', passport.authenticate('bearer', { session: false }), listSitesHandler)
 
-export {
-  router as controller
-}
+export { controller }
