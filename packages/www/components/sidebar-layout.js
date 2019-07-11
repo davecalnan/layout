@@ -4,9 +4,9 @@ import tw from 'tailwind.macro'
 import BaseLayout from './base-layout'
 import Header from './header'
 
-const SidebarLayout = ({ title, headerContent, sidebarContent, children, className }) => (
+const SidebarLayout = ({ headerContent, sidebarContent, children, className }) => (
   <BaseLayout className={className}>
-    <Header title={title} content={headerContent} />
+    <Header content={headerContent} />
     <aside className="min-w-xs overflow-x-hidden overflow-y-scroll bg-gray-100 shadow z-10">
       {sidebarContent}
     </aside>

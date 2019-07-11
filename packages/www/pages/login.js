@@ -65,7 +65,7 @@ const LoginForm = ({ className }) => {
 }
 
 const LoginPage = () => (
-  <DefaultLayout mainClassName="relative" title="Login">
+  <DefaultLayout mainClassName="relative">
     <section className="absolute w-full h-full flex justify-end items-center">
       <div className="absolute left-0 p-4 sm:static sm:left-auto sm:p-0">
         <div className="border bg-white rounded-lg px-8 py-12 sm:rounded-r-none sm:px-12 md:p-16 lg:p-20 xl:p-24">

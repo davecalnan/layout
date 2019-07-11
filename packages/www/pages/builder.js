@@ -200,7 +200,6 @@ const BuilderPage = ({ router }) => {
 
   return (
     <SidebarLayout
-      title="Builder"
       headerContent={
         <div className="flex items-center">
           <P className="mr-4">{message}</P>

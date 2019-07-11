@@ -12,7 +12,6 @@ import CreateWebsiteIllustration from '../assets/create-website-illustration.svg
 
 const Dashboard = ({ sites }) => (
   <DefaultLayout
-    title="Your sites"
     mainClassName={sites.length === 0 && 'relative'}
   >
     {sites.length ? (
