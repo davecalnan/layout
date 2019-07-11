@@ -24,14 +24,14 @@ const Dashboard = ({ sites }) => (
                 src={`https://api.apiflash.com/v1/urltoimage?access_key=2d674fb464874085b3602e6e64661a95&height=900&thumbnail_width=640&width=1440&&url=${encodeURI(
                   url
                 )}`}
-                alt={`A preview of ${subdomain}`}
+                alt={`A preview of ${domain}`}
               />
             </Link>
             <div className="px-4 py-6">
               <div className="flex justify-between">
                 <div className="flex items-center font-bold text-base">
                   <Icon type={ICON_GLOBE} className="h-6 w-6 mr-2" />
-                  {subdomain}
+                  {subdomain || domain}
                 </div>
                 <span className="rounded-full text-sm font-bold text-green-900 bg-green-200 px-2">Published</span>
               </div>
