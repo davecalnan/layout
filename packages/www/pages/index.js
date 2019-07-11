@@ -16,7 +16,7 @@ const Dashboard = ({ sites }) => (
   >
     {sites.length ? (
       <div className="flex flex-wrap p-8">
-        {sites.map(({ id, url, subdomain }) => (
+        {sites.map(({ id, url, subdomain, domain }) => (
           <div key={id} className="w-80 bg-white rounded-lg shadow-md mr-8">
             <Link as={`/sites/${id}/builder`} href={`/builder?siteId=${id}`}>
               <img
