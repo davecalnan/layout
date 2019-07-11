@@ -106,6 +106,10 @@ const Icon = ({ type, className, style }) => (
 )
 
 export default styled(Icon)`
+  .primary, .secondary {
+    fill: currentColor;
+  }
+
   .primary {
     ${({ disabled, primary }) =>
       disabled
