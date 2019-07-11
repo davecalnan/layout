@@ -103,7 +103,7 @@ const Editor = ({ site, currentPath, isLoading, onEdit, onNavigate, className })
                           section.name ||
                           toCapitalCase(section.type)
                         }
-                        onClick={() =>
+                        onOpen={() =>
                           setActiveSectionIndex(index)
                         }
                         onDelete={() => {

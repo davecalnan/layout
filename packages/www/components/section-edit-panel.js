@@ -101,7 +101,7 @@ const SectionEditPanel = ({
                         id={component.uuid}
                         index={index}
                         name={component.props.name || toCapitalCase(component.type)}
-                        onClick={() => setActiveComponentIndex(index)}
+                        onOpen={() => setActiveComponentIndex(index)}
                         onDelete={() => {
                           onEdit({
                             type: REMOVE_COMPONENT_FROM_SECTION,

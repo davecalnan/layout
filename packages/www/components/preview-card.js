@@ -3,7 +3,7 @@ import { P } from './typography'
 import Button from './button'
 import Icon, { ICON_DOTS_VERTICAL_DOUBLE, ICON_DUPLICATE, ICON_TRASH } from './icon'
 
-const PreviewCard = ({ name, onClick, onDelete, onDuplicate, index, id }) => (
+const PreviewCard = ({ name, onOpen, onDelete, onDuplicate, index, id }) => (
   <Draggable draggableId={id} index={index}>
     {({ draggableProps, dragHandleProps, innerRef }) => (
       <div
@@ -11,7 +11,8 @@ const PreviewCard = ({ name, onClick, onDelete, onDuplicate, index, id }) => (
         {...dragHandleProps}
         ref={innerRef}
         className="w-full h-16 flex justify-between items-center text-left bg-white rounded shadow px-4 mb-2"
-        onClick={onClick}
+        onClick={onOpen}
+        onKeyPress={event => event.key === 'Enter' && onOpen()}
       >
         <div className="flex items-center -ml-2 mr-4">
           <Icon
