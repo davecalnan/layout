@@ -12,12 +12,12 @@ const stat = promisify(fs.stat)
 
 const netlify = new Netlify(process.env.NETLIFY_API_KEY)
 
-const createNetlifySite = async ({ id, subdomain }) => {
+const createNetlifySite = async ({ id, domain, subdomain }) => {
   try {
     return await netlify.createSite({
       body: {
         name: `layout-${process.env.NODE_ENV}-${id}`,
-        custom_domain: `${subdomain}.onlayout.co`,
+        custom_domain: domain || `${subdomain}.onlayout.co`,
         processing_settings: {
           html: {
             pretty_urls: true
