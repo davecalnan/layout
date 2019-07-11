@@ -3,6 +3,7 @@ import tw from 'tailwind.macro'
 import classNames from 'classnames'
 
 export const ICON_ADD = 'ICON_ADD'
+export const ICON_ADD_CIRCLE = 'ICON_ADD_CIRCLE'
 export const ICON_CHEVRON_DOWN = 'ICON_CHEVRON_DOWN'
 export const ICON_CHEVRON_LEFT = 'ICON_CHEVRON_LEFT'
 export const ICON_CHEVRON_RIGHT = 'ICON_CHEVRON_RIGHT'
@@ -17,6 +18,14 @@ const pickIcon = type => {
     case 'ICON_ADD': {
       return (
         <path className="primary" fillRule="evenodd" d="M17 11a1 1 0 0 1 0 2h-4v4a1 1 0 0 1-2 0v-4H7a1 1 0 0 1 0-2h4V7a1 1 0 0 1 2 0v4h4z" />
+      )
+    }
+    case 'ICON_ADD_CIRCLE': {
+      return (
+        <>
+          <circle cx="12" cy="12" r="10" className="secondary"/>
+          <path className="primary" d="M13 11h4a1 1 0 0 1 0 2h-4v4a1 1 0 0 1-2 0v-4H7a1 1 0 0 1 0-2h4V7a1 1 0 0 1 2 0v4z"/>
+        </>
       )
     }
     case 'ICON_CHEVRON_DOWN': {
@@ -97,10 +106,6 @@ const Icon = ({ type, className, style }) => (
 )
 
 export default styled(Icon)`
-  .primary, .secondary {
-    fill: currentColor;
-  }
-
   .primary {
     ${({ disabled, primary }) =>
       disabled
@@ -112,11 +117,11 @@ export default styled(Icon)`
   }
 
   .secondary {
-    ${({ disabled, primary }) =>
+    ${({ disabled, secondary }) =>
       disabled
         ? tw`text-gray-200`
-        : primary
-        ? { color: primary }
+        : secondary
+        ? { color: secondary }
         : tw`text-gray-500`}
   }
 `
