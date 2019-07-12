@@ -8,8 +8,6 @@ export {
 } from '../hooks/use-undoable-reducer'
 
 export const ERROR = 'ERROR'
-export const START_LOADING_SITE = 'START_LOADING_SITE'
-export const FINISH_LOADING_SITE = 'FINISH_LOADING_SITE'
 export const EDIT_SITE = 'EDIT_SITE'
 export const START_CREATING = 'START_CREATING'
 export const FINISH_CREATING = 'FINISH_CREATING'
@@ -27,16 +25,6 @@ export const builderReducer = (state, { type, payload }) => {
         isDeploying: payload.isDeploying || state.isDeploying,
         isSaving: payload.isSaving || state.isSaving,
         message: 'Something went wrong'
-      }
-    case START_LOADING_SITE:
-      return {
-        ...state,
-        isLoading: true
-      }
-    case FINISH_LOADING_SITE:
-      return {
-        ...state,
-        isLoading: false
       }
     case EDIT_SITE: {
       return {

@@ -33,7 +33,7 @@ const Dashboard = ({ sites }) => (
       <div className="flex flex-wrap p-8">
         {sites.map(({ id, url, subdomain, domain }) => (
           <div key={id} className="w-80 bg-white rounded-lg shadow-md mr-8">
-            <Link as={`/sites/${id}/builder`} href={`/builder?siteId=${id}`}>
+            <Link href="/sites/[id]/builder" as={`/sites/${id}/builder`}>
               <img
                 className="w-80 h-50 rounded-t-lg cursor-pointer bg-gray-100"
                 src={`https://api.apiflash.com/v1/urltoimage?access_key=2d674fb464874085b3602e6e64661a95&height=900&thumbnail_width=640&width=1440&&url=${encodeURI(
@@ -54,7 +54,7 @@ const Dashboard = ({ sites }) => (
               </div>
             </div>
             <div className="flex rounded-b-lg border-t bg-gray-100 text-center text-blue-600">
-              <Link as={`/sites/${id}/builder`} href={`/builder?siteId=${id}`}>
+              <Link href="/sites/[id]/builder" as={`/sites/${id}/builder`}>
                 <a className="w-1/2 p-2">Edit site</a>
               </Link>
               <a

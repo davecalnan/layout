@@ -1,19 +1,16 @@
-import { withRouter } from 'next/router'
-import { useEffect, useReducer } from 'react'
+import { useReducer } from 'react'
 import axios from 'axios'
 import cookies from 'nookies'
+import { resetServerContext } from 'react-beautiful-dnd'
 
-import { useUndoableReducer } from '../hooks/use-undoable-reducer'
+import { useUndoableReducer } from '../../../hooks/use-undoable-reducer'
 
 import {
   builderReducer,
-  RESET,
   UNDO,
   REDO,
   PERHAPS_UNWISELY_REPLACE_STATE_WITHOUT_ADDING_TO_HISTORY,
   ERROR,
-  START_LOADING_SITE,
-  FINISH_LOADING_SITE,
   EDIT_SITE,
   START_CREATING,
   FINISH_CREATING,
@@ -21,31 +18,31 @@ import {
   FINISH_SAVING,
   START_DEPLOYING,
   FINISH_DEPLOYING
-} from '../reducers/builder'
+} from '../../../reducers/builder'
 
 import {
   navigationReducer,
   BACK,
   FORWARD,
   NAVIGATE
-} from '../reducers/navigation'
+} from '../../../reducers/navigation'
 
-import { siteReducer } from '../reducers/site'
-import SidebarLayout from '../components/sidebar-layout'
-import SEO from '../components/seo'
-import Button from '../components/button'
-import Browser from '../components/browser'
-import Editor from '../components/editor'
-import Previewer from '../components/previewer'
-import { P } from '../components/typography'
+import { siteReducer } from '../../../reducers/site'
+import SidebarLayout from '../../../components/sidebar-layout'
+import SEO from '../../../components/seo'
+import Button from '../../../components/button'
+import Browser from '../../../components/browser'
+import Editor from '../../../components/editor'
+import Previewer from '../../../components/previewer'
+import { P } from '../../../components/typography'
 
-const BuilderPage = ({ router }) => {
+const BuilderPage = ({ http, site: initialSite, isExistingSite }) => {
   const {
     state: site,
     dispatch: dispatchSiteAction,
     canUndo,
     canRedo
-  } = useUndoableReducer(siteReducer, {})
+  } = useUndoableReducer(siteReducer, initialSite)
 
   const {
     state: currentPath,
@@ -60,8 +57,7 @@ const BuilderPage = ({ router }) => {
       hasError: null,
       hasUnsavedEdits: false,
       isDeploying: false,
-      isExistingSite: router.query.siteId === 'new' ? false : true,
-      isLoading: true,
+      isLoading: false,
       isSaving: false,
       message: null
     }
@@ -71,56 +67,13 @@ const BuilderPage = ({ router }) => {
     hasError,
     hasUnsavedEdits,
     isDeploying,
-    isExistingSite,
     isLoading,
     isSaving,
     message,
   } = state
 
-  const http = axios.create({
-    headers: {
-      Authorization: `Bearer ${cookies.get().token}`
-    }
-  })
-
   const canSave = !isExistingSite || (!isSaving && hasUnsavedEdits)
   const canView = isExistingSite && !isDeploying
-
-  useEffect(() => {
-    const getExistingSite = async siteId => {
-      const { data: site } = await http.get(`${process.env.API_BASE}/sites/${siteId}`)
-
-      return site
-    }
-
-    const getStarterSite = async () => {
-      const { default: site } = await import('../data/new-site.json')
-
-      return site
-    }
-
-    const getSite = async () => {
-      dispatchBuilderAction({
-        type: START_LOADING_SITE,
-        payload: site
-      })
-
-      const site = isExistingSite
-        ? await getExistingSite(router.query.siteId)
-        : await getStarterSite()
-
-      dispatchSiteAction({
-        type: RESET,
-        payload: site
-      })
-      dispatchBuilderAction({
-        type: FINISH_LOADING_SITE,
-        payload: site
-      })
-    }
-
-    getSite()
-  }, [])
 
   const save = async site => {
     try {
@@ -290,11 +243,32 @@ const BuilderPage = ({ router }) => {
   )
 }
 
-BuilderPage.getInitialProps = ctx => {
+BuilderPage.getInitialProps = async ctx => {
   const { query, res } = ctx
+  const { id } = query
   const { token } = cookies.get(ctx)
 
-  if (query.siteId !== 'new' && !token) {
+  resetServerContext()
+
+  const http = axios.create({
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+
+  const props = {
+    http
+  }
+
+  if (query.id === 'new') {
+    return {
+      ...props,
+      site: await import('../../../data/new-site.json'),
+      isExistingSite: false
+    }
+  }
+
+  if (!token) {
     if (res) {
       res.writeHead(302, {
         Location: '/login'
@@ -305,7 +279,15 @@ BuilderPage.getInitialProps = ctx => {
     }
   }
 
-  return {}
+  const { data: site } = await http.get(
+    `${process.env.API_BASE}/sites/${id}`
+  )
+
+  return {
+    ...props,
+    site,
+    isExistingSite: true
+  }
 }
 
-export default withRouter(BuilderPage)
+export default BuilderPage
