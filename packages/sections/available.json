@@ -142,8 +142,17 @@
       }
     ],
     "propTypes": {
+      "alignment": {
+        "type": "enum",
+        "options": [
+          "left",
+          "center",
+          "right"
+        ]
+      }
     },
     "defaultProps": {
+      "alignment": "left"
     }
   }
 ]
