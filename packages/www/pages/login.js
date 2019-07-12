@@ -3,21 +3,25 @@ import axios from 'axios'
 import Router from 'next/router'
 import Link from 'next/link'
 import cookies from 'nookies'
+import classNames from 'classnames'
 
 import MinimalLayout from '../components/minimal-layout'
 import SEO from '../components/seo'
 import { H1, Label } from '../components/typography'
 import { Input } from '../components/form-controls'
-import Button from '../components/button'
+import LoadingSpinner from '../components/loading-spinner'
+
 import Logo from '../assets/layout-logo-color.svg'
 
 const LoginForm = ({ className }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState()
 
   const handleSubmit = async event => {
     event.preventDefault()
+    setIsLoading(true)
 
     try {
       const { data } = await axios.post(`${process.env.API_BASE}/auth/login`, {
@@ -30,15 +34,14 @@ const LoginForm = ({ className }) => {
 
       Router.push('/')
     } catch (error) {
+      setIsLoading(false)
       setError('Your email or password is incorrect.')
     }
   }
   return (
     <form onSubmit={handleSubmit} className={className}>
       <div className="flex flex-col">
-        <Label htmlFor="email">
-          Email
-        </Label>
+        <Label htmlFor="email">Email</Label>
         <Input
           id="email"
           type="email"
@@ -48,9 +51,7 @@ const LoginForm = ({ className }) => {
         />
       </div>
       <div className="flex flex-col mt-8">
-        <Label htmlFor="password">
-          Password
-        </Label>
+        <Label htmlFor="password">Password</Label>
         <Input
           id="password"
           type="password"
@@ -58,9 +59,17 @@ const LoginForm = ({ className }) => {
           onChange={event => setPassword(event.target.value)}
         />
       </div>
-      <Button type="submit" action="primary" className="mt-8 w-full">
+      <button
+        type="submit"
+        className={classNames(
+          'mt-8 w-full inline-flex justify-center items-center rounded shadow text-center text-lg text-white py-1',
+          isLoading ? 'bg-blue-400' : 'bg-blue-600'
+        )}
+        disabled={isLoading}
+      >
         Log in
-      </Button>
+        {isLoading && <LoadingSpinner className="ml-2" />}
+      </button>
       <p className="mt-4 -mb-6 text-red-500">{error}</p>
     </form>
   )
