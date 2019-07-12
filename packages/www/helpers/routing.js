@@ -1,7 +1,7 @@
 import Router from 'next/router'
 import cookies from 'nookies'
 
-export const redirect = ({ ctx, to, statusCode = 302 }) => {
+export const redirect = ({ ctx = {}, to, statusCode = 302 }) => {
   const { res } = ctx
 
   if (res) {
