@@ -257,7 +257,7 @@ const BuilderPage = ({ router }) => {
         />
       }
     >
-      <SEO title={`Building ${site.subdomain || site.domain || 'a new site'}`} />
+      <SEO title={isLoading ? `Loading...` : `Building ${site.subdomain || site.domain || 'a new site'}`} />
       <Browser
         url={constructUrl(site)}
         content={
