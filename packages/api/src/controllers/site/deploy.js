@@ -1,14 +1,9 @@
-import fs from 'fs'
+import fs from 'fs-extra'
 import path from 'path'
-import { promisify } from 'util'
-import rimraf from 'rimraf'
 import Netlify from 'netlify'
 import { renderPageToHTML } from '@layouthq/renderer'
 import { generateFilePath } from '@layouthq/util'
 import { authorize, MANAGE_SITE } from '../../auth'
-
-const mkdir = promisify(fs.mkdir)
-const stat = promisify(fs.stat)
 
 const netlify = new Netlify(process.env.NETLIFY_API_KEY)
 
@@ -58,17 +53,6 @@ const generateHTML = (page, options) => {
   }
 }
 
-const writeFile = async (filepath, content, config) => {
-  const dirname = path.dirname(filepath)
-  try {
-    await stat(dirname)
-  } catch (error) {
-    await mkdir(dirname, { recursive: true })
-  }
-
-  await promisify(fs.writeFile)(filepath, content, config)
-}
-
 const writeToTemporaryDirectory = async ({ id, pages, theme }, directory) => {
   console.log(`Building site id ${id}.`)
 
@@ -76,17 +60,18 @@ const writeToTemporaryDirectory = async ({ id, pages, theme }, directory) => {
     pages.map(async page => {
       const html = generateHTML(page, { theme })
 
-      return await writeFile(directory + generateFilePath(page.path), html)
+      await fs.remove(directory)
+      return await fs.outputFile(directory + generateFilePath(page.path), html)
     })
   )
   console.log(`Finished building site id ${id}.`)
 }
 
-const deploySite = async site => {
+const deploySite = async (site, directory) => {
   console.log(`Deploying site id ${site.id}.`)
   const deployment = await netlify.deploy(
     site.netlify.siteId,
-    `${__dirname}/tmp/${site.netlify.name}/`,
+    directory,
     {
       statusCb: ({ msg }) => console.log(msg)
     }
@@ -114,12 +99,12 @@ export default async ({ db, params, authInfo }, res) => {
     site = updatedSite
   }
 
-  const tempDirectory = `${__dirname}/tmp/${site.netlify.name}`
+  const tempDirectory = path.join(__dirname, 'tmp', site.netlify.name)
 
   await writeToTemporaryDirectory(site, tempDirectory)
 
   try {
-    const deployment = await deploySite(site)
+    const deployment = await deploySite(site, tempDirectory)
 
     res.status(200).send(JSON.stringify(deployment))
   } catch (error) {
@@ -127,6 +112,6 @@ export default async ({ db, params, authInfo }, res) => {
 
     return res.status(500).send(JSON.stringify({ error }))
   } finally {
-    await rimraf(tempDirectory, error => error && console.error(error.message))
+    await fs.remove(tempDirectory, error => error && console.error(error.message))
   }
 }
