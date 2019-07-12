@@ -57,7 +57,6 @@ const BuilderPage = ({ http, site: initialSite, isExistingSite }) => {
       hasError: null,
       hasUnsavedEdits: false,
       isDeploying: false,
-      isLoading: false,
       isSaving: false,
       message: null
     }
@@ -67,7 +66,6 @@ const BuilderPage = ({ http, site: initialSite, isExistingSite }) => {
     hasError,
     hasUnsavedEdits,
     isDeploying,
-    isLoading,
     isSaving,
     message,
   } = state
@@ -137,9 +135,6 @@ const BuilderPage = ({ http, site: initialSite, isExistingSite }) => {
   }
 
   const constructUrl = site => {
-    if (isLoading) {
-      return null
-    }
     if (!isExistingSite) {
       return 'Save your site to get a url 👉🏻'
     }
@@ -206,11 +201,10 @@ const BuilderPage = ({ http, site: initialSite, isExistingSite }) => {
               payload: path
             })
           }}
-          isLoading={isLoading}
         />
       }
     >
-      <SEO title={isLoading ? `Loading...` : `Building ${site.subdomain || site.domain || 'a new site'}`} />
+      <SEO title={`Building ${site.subdomain || site.domain || 'a new site'}`} />
       <Browser
         url={constructUrl(site)}
         content={

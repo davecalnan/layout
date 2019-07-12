@@ -15,7 +15,6 @@ import {
 } from '../reducers/site'
 import { makeInputComponent } from './form-controls'
 import { H3, Label } from './typography/index'
-import LoadingDots from './loading-dots'
 import PageSelector from './page-selector';
 import SectionEditPanel from './section-edit-panel'
 import PreviewCard from './preview-card'
@@ -23,12 +22,7 @@ import AddNewButton from './add-new-button'
 import Modal from './modal'
 import AddASection from './modals/add-a-section'
 
-const Editor = ({ site, currentPath, isLoading, onEdit, onNavigate, className }) => {
-  if (isLoading) return (
-    <div className="h-full w-full flex flex-col justify-center items-center p-4">
-      <LoadingDots />
-    </div>
-  )
+const Editor = ({ site, currentPath, onEdit, onNavigate, className }) => {
   const { pages, subdomain } = site
   const [activeSectionIndex, setActiveSectionIndex] = useState()
   const [modalContent, setModalContent] = useState(null)

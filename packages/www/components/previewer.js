@@ -2,7 +2,6 @@ import { useEffect, useRef } from 'react'
 import Frame from 'react-frame-component'
 import { renderPageToReact } from '@layouthq/renderer'
 import parseUrl from 'url-parse'
-import LoadingGrid from './loading-grid'
 
 const hijackClicks = (frame, site, onNavigate) => {
   const document = frame.node.contentDocument
@@ -58,13 +57,6 @@ const hijackClicks = (frame, site, onNavigate) => {
 
 const Previewer = ({ site, currentPath, onNavigate }) => {
   const { pages, theme } = site
-  if (!pages) {
-    return (
-      <div className="w-full h-full flex flex-col justify-center items-center">
-        <LoadingGrid />
-      </div>
-    )
-  }
 
   const frame = useRef(null)
 
