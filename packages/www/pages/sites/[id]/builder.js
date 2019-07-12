@@ -28,6 +28,7 @@ import {
 } from '../../../reducers/navigation'
 
 import { siteReducer } from '../../../reducers/site'
+import { redirect, redirectIfNotAuthenticated } from '../../../helpers/routing'
 import SidebarLayout from '../../../components/sidebar-layout'
 import SEO from '../../../components/seo'
 import Button from '../../../components/button'
@@ -238,7 +239,7 @@ const BuilderPage = ({ http, site: initialSite, isExistingSite }) => {
 }
 
 BuilderPage.getInitialProps = async ctx => {
-  const { query, res } = ctx
+  const { query } = ctx
   const { id } = query
   const { token } = cookies.get(ctx)
 
@@ -246,7 +247,7 @@ BuilderPage.getInitialProps = async ctx => {
 
   const http = axios.create({
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token || 'guest'}`
     }
   })
 
@@ -262,25 +263,23 @@ BuilderPage.getInitialProps = async ctx => {
     }
   }
 
-  if (!token) {
-    if (res) {
-      res.writeHead(302, {
-        Location: '/login'
-      })
-      res.end()
-    } else {
-      Router.push('/login')
+  redirectIfNotAuthenticated(ctx)
+
+  try {
+    const { data: site } = await http.get(
+      `${process.env.API_BASE}/sites/${id}`
+    )
+
+    return {
+      ...props,
+      site,
+      isExistingSite: true
     }
-  }
-
-  const { data: site } = await http.get(
-    `${process.env.API_BASE}/sites/${id}`
-  )
-
-  return {
-    ...props,
-    site,
-    isExistingSite: true
+  } catch (error) {
+    redirect({
+      ctx,
+      to: '/'
+    })
   }
 }
 

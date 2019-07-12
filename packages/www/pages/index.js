@@ -1,8 +1,8 @@
-import Router from 'next/router'
 import Link from 'next/link'
 import cookies from 'nookies'
 import axios from 'axios'
 
+import { redirectIfNotAuthenticated } from '../helpers/routing'
 import DefaultLayout from '../components/default-layout'
 import SEO from '../components/seo'
 import { H2, P } from '../components/typography'
@@ -97,20 +97,9 @@ const Dashboard = ({ sites }) => (
 )
 
 Dashboard.getInitialProps = async ctx => {
-  const { res } = ctx
-  const { token } = cookies.get(ctx)
+  redirectIfNotAuthenticated(ctx)
 
-  if (!token) {
-    if (res) {
-      res.writeHead(302, {
-        Location: '/login'
-      })
-      res.end()
-    } else {
-      Router.push('/login')
-    }
-    return {}
-  }
+  const { token } = cookies.get(ctx)
 
   const { data } = await axios.get(`${process.env.API_BASE}/users/me/sites`, {
     headers: {
