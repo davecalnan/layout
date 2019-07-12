@@ -98,4 +98,23 @@ const LoginPage = () => (
   </MinimalLayout>
 )
 
+LoginPage.getInitialProps = ctx => {
+  const { res } = ctx
+  const { token } = cookies.get(ctx)
+
+  if (token) {
+    if (res) {
+      res.writeHead(204, {
+        Location: '/'
+      })
+      res.end()
+    } else {
+      Router.push('/')
+    }
+
+    return {}
+  }
+  return {}
+}
+
 export default LoginPage
