@@ -5,6 +5,7 @@ import Link from 'next/link'
 import cookies from 'nookies'
 
 import MinimalLayout from '../components/minimal-layout'
+import SEO from '../components/seo'
 import { H1, Label } from '../components/typography'
 import { Input } from '../components/form-controls'
 import Button from '../components/button'
@@ -67,6 +68,7 @@ const LoginForm = ({ className }) => {
 
 const LoginPage = () => (
   <MinimalLayout mainClassName="relative">
+    <SEO title="Login" />
     <section className="absolute w-full h-full flex justify-end items-center">
       <div className="absolute left-0 p-4 sm:static sm:left-auto sm:p-0">
         <div className="border bg-white rounded-lg px-8 py-12 sm:rounded-r-none sm:px-12 md:p-16 lg:p-20 xl:p-24">

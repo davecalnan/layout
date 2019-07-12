@@ -4,6 +4,7 @@ import cookies from 'nookies'
 import axios from 'axios'
 
 import DefaultLayout from '../components/default-layout'
+import SEO from '../components/seo'
 import { H2, P } from '../components/typography'
 import Button from '../components/button'
 import Icon, { ICON_ADD_CIRCLE, ICON_EXTERNAL_WINDOW, ICON_GLOBE } from '../components/icon'
@@ -27,6 +28,7 @@ const Dashboard = ({ sites }) => (
     }
     mainClassName={sites.length === 0 && 'relative'}
   >
+    <SEO title="Your sites" />
     {sites.length ? (
       <div className="flex flex-wrap p-8">
         {sites.map(({ id, url, subdomain, domain }) => (

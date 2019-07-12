@@ -32,6 +32,7 @@ import {
 
 import { siteReducer } from '../reducers/site'
 import SidebarLayout from '../components/sidebar-layout'
+import SEO from '../components/seo'
 import Button from '../components/button'
 import Browser from '../components/browser'
 import Editor from '../components/editor'
@@ -256,6 +257,7 @@ const BuilderPage = ({ router }) => {
         />
       }
     >
+      <SEO title={`Building ${site.subdomain || site.domain || 'a new site'}`} />
       <Browser
         url={constructUrl(site)}
         content={
