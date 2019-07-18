@@ -10,7 +10,7 @@ const PageSelector = ({
   setModalContent
 }) => (
   <header className="w-full bg-gray-300 border-b border-gray-400">
-    <div className="h-10 flex">
+    <div className="h-full flex">
       <div className="w-full inline-block relative">
         <select
           value={currentPage.path}

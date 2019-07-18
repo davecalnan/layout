@@ -182,7 +182,7 @@ const Editor = ({ site, currentPath, onEdit, onNavigate, className }) => {
         }}
         setModalContent={setModalContent}
       />
-      <main className="h-full overflow-y-scroll">
+      <main className="overflow-y-scroll">
         {determineContent(activeSection)}
         <Modal
           isOpen={modalContent !== null}
@@ -198,13 +198,26 @@ const Editor = ({ site, currentPath, onEdit, onNavigate, className }) => {
 }
 
 export default styled(Editor)`
-${tw`h-full`}
+  ${tw`h-full`}
 
-  main > section {
-    ${tw`p-4`}
+  header {
+    height: 2.5rem;
+    box-sizing: content-box;
 
-    &:not(:last-child) {
-      ${tw`border-b border-gray-400 pb-4`}
+    & > * {
+      box-sizing: border-box;
+    }
+  }
+
+  main {
+    height: calc(100% - 2.5rem);
+
+    & > section {
+      ${tw`p-4`}
+
+      &:not(:last-child) {
+        ${tw`border-b border-gray-400 pb-4`}
+      }
     }
   }
 `
