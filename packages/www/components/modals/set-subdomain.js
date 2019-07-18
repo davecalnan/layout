@@ -4,7 +4,7 @@ import { Input } from '../form-controls'
 import Button from '../button'
 
 const SetSubdomain = ({ onComplete }) => {
-  const [subdomain, setSubdomain] = useState('1')
+  const [subdomain, setSubdomain] = useState('')
 
   const handleSubmit = event => {
     event.preventDefault()

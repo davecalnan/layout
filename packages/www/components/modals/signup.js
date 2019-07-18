@@ -7,8 +7,8 @@ import { Input } from '../form-controls'
 import Button from '../button'
 
 const Signup = ({ onComplete }) => {
-  const [email, setEmail] = useState('1@onlayout.co')
-  const [password, setPassword] = useState('password')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
   const handleSubmit = async event => {
     event.preventDefault()
