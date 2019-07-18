@@ -31,47 +31,50 @@ const Dashboard = ({ sites }) => (
     <SEO title="Your sites" />
     {sites.length ? (
       <div className="flex flex-wrap p-8">
-        {sites.map(({ id, url, subdomain, domain }) => (
-          <div key={id} className="w-80 bg-white rounded-lg shadow-md mr-8">
-            <Link href="/sites/[id]/builder" as={`/sites/${id}/builder`}>
-              <img
-                className="w-80 h-50 rounded-t-lg cursor-pointer bg-gray-100"
-                src={`https://api.apiflash.com/v1/urltoimage?access_key=2d674fb464874085b3602e6e64661a95&height=900&thumbnail_width=640&width=1440&&url=${encodeURI(
-                  url
-                )}`}
-                alt={`A preview of ${domain}`}
-              />
-            </Link>
-            <div className="px-4 py-6">
-              <div className="flex justify-between">
-                <div className="flex items-center font-bold text-base">
-                  <Icon type={ICON_GLOBE} className="h-6 w-6 mr-2" />
-                  {subdomain || domain}
+        {sites.map(({ id, subdomain, domain }) => {
+          const url = domain || `${subdomain}.onlayout.co`
+          return (
+            <div key={id} className="w-80 bg-white rounded-lg shadow-md mr-8">
+              <Link href="/sites/[id]/builder" as={`/sites/${id}/builder`}>
+                <img
+                  className="w-80 h-50 rounded-t-lg cursor-pointer bg-gray-100"
+                  src={`https://api.apiflash.com/v1/urltoimage?access_key=2d674fb464874085b3602e6e64661a95&height=900&thumbnail_width=640&width=1440&&url=${encodeURI(
+                    `http://${url}`
+                  )}`}
+                  alt={`A preview of ${url}`}
+                />
+              </Link>
+              <div className="px-4 py-6">
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center font-bold text-base">
+                    <Icon type={ICON_GLOBE} className="h-6 w-6 mr-2" />
+                    {url}
+                  </div>
+                  <span className="rounded-full text-sm font-bold text-green-900 bg-green-200 px-2">
+                    Published
+                  </span>
                 </div>
-                <span className="rounded-full text-sm font-bold text-green-900 bg-green-200 px-2">
-                  Published
-                </span>
+              </div>
+              <div className="flex rounded-b-lg border-t bg-gray-100 text-center text-blue-600">
+                <Link href="/sites/[id]/builder" as={`/sites/${id}/builder`}>
+                  <a className="w-1/2 p-2">Edit site</a>
+                </Link>
+                <a
+                  href={`//${url}`}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="w-1/2 flex items-center justify-center p-2 border-l"
+                >
+                  View site
+                  <Icon
+                    type={ICON_EXTERNAL_WINDOW}
+                    className="ml-1 h-5 w-5 mb-1"
+                  />
+                </a>
               </div>
             </div>
-            <div className="flex rounded-b-lg border-t bg-gray-100 text-center text-blue-600">
-              <Link href="/sites/[id]/builder" as={`/sites/${id}/builder`}>
-                <a className="w-1/2 p-2">Edit site</a>
-              </Link>
-              <a
-                href={url}
-                target="_blank"
-                rel="noreferrer noopener"
-                className="w-1/2 flex items-center justify-center p-2 border-l"
-              >
-                View site
-                <Icon
-                  type={ICON_EXTERNAL_WINDOW}
-                  className="ml-1 h-5 w-5 mb-1"
-                />
-              </a>
-            </div>
-          </div>
-        ))}
+          )
+        })}
       </div>
     ) : (
       <div className="lg:absolute lg:h-full lg:w-full lg:flex lg:items-center">
