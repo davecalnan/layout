@@ -8,6 +8,7 @@ import { authorize, MANAGE_SITE } from '../../auth'
 
 const netlify = new Netlify(process.env.NETLIFY_API_KEY)
 
+console.log('DigitalOcean API KEY:', process.env.DIGITALOCEAN_API_KEY)
 const digitalOceanClient = axios.create({
   headers: {
     Authorization: `Bearer ${process.env.DIGITALOCEAN_API_KEY}`
@@ -32,8 +33,6 @@ const createDNSRecord = async record => {
 const ensureDNSRecordExists = async record => {
   console.log(`Ensuring DNS record exists for ${record.name}.`)
   const records = await getDNSRecords()
-  console.log('records:', records)
-
   const foundRecord = records.find(({ type, name }) => type === record.type && name === record.name)
 
   if (foundRecord) {
