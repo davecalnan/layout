@@ -24,7 +24,7 @@ export const builderReducer = (state, { type, payload }) => {
         hasError: payload.error,
         isDeploying: payload.isDeploying || state.isDeploying,
         isSaving: payload.isSaving || state.isSaving,
-        message: 'Something went wrong'
+        message: 'Error'
       }
     case EDIT_SITE: {
       return {
