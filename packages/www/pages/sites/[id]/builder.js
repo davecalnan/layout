@@ -1,4 +1,4 @@
-import { useReducer } from 'react'
+import { useState, useRef, useReducer } from 'react'
 import axios from 'axios'
 import cookies from 'nookies'
 import { resetServerContext } from 'react-beautiful-dnd'
@@ -36,14 +36,21 @@ import Browser from '../../../components/browser'
 import Editor from '../../../components/editor'
 import Previewer from '../../../components/previewer'
 import { P } from '../../../components/typography'
+import Modal from '../../../components/modal'
+import SetSubdomain from '../../../components/modals/set-subdomain'
+import Signup from '../../../components/modals/signup'
 
-const BuilderPage = ({ http, site: initialSite, isExistingSite }) => {
+const BuilderPage = initialProps => {
+  const token = useRef(initialProps.token)
+  const [isExistingSite, setIsExistingSite] = useState(initialProps.isExistingSite)
+  const [modalContent, setModalContent] = useState(null)
+
   const {
     state: site,
     dispatch: dispatchSiteAction,
     canUndo,
     canRedo
-  } = useUndoableReducer(siteReducer, initialSite)
+  } = useUndoableReducer(siteReducer, initialProps.site)
 
   const {
     state: currentPath,
@@ -74,29 +81,85 @@ const BuilderPage = ({ http, site: initialSite, isExistingSite }) => {
   const canSave = !isExistingSite || (!isSaving && hasUnsavedEdits)
   const canView = isExistingSite && !isDeploying
 
-  const save = async site => {
+  const promptForSiteDetails = async () => {
+    const promptSubdomain = () =>
+      new Promise(resolve => {
+        setModalContent(
+          <SetSubdomain
+            onComplete={subdomain => resolve(subdomain)}
+          />
+        )
+      })
+
+    const promptSignup = () =>
+      new Promise(resolve => {
+        setModalContent(
+          <Signup onComplete={token => resolve(token)} />
+        )
+      })
+
+    const subdomain = await promptSubdomain()
+    if (token.current === 'guest') {
+      const userToken = await promptSignup()
+      token.current = userToken
+    }
+
+    setModalContent(null)
+
+    return {
+      ...site,
+      subdomain
+    }
+  }
+
+  const create = async site => {
     try {
-      if (isExistingSite) {
-        dispatchBuilderAction({
-          type: START_SAVING
-        })
-        const { data } = await http.patch(`${process.env.API_BASE}/sites/${site.id}`, site)
-        dispatchBuilderAction({
-          type: FINISH_SAVING
-        })
-        return data
-      }
       dispatchBuilderAction({
         type: START_CREATING
       })
-      const { data } = await http.post(`${process.env.API_BASE}/sites`, site)
-      await dispatchSiteAction({
-        type: PERHAPS_UNWISELY_REPLACE_STATE_WITHOUT_ADDING_TO_HISTORY,
-        payload: data
-      })
+      const { data } = await axios.post(
+        `${process.env.API_BASE}/sites`,
+        site,
+        {
+          headers: {
+            Authorization: `Bearer ${token.current}`
+          }
+        }
+      )
       dispatchBuilderAction({
         type: FINISH_CREATING,
         payload: data
+      })
+      setIsExistingSite(true)
+
+      return data
+    } catch (error) {
+      dispatchBuilderAction({
+        type: ERROR,
+        payload: {
+          error,
+          saving: false
+        }
+      })
+    }
+  }
+
+  const save = async site => {
+    try {
+      dispatchBuilderAction({
+        type: START_SAVING
+      })
+      const { data } = await axios.patch(
+        `${process.env.API_BASE}/sites/${site.id}`,
+        site,
+        {
+          headers: {
+            Authorization: `Bearer ${token.current}`
+          }
+        }
+      )
+      dispatchBuilderAction({
+        type: FINISH_SAVING
       })
       return data
     } catch (error) {
@@ -115,7 +178,15 @@ const BuilderPage = ({ http, site: initialSite, isExistingSite }) => {
       dispatchBuilderAction({
         type: START_DEPLOYING
       })
-      await http.post(`${process.env.API_BASE}/sites/${id}/deploy`, {})
+      await axios.post(
+        `${process.env.API_BASE}/sites/${id}/deploy`,
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${token.current}`
+          }
+        }
+      )
       dispatchBuilderAction({
         type: FINISH_DEPLOYING
       })
@@ -130,8 +201,22 @@ const BuilderPage = ({ http, site: initialSite, isExistingSite }) => {
     }
   }
 
-  const handleSave = async site => {
-    const savedSite = await save(site)
+  const handleSave = async () => {
+    let siteToSave = site
+
+    if (!isExistingSite) {
+      siteToSave = await promptForSiteDetails()
+    }
+
+    const savedSite = isExistingSite
+      ? await save(siteToSave)
+      : await create(siteToSave)
+
+    dispatchSiteAction({
+      type: PERHAPS_UNWISELY_REPLACE_STATE_WITHOUT_ADDING_TO_HISTORY,
+      payload: savedSite
+    })
+
     await deploy(savedSite)
   }
 
@@ -205,7 +290,9 @@ const BuilderPage = ({ http, site: initialSite, isExistingSite }) => {
         />
       }
     >
-      <SEO title={`Building ${site.subdomain || site.domain || 'a new site'}`} />
+      <SEO
+        title={`Building ${site.subdomain || site.domain || 'a new site'}`}
+      />
       <Browser
         url={constructURL(site)}
         content={
@@ -234,6 +321,14 @@ const BuilderPage = ({ http, site: initialSite, isExistingSite }) => {
           })
         }}
       />
+      <Modal
+        isOpen={modalContent !== null}
+        onRequestClose={() => {
+          setModalContent(null)
+        }}
+      >
+        {modalContent}
+      </Modal>
     </SidebarLayout>
   )
 }
@@ -245,19 +340,9 @@ BuilderPage.getInitialProps = async ctx => {
 
   resetServerContext()
 
-  const http = axios.create({
-    headers: {
-      Authorization: `Bearer ${token || 'guest'}`
-    }
-  })
-
-  const props = {
-    http
-  }
-
   if (query.id === 'new') {
     return {
-      ...props,
+      token: token || 'guest',
       site: await import('../../../data/new-site.json'),
       isExistingSite: false
     }
@@ -266,12 +351,17 @@ BuilderPage.getInitialProps = async ctx => {
   redirectIfNotAuthenticated(ctx)
 
   try {
-    const { data: site } = await http.get(
-      `${process.env.API_BASE}/sites/${id}`
+    const { data: site } = await axios.get(
+      `${process.env.API_BASE}/sites/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
     )
 
     return {
-      ...props,
+      token,
       site,
       isExistingSite: true
     }
