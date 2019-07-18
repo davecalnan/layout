@@ -16,7 +16,7 @@ const digitalOceanClient = axios.create({
 
 const getDNSRecords = async () => {
   const { data } = await digitalOceanClient.get(
-    'https://api.digitalocean.com/v2/domains/onlayout.co/records'
+    'https://api.digitalocean.com/v2/domains/onlayout.co/records?per_page=200'
   )
   return data.domain_records
 }
@@ -30,15 +30,18 @@ const createDNSRecord = async record => {
 }
 
 const ensureDNSRecordExists = async record => {
-  console.log(`Ensuring DNS record exists for ${record.data}.`)
+  console.log(`Ensuring DNS record exists for ${record.name}.`)
   const records = await getDNSRecords()
+  console.log('records:', records)
 
-  const foundRecord = records.find(({ type, name }) => type === record.type && name === record.type)
+  const foundRecord = records.find(({ type, name }) => type === record.type && name === record.name)
 
   if (foundRecord) {
+    console.log(`Found DNS record for ${record.name}.`)
     return foundRecord
   }
 
+  console.log(`Didn't find DNS record for ${record.name}. Creating it.`)
   return await createDNSRecord({
     ...record,
     ttl: 30
@@ -123,10 +126,14 @@ const deploySite = async (site, directory) => {
 }
 
 const provisionSSLCert = async site => {
-  console.log(`Provisioning SSL cert for site id ${site.id}`)
-  return await netlify.provisionSiteTLSCertificate({
-    siteId: site.netlify.siteId
-  })
+  try {
+    console.log(`Provisioning SSL cert for site id ${site.id}`)
+    return await netlify.provisionSiteTLSCertificate({
+      siteId: site.netlify.siteId
+    })
+  } catch (error) {
+    console.error(`SSL Cert has already been provisioned for site id ${site.id}.`)
+  }
 }
 
 export default async ({ db, params, authInfo }, res) => {
@@ -140,7 +147,6 @@ export default async ({ db, params, authInfo }, res) => {
   let site = await sites.findOne({ id: Number(id) })
 
   try {
-    console.log('Checking DNS record...')
     await ensureDNSRecordExists({
       type: 'CNAME',
       name: site.subdomain,
