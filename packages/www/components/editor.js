@@ -213,21 +213,25 @@ const Editor = ({ site, currentPath, onEdit, onNavigate, className }) => {
         }}
         setModalContent={setModalContent}
       />
-      {determineContent(activeSection)}
-      <Modal
-        isOpen={modalContent !== null}
-        onRequestClose={() => {
-          setModalContent(null)
-        }}
-      >
-        {modalContent}
-      </Modal>
+      <main className="h-full overflow-y-scroll">
+        {determineContent(activeSection)}
+        <Modal
+          isOpen={modalContent !== null}
+          onRequestClose={() => {
+            setModalContent(null)
+          }}
+        >
+          {modalContent}
+        </Modal>
+      </main>
     </div>
   )
 }
 
 export default styled(Editor)`
-  & > section {
+${tw`h-full`}
+
+  main > section {
     ${tw`p-4`}
 
     &:not(:last-child) {
