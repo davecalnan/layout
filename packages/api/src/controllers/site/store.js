@@ -1,13 +1,9 @@
-import { getNextId, setNextId } from '../../db/auto-increment'
 import { withoutId, withoutInternalKeys } from '@layouthq/util'
-import { authorize, CREATE_SITES } from '../../auth'
+import { getNextId, setNextId } from '../../db/auto-increment'
+import { MANAGE_SITE } from '../../auth'
 
-export default async ({ db, body, authInfo }, res) => {
+export default async ({ db, body, user }, res) => {
   try {
-    if (!authorize(authInfo, [CREATE_SITES])) {
-      return res.status(403).send(JSON.stringify({ message: `You are not authorized to create sites.` }))
-    }
-
     const id = await getNextId(db, 'sites')
 
     const collection = await db.collection('sites')
@@ -16,6 +12,18 @@ export default async ({ db, body, authInfo }, res) => {
       ...withoutId(body)
     })
     const site = response.ops[0]
+
+    const users = await db.collection('users')
+    await users.findOneAndUpdate({ id: user.id }, {
+      $push: {
+        scopes: {
+          type: MANAGE_SITE,
+          value: site.id
+        }
+      }
+    }, {
+      returnOriginal: false
+    })
 
     res.status(200).send(JSON.stringify(withoutInternalKeys(site)))
 
