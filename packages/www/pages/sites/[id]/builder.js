@@ -135,7 +135,7 @@ const BuilderPage = ({ http, site: initialSite, isExistingSite }) => {
     await deploy(savedSite)
   }
 
-  const constructUrl = site => {
+  const constructURL = site => {
     if (!isExistingSite) {
       return 'Save your site to get a url 👉🏻'
     }
@@ -144,7 +144,7 @@ const BuilderPage = ({ http, site: initialSite, isExistingSite }) => {
       return site.url + path
     }
     if (site.subdomain) {
-      return `https://${site.subdomain}.onlayout.co` + path
+      return `${site.subdomain}.onlayout.co` + path
     }
   }
 
@@ -207,7 +207,7 @@ const BuilderPage = ({ http, site: initialSite, isExistingSite }) => {
     >
       <SEO title={`Building ${site.subdomain || site.domain || 'a new site'}`} />
       <Browser
-        url={constructUrl(site)}
+        url={constructURL(site)}
         content={
           <Previewer
             site={site}
