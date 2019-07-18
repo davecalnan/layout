@@ -30,7 +30,9 @@ const LoginForm = ({ className }) => {
       })
       const { token } = data
 
-      cookies.set(null, 'token', token)
+      cookies.set(null, 'token', token, {
+        path: '/'
+      })
 
       Router.push('/')
     } catch (error) {
