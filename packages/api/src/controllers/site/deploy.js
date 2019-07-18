@@ -8,7 +8,6 @@ import { authorize, MANAGE_SITE } from '../../auth'
 
 const netlify = new Netlify(process.env.NETLIFY_API_KEY)
 
-console.log('DigitalOcean API KEY:', process.env.DIGITALOCEAN_API_KEY)
 const digitalOceanClient = axios.create({
   headers: {
     Authorization: `Bearer ${process.env.DIGITALOCEAN_API_KEY}`
