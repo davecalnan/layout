@@ -1,13 +1,52 @@
 import fs from 'fs-extra'
 import path from 'path'
 import Netlify from 'netlify'
+import axios from 'axios'
 import { renderPageToHTML } from '@layouthq/renderer'
 import { generateFilePath } from '@layouthq/util'
 import { authorize, MANAGE_SITE } from '../../auth'
 
 const netlify = new Netlify(process.env.NETLIFY_API_KEY)
 
+const digitalOceanClient = axios.create({
+  headers: {
+    Authorization: `Bearer ${process.env.DIGITALOCEAN_API_KEY}`
+  }
+})
+
+const getDNSRecords = async () => {
+  const { data } = await digitalOceanClient.get(
+    'https://api.digitalocean.com/v2/domains/onlayout.co/records'
+  )
+  return data.domain_records
+}
+
+const createDNSRecord = async record => {
+  const { data } = await digitalOceanClient.post(
+    'https://api.digitalocean.com/v2/domains/onlayout.co/records',
+    record
+  )
+  return data.domain_record
+}
+
+const ensureDNSRecordExists = async record => {
+  console.log(`Ensuring DNS record exists for ${record.data}.`)
+  const records = await getDNSRecords()
+
+  const foundRecord = records.find(({ type, name }) => type === record.type && name === record.type)
+
+  if (foundRecord) {
+    return foundRecord
+  }
+
+  return await createDNSRecord({
+    ...record,
+    ttl: 30
+  })
+}
+
 const createNetlifySite = async ({ id, domain, subdomain }) => {
+  console.log('Creating Netlify site.')
   try {
     return await netlify.createSite({
       body: {
@@ -26,6 +65,7 @@ const createNetlifySite = async ({ id, domain, subdomain }) => {
 }
 
 const saveNetlifyDetails = async (sites, { id }, netlifySite) => {
+  console.log('Updating site with Netlify details.')
   const { value } = await sites.findOneAndUpdate(
     { id: Number(id) },
     {
@@ -82,36 +122,52 @@ const deploySite = async (site, directory) => {
   return deployment
 }
 
+const provisionSSLCert = async site => {
+  console.log(`Provisioning SSL cert for site id ${site.id}`)
+  return await netlify.provisionSiteTLSCertificate({
+    siteId: site.netlify.siteId
+  })
+}
+
 export default async ({ db, params, authInfo }, res) => {
   const { id } = params
 
   if (!authorize(authInfo, [MANAGE_SITE], [Number(id)])) {
-      return res.status(403).send(JSON.stringify({ message: `You are not authorized to deploy site id ${id}.` }))
-    }
+    return res.status(403).send(JSON.stringify({ message: `You are not authorized to deploy site id ${id}.` }))
+  }
 
   const sites = await db.collection('sites')
   let site = await sites.findOne({ id: Number(id) })
 
-  if (!site.netlify || !site.netlify.siteId) {
-    const netlifySite = await createNetlifySite(site)
-    const updatedSite = await saveNetlifyDetails(sites, site, netlifySite)
-
-    site = updatedSite
-  }
-
-  const tempDirectory = path.join(__dirname, 'tmp', site.netlify.name)
-
-  await writeToTemporaryDirectory(site, tempDirectory)
-
   try {
+    console.log('Checking DNS record...')
+    await ensureDNSRecordExists({
+      type: 'CNAME',
+      name: site.subdomain,
+      data: 'sites.onlayout.co.'
+    })
+
+    if (!site.netlify || !site.netlify.siteId) {
+      const netlifySite = await createNetlifySite(site)
+      const updatedSite = await saveNetlifyDetails(sites, site, netlifySite)
+
+      site = updatedSite
+    }
+
+    const tempDirectory = path.join(__dirname, 'tmp', site.netlify.name)
+
+    await writeToTemporaryDirectory(site, tempDirectory)
+
     const deployment = await deploySite(site, tempDirectory)
 
+    await provisionSSLCert(site)
+
     res.status(200).send(JSON.stringify(deployment))
+
+    fs.remove(tempDirectory, error => error && console.error(error.message))
   } catch (error) {
     console.error('Could not deploy site:', error.message)
 
     return res.status(500).send(JSON.stringify({ error }))
-  } finally {
-    await fs.remove(tempDirectory, error => error && console.error(error.message))
   }
 }
