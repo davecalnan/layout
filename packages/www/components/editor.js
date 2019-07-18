@@ -23,7 +23,7 @@ import Modal from './modal'
 import AddASection from './modals/add-a-section'
 
 const Editor = ({ site, currentPath, onEdit, onNavigate, className }) => {
-  const { pages, subdomain } = site
+  const { pages } = site
   const [activeSectionIndex, setActiveSectionIndex] = useState()
   const [modalContent, setModalContent] = useState(null)
 
@@ -36,10 +36,6 @@ const Editor = ({ site, currentPath, onEdit, onNavigate, className }) => {
     path: currentPage.path,
     title: currentPage.title,
     description: currentPage.description
-  }
-
-  const siteDetails = {
-    subdomain
   }
 
   const onDragEnd = result => {
@@ -153,33 +149,6 @@ const Editor = ({ site, currentPath, onEdit, onNavigate, className }) => {
                       target: {
                         page: currentPage
                       },
-                      payload: {
-                        [key]: event.target.value
-                      }
-                    })
-                  }
-                }
-              )
-              return (
-                <div key={key} className="flex flex-col mb-6">
-                  <Label>{toSentenceCase(key)}</Label>
-                  {InputComponent}
-                </div>
-              )
-            })}
-          </div>
-        </section>
-        <section>
-          <H3>Site Details</H3>
-          <div className="mt-4">
-            {Object.entries(siteDetails).map(([key, value]) => {
-              const InputComponent = makeInputComponent(
-                { type: 'string' },
-                {
-                  value,
-                  onChange: event => {
-                    onEdit({
-                      type: UPDATE_SITE_METADATA,
                       payload: {
                         [key]: event.target.value
                       }
