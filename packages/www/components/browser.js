@@ -45,7 +45,7 @@ const Browser = ({
       <Button
         className="w-20"
         disabled={!canView}
-        href={`//${url}`}
+        href={`http://${url}`}
         compact
         openInNewTab
       >

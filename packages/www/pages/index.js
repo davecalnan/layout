@@ -60,7 +60,7 @@ const Dashboard = ({ sites }) => (
                   <a className="w-1/2 p-2">Edit site</a>
                 </Link>
                 <a
-                  href={`//${url}`}
+                  href={`http://${url}`}
                   target="_blank"
                   rel="noreferrer noopener"
                   className="w-1/2 flex items-center justify-center p-2 border-l"
