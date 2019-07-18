@@ -19,7 +19,7 @@ export const siteReducer = (site, { type, target, payload  }) => {
   switch (type) {
     case UPDATE_SITE_METADATA:
       /*
-        `payload` should be the an object with the key of the metadatum to update and its new value.
+        `payload` should be an object with the key of the metadatum to update and its new value.
       */
       return {
         ...site,
