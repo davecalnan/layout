@@ -225,8 +225,8 @@ const BuilderPage = initialProps => {
       return 'Save your site to get a url 👉🏻'
     }
     const path = (currentPath && currentPath !== '/') ? currentPath : ''
-    if (site.url) {
-      return site.url + path
+    if (site.domain) {
+      return site.domain + path
     }
     if (site.subdomain) {
       return `${site.subdomain}.onlayout.co` + path
