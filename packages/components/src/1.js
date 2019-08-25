@@ -5,12 +5,11 @@ import tw from 'tailwind.macro'
 
 const Heading = ({ text, level, className }) => {
   const Tag = `h${level}`
-  return (
-    <Tag className={className}>{text}</Tag>
-  )
+  return <Tag className={className}>{text}</Tag>
 }
 
 Heading.propTypes = {
+  ...PropTypes.typography,
   text: PropTypes.string,
   level: PropTypes.oneOf([1, 2, 3, 4, 5, 6])
 }
@@ -24,5 +23,6 @@ ${({ level }) => level === 4 && tw`text-2xl`}
 ${({ level }) => level === 5 && tw`text-xl`}
 ${({ level }) => level === 6 && tw`text-lg`}
 ${({ theme }) => theme.typography.headings}
-color: ${({ theme }) => theme.colors.text.base};
+color: ${({ theme, backgroundType }) =>
+  theme.colors.text[backgroundType === 'dark' ? 'white' : 'base']};
 `

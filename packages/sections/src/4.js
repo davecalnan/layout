@@ -23,9 +23,12 @@ background-color: ${({ theme }) => theme.colors.background.base};
 border-color: ${({ theme }) => theme.colors.border.base};
 align-items: ${({ alignment }) => {
   switch (alignment) {
-    case 'left': return 'flex-start'
-    case 'center': return 'center'
-    case 'right': return 'flex-end'
+    case 'left':
+      return 'flex-start'
+    case 'center':
+      return 'center'
+    case 'right':
+      return 'flex-end'
   }
 }};
 `

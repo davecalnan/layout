@@ -7,7 +7,11 @@ import DefaultLayout from '../components/default-layout'
 import SEO from '../components/seo'
 import { H2, P } from '../components/typography'
 import Button from '../components/button'
-import Icon, { ICON_ADD_CIRCLE, ICON_EXTERNAL_WINDOW, ICON_GLOBE } from '../components/icon'
+import Icon, {
+  ICON_ADD_CIRCLE,
+  ICON_EXTERNAL_WINDOW,
+  ICON_GLOBE
+} from '../components/icon'
 
 import CreateWebsiteIllustration from '../assets/create-website-illustration.svg'
 
@@ -34,7 +38,10 @@ const Dashboard = ({ sites }) => (
         {sites.map(({ id, subdomain, domain }) => {
           const url = domain || `${subdomain}.onlayout.co`
           return (
-            <div key={id} className="w-80 bg-white rounded-lg shadow-md mr-8">
+            <div
+              key={id}
+              className="w-80 flex flex-col bg-white rounded-lg shadow-md mr-8"
+            >
               <Link href="/sites/[id]/builder" as={`/sites/${id}/builder`}>
                 <img
                   className="w-80 h-50 rounded-t-lg cursor-pointer bg-gray-100"
@@ -44,15 +51,15 @@ const Dashboard = ({ sites }) => (
                   alt={`A preview of ${url}`}
                 />
               </Link>
-              <div className="px-4 py-6">
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center font-bold text-base">
+              <div className="flex-1 px-4 py-6">
+                <div className="flex items-start justify-between">
+                  <div className="flex font-bold text-base">
                     <Icon type={ICON_GLOBE} className="h-6 w-6 mr-2" />
                     {url}
                   </div>
-                  <span className="rounded-full text-sm font-bold text-green-900 bg-green-200 px-2">
+                  <div className="rounded-full text-sm font-bold text-green-900 bg-green-200 px-2">
                     Published
-                  </span>
+                  </div>
                 </div>
               </div>
               <div className="flex rounded-b-lg border-t bg-gray-100 text-center text-blue-600">

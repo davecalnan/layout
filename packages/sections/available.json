@@ -1,10 +1,8 @@
-[
-  {
+[{
     "id": 1,
     "type": "banner",
     "description": "The main attraction on this particular page",
-    "defaultComponents": [
-      {
+    "defaultComponents": [{
         "id": 1,
         "type": "heading",
         "props": {
@@ -59,8 +57,7 @@
     "id": 2,
     "type": "spotlight",
     "description": "Call attention to a feature or piece of information",
-    "defaultComponents": [
-      {
+    "defaultComponents": [{
         "id": 1,
         "type": "heading",
         "props": {
@@ -119,8 +116,7 @@
     "id": 4,
     "type": "callToAction",
     "description": "Direct your visitors to a particular goal.",
-    "defaultComponents": [
-      {
+    "defaultComponents": [{
         "id": 1,
         "type": "heading",
         "props": {
@@ -153,6 +149,148 @@
     },
     "defaultProps": {
       "alignment": "left"
+    }
+  },
+  {
+    "id": 5,
+    "type": "header",
+    "description": "A nice place to put your logo and some links.",
+    "propTypes": {
+      "logoUrl": {
+        "type": "string"
+      },
+      "logoSource": {
+        "type": "string"
+      },
+      "links": {
+        "type": "links"
+      }
+    },
+    "defaultProps": {
+      "logoUrl": "",
+      "logoSource": "",
+      "links": []
+    }
+  },
+  {
+    "id": 6,
+    "type": "Hero",
+    "description": "Put your best sales pitch here.",
+    "defaultComponents": [{
+        "id": 1,
+        "type": "heading",
+        "props": {
+          "text": "Edit this heading",
+          "level": 2
+        }
+      },
+      {
+        "id": 2,
+        "type": "text",
+        "props": {
+          "markdown": "Use this element to highlight something important — a feature, benefit, or whatever. Change the image to whatever you'd like and get rid of the button if you're not using it."
+        }
+      },
+      {
+        "id": 3,
+        "type": "button",
+        "props": {
+          "text": "Learn more",
+          "link": "#learn-more",
+          "type": "primary"
+        }
+      }
+    ],
+    "propTypes": {
+      "imageSource": {
+        "type": "string"
+      },
+      "backgroundColor": {
+        "type": "string"
+      },
+      "alignment": {
+        "type": "enum",
+        "options": [
+          "left",
+          "center",
+          "right"
+        ]
+      }
+    },
+    "defaultProps": {
+      "imageSource": "https://images.unsplash.com/photo-1438109491414-7198515b166b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80",
+      "backgroundColor": "#fff",
+      "alignment": "left"
+    }
+  },
+  {
+    "id": 7,
+    "type": "Services",
+    "description": "List the services you provide.",
+    "defaultComponents": [{
+        "id": 1,
+        "type": "heading",
+        "props": {
+          "text": "Edit this heading",
+          "level": 2
+        }
+      },
+      {
+        "id": 2,
+        "type": "text",
+        "props": {
+          "markdown": "Use this element to highlight something important — a feature, benefit, or whatever. Change the image to whatever you'd like and get rid of the button if you're not using it."
+        }
+      },
+      {
+        "id": 3,
+        "type": "button",
+        "props": {
+          "text": "Learn more",
+          "link": "#learn-more",
+          "type": "primary"
+        }
+      }
+    ],
+    "propTypes": {
+      "asideBackgroundColor": {
+        "type": "string"
+      },
+      "servicesBackgroundColor": {
+        "type": "string"
+      },
+      "servicesTitle": {
+        "type": "string"
+      },
+      "services": {
+        "type": "array"
+      }
+    },
+    "defaultProps": {
+      "asideBackgroundColor": "#43a8ef",
+      "servicesBackgroundColor": "#f1f1f1",
+      "servicesTitle": "Services Offered",
+      "services": [{
+          "imageSource": "https://castlegale.com/wp-content/uploads/2015/11/drop.png",
+          "name": "Water",
+          "description": "We can help you to achieve your water treatment compliance, technical or financial goals through experience and innovation."
+        },
+        {
+          "imageSource": "https://castlegale.com/wp-content/uploads/2015/11/waste.png",
+          "name": "Waste",
+          "description": "Tracking your waste from source, minimising the production of waste and giving you the best options for onward treatment."
+        },
+        {
+          "imageSource": "https://castlegale.com/wp-content/uploads/2015/11/flasks.png",
+          "name": "Chemical",
+          "description": "Using our network of client contacts we can open the right doors for you, get your product noticed and help you to grow your business."
+        },
+        {
+          "imageSource": "https://castlegale.com/wp-content/uploads/2015/11/industry.png",
+          "name": "Manufacturing",
+          "description": "Assisting many types of manufacturing businesses to optimise internal processes and manage external influences."
+        }
+      ]
     }
   }
 ]
