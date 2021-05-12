@@ -28,7 +28,7 @@
     "@layouthq/util": "0.1.20",
     "classnames": "2.2.6",
     "perfectionist": "2.4.0",
-    "postcss": "7.0.17",
+    "postcss": "8.2.10",
     "postcss-nested": "4.1.2",
     "react": "16.8.6",
     "react-dom": "16.8.6",
