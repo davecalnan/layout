@@ -171,7 +171,7 @@
           "id": 3,
           "type": "footer",
           "props": {
-            "copyrightText": "© 2019"
+            "copyrightText": "© 2021"
           }
         }
       ]
@@ -199,7 +199,7 @@
         "base": "#000000",
         "white": "#ffffff"
       },
-      "link" : {
+      "link": {
         "base": "#4299e1",
         "visited": "#9f7aea"
       }
