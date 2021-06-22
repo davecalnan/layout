@@ -1,10 +1,9 @@
 require('dotenv').config()
 const path = require('path')
 const Dotenv = require('dotenv-webpack')
-const withCSS = require('@zeit/next-css')
 const TerserPlugin = require('terser-webpack-plugin')
 
-module.exports = withCSS({
+module.exports = {
   webpack: config => {
     config.plugins.push(
       new Dotenv({
@@ -35,4 +34,4 @@ module.exports = withCSS({
 
     return config
   }
-})
+}
