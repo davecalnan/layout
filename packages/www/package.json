@@ -34,7 +34,7 @@
     "react-modal": "3.8.1",
     "styled-components": "4.2.1",
     "tailwindcss": "1.0.3",
-    "url-parse": "1.4.7"
+    "url-parse": "1.5.9"
   },
   "devDependencies": {
     "@svgr/webpack": "4.3.1",
